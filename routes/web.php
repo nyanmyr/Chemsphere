@@ -15,6 +15,10 @@ Route::get('/register', function () {
     return view('register');
 })->name('register');
 
+Route::get('/pending', function () {
+    return view('pending');
+})->name('pending');
+
 // Standard Auth Actions
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
