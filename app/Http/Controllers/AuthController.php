@@ -22,6 +22,7 @@ class AuthController extends Controller
         $user = User::create([
             'email' => $credentials['email'],
             'password' => Hash::make($credentials['password']),
+            'user_role' => 'pending'
         ]);
 
         Auth::login($user);
@@ -58,21 +59,22 @@ class AuthController extends Controller
     // Redirect user to Google OAuth page
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->redirect();
+        // stateless() should be removed for production
+        return Socialite::driver('google')->stateless()->redirect();
     }
 
     // Handle incoming OAuth callback from Google
     public function handleGoogleCallback()
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser = Socialite::driver('google')->stateless()->user();
 
             $user = User::updateOrCreate([
                 'email' => $googleUser->getEmail(),
             ], [
-                'name' => $googleUser->getName(), // Captured from Google if available
+                'name' => $googleUser->getName(),
                 'google_id' => $googleUser->getId(),
-                'password' => Hash::make(Str::random(24)), // Dummy password for SSO users
+                'password' => Hash::make(Str::random(24)),
             ]);
 
             Auth::login($user);
