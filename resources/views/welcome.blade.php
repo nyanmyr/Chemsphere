@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head><title>Chemsphere</title></head>
+
+<head>
+    <title>Chemsphere</title>
+</head>
+
 <body>
     <h1>Welcome to Chemsphere</h1>
 
@@ -16,4 +20,5 @@
         <a href="{{ route('register') }}">Register</a>
     @endauth
 </body>
+
 </html>

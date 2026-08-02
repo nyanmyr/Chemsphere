@@ -6,12 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
-    // Handle standard registration (Email & Password only)
     public function register(Request $request)
     {
         $credentials = $request->validate([
@@ -28,7 +26,6 @@ class AuthController extends Controller
         return redirect('/pending');
     }
 
-    // Handle standard login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -36,37 +33,36 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-
-            if ($user->user_role === 'pending') {
-                Auth::logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-
-                return back()->withErrors(['email' => 'Your account is currently pending approval.']);
-            }
-
-            if (is_null($user->google_id)) {
-                $userId = $user->id;
-
-                Auth::logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-
-                $request->session()->put('linking_user_id', $userId);
-
-                return Socialite::driver('google')->redirect();
-            }
-
-            $request->session()->regenerate();
-            return redirect('/');
+        if (!Auth::attempt($credentials)) {
+            return back()->withErrors(['email' => 'Invalid credentials']);
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials']);
+        $user = Auth::user();
+
+        if ($user->user_role === 'pending') {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()->withErrors(['email' => 'Your account is currently pending approval.']);
+        }
+
+        if (is_null($user->google_id)) {
+            $userId = $user->id;
+
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            $request->session()->put('linking_user_id', $userId);
+
+            return Socialite::driver('google')->redirect();
+        }
+
+        $request->session()->regenerate();
+        return redirect('/');
     }
 
-    // Handle logout
     public function logout(Request $request)
     {
         Auth::logout();
@@ -76,14 +72,12 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-    // Redirect user to Google OAuth page
     public function redirectToGoogle()
     {
         // stateless() should be removed for production
         return Socialite::driver('google')->stateless()->redirect();
     }
 
-    // Handle incoming OAuth callback from Google
     public function handleGoogleCallback()
     {
         try {
