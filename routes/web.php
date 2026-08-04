@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChemicalsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,6 +19,9 @@ Route::get('/register', function () {
 Route::get('/pending', function () {
     return view('pending');
 })->name('pending');
+
+Route::get('/inventory', [ChemicalsController::class, 'chemicals'])
+->name('inventory');
 
 // Standard Auth Actions
 Route::post('/register', [AuthController::class, 'register']);

@@ -48,7 +48,7 @@ class AuthController extends Controller
         }
 
         if (is_null($user->google_id)) {
-            $userId = $user->id;
+            $userId = $user->user_id;
 
             Auth::logout();
             $request->session()->invalidate();
@@ -96,6 +96,12 @@ class AuthController extends Controller
                 if ($user->email !== $googleUser->getEmail()) {
                     return redirect('/login')->withErrors([
                         'email' => "Email mismatch! You tried signing into Google with '{$googleUser->getEmail()}', but your account is registered as '{$user->email}'."
+                    ]);
+                }
+
+                if (!is_null($user->google_id) && $user->google_id !== $googleUser->getId()) {
+                    return redirect('/login')->withErrors([
+                        'email' => 'This account is already linked to a different Google account.'
                     ]);
                 }
 

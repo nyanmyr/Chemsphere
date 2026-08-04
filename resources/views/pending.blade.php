@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Chemsphere</title>
+    <title>Chemsphere | Pending</title>
 </head>
 
 <body>

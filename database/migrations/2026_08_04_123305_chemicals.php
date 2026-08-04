@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('chemicals', function (Blueprint $table) {
+            $table->id('chemical_id');
+            $table->string('chemical_name');
+            $table->enum(
+                'hazard_color',
+                [
+                    'red',
+                    'yellow',
+                    'white',
+                    'blue'
+                ]
+            )->default('red');
+            $table->decimal('amount', $precision = 10, $scale = 3);
+            $table->boolean('opened');
+            $table->date('expiration_date');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('chemicals');
+    }
+};
