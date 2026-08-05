@@ -11,7 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('equipment', function (Blueprint $table) {
+            $table->id('equipment_id');
+            $table->string('equipment_name');
+            $table->enum(
+                'status',
+                [
+                    'available',
+                    'unavailable',
+                    'broken',
+                    'under maintenance'
+                ]
+            )->default('unavailable');
+            $table->decimal('quantity', $precision = 10, $scale = 3);
+        });
     }
 
     /**
@@ -19,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('equipment');
     }
 };

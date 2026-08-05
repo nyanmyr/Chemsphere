@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ghs_symbols', function (Blueprint $table) {
-            $table->id('ghs_symbol_id');
-            $table->string('ghs_symbol_name');
-            $table->text('description')->nullable();
-            $table->date('expiration_date');
+        Schema::create('action_types', function (Blueprint $table) {
+            $table->id('action_type_id');
+            $table->string('action_name');
+            $table->text('description');
         });
     }
 
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ghs_symbols');
+        Schema::dropIfExists('action_types');
     }
 };

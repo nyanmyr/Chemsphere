@@ -11,7 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('alerts', function (Blueprint $table) {
+            $table->id('alert_id');
+            $table->enum('item_type', ['equipment', 'chemical']);
+            $table->text('message')->nullable();
+            $table->date('alert_date');
+        });
     }
 
     /**
@@ -19,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('alerts');
     }
 };

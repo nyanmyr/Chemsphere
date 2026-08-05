@@ -11,7 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('units', function (Blueprint $table) {
+            $table->id('unit_id');
+            $table->string('unit_name');
+            $table->string('abbreviation');
+        });
     }
 
     /**
@@ -19,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('units');
     }
 };

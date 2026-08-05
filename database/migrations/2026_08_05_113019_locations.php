@@ -11,7 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('locations', function (Blueprint $table) {
+            $table->id('location_id');
+            $table->string('location_name');
+            $table->text('description')->nullable();
+        });
     }
 
     /**
@@ -19,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('locations');
     }
 };
