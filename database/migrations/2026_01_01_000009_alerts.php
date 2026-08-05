@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('alerts', function (Blueprint $table) {
             $table->id('alert_id');
+            $table->foreignId('chemical_id')->constrained('chemicals');
+            $table->foreignId('equipment_id')->constrained('equipment');
             $table->enum('item_type', ['equipment', 'chemical']);
             $table->text('message')->nullable();
             $table->date('alert_date');
