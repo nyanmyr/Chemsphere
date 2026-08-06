@@ -21,6 +21,7 @@ Route::get('/pending', function () {
 })->name('pending');
 
 Route::get('/inventory', [ChemicalsController::class, 'chemicals'])
+->middleware('auth')
 ->name('inventory');
 
 // Standard Auth Actions

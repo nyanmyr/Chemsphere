@@ -4,8 +4,10 @@
 <body>
     <h1>Login</h1>
 
-    @if($errors->any())
-        <div style="color: red;">{{ $errors->first() }}</div>
+    @if(session('message') || $errors->any())
+        <div style="color: red;">
+            {{ session('message') ?? $errors->first() }}
+        </div>
     @endif
 
     <form action="/login" method="POST">
