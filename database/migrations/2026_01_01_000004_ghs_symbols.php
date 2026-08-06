@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('ghs_symbol_id');
             $table->string('ghs_symbol_name');
             $table->text('description')->nullable();
-            $table->date('expiration_date');
+            $table->string('icon_path');
         });
     }
 
