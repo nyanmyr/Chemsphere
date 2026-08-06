@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('usage_logs', function (Blueprint $table) {
             $table->id('usage_log_id');
-            $table->foreignId('chemical_id')->constrained('chemicals');
-            $table->foreignId('equipment_id')->constrained('equipment');
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('action_type_id')->constrained('action_types');
-            $table->foreignId('unit_id')->constrained('units');
+            $table->foreignId('chemical_id')->constrained('chemicals')->references('chemical_id');
+            $table->foreignId('equipment_id')->constrained('equipment')->references('equipment_id');
+            $table->foreignId('user_id')->constrained('users')->references('user_id');
+            $table->foreignId('action_type_id')->constrained('action_types')->references('action_type_id');
+            $table->foreignId('unit_id')->constrained('units')->references('unit_id');
             $table->enum('item_type', ['equipment', 'chemical']);
             $table->decimal('quantity_used', $precision = 10, $scale = 3);
             $table->date('usage_log_date');
