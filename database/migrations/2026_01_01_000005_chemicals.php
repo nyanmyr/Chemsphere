@@ -11,16 +11,25 @@ return new class extends Migration
         Schema::create('chemicals', function (Blueprint $table) {
             $table->id('chemical_id');
             $table->foreignId('location_id')->constrained('locations')->references('location_id');
+            $table->foreignId('created_by')->constrained('users')->references('user_id');
             $table->string('chemical_name');
+            $table->string('batch_number');
+            $table->string('brand_name');
+            $table->decimal('volume_per_unit', $precision = 10, $scale = 3);
+            $table->decimal('initial_quantity', $precision = 10, $scale = 3);
+            $table->decimal('current_quantity', $precision = 10, $scale = 3);
+            $table->date('expiration_date');
+            $table->date('arrival_date');
+
             $table->enum(
-                'hazard_color',
+                'safety_class',
                 [
-                    'red',
-                    'yellow',
-                    'white',
-                    'blue'
+                    'flammable',
+                    'corrosive',
+                    'reactive',
+                    'toxic'
                 ]
-            )->default('red');
+            )->default('flammable');
             $table->set(
                 'ghs_symbols',
                 [
@@ -47,9 +56,7 @@ return new class extends Migration
                     'microliter'
                 ]
             )->default('kilogram');
-            $table->decimal('quantity', $precision = 10, $scale = 3);
-            $table->boolean('opened');
-            $table->date('expiration_date');
+            $table->timestamps();
         });
     }
 
