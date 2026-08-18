@@ -20,7 +20,6 @@ return new class extends Migration
             $table->decimal('current_quantity', $precision = 10, $scale = 3);
             $table->date('expiration_date');
             $table->date('arrival_date');
-
             $table->enum(
                 'safety_class',
                 [
