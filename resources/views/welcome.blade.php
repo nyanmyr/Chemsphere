@@ -15,6 +15,7 @@
             <button type="submit">Logout</button>
         </form>
         <a href="{{ route('inventory') }}">Inventory</a>
+        <a href="{{ route('locations') }}">Locations</a>
     @else
         <a href="{{ route('login') }}">Login</a>
         <br>
