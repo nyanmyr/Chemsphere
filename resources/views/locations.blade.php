@@ -28,6 +28,11 @@
     </table>
 
     <br>
+    @if($user?->user_role === 'admin')
+        <a>You are an admin</a>
+    @endif
+
+    <br>
     <a href="{{ route('welcome') }}">Return</a>
 </body>
 
