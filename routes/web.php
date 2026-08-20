@@ -29,6 +29,12 @@ Route::get('/locations', [LocationsController::class, 'locations'])
 ->middleware('auth')
 ->name('locations');
 
+Route::get('/locations/create', function () {
+    return view('create_location');
+})
+->middleware(['auth', 'admin'])
+->name('create_location');
+
 // Standard Auth Actions
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
