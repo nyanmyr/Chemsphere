@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id('location_id');
             $table->string('location_name');
             $table->text('description')->nullable();
+            $table->timestamps();
         });
     }
 
