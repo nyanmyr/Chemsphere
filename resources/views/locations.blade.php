@@ -29,7 +29,7 @@
 
     <br>
     @if($user?->user_role === 'admin')
-        <a>You are an admin</a>
+        <a href="{{ route('create_location') }}">Create</a>
     @endif
 
     <br>

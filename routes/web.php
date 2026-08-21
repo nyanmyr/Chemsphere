@@ -32,7 +32,7 @@ Route::get('/locations', [LocationsController::class, 'locations'])
 Route::get('/locations/create', function () {
     return view('create_location');
 })
-->middleware(['auth', 'admin'])
+->middleware([' ', 'admin'])
 ->name('create_location');
 
 // Standard Auth Actions
