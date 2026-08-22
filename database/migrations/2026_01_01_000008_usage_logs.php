@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\ItemType;
 
 return new class extends Migration
 {
@@ -12,7 +13,7 @@ return new class extends Migration
             $table->id('usage_log_id');
             $table->foreignId('user_id')->constrained('users')->references('user_id');
             $table->foreignId('location_id')->constrained('locations')->references('location_id');
-            $table->enum('item_type', ['equipment', 'chemical']);
+            $table->string('item_type')->default(ItemType::CHEMICAL->value);
             $table->unsignedBigInteger('item_id');
             $table->decimal('quantity_used', $precision = 10, $scale = 3);
             $table->decimal('quantity_remaining', $precision = 10, $scale = 3);
