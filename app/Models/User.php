@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\UserRole;
 
 class User extends Authenticatable
 {
@@ -20,7 +21,8 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'password'
+        'password',
+        'remember_token'
     ];
 
     protected function casts(): array
@@ -28,6 +30,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'user_role' => UserRole::class
         ];
     }
 }

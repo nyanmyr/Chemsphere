@@ -28,7 +28,7 @@
     </table>
 
     <br>
-    @if($user?->user_role === 'admin')
+    @if($user?->user_role?->isAdmin())
         <a href="{{ route('locations.create') }}">Create</a>
     @endif
 

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\UserRole;
 
 return new class extends Migration
 {
@@ -14,7 +15,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('google_id')->nullable();
-            $table->enum('user_role', ['pending', 'user', 'admin'])->default('pending');
+            $table->string('user_role')->default(UserRole::PENDING->value);
             $table->rememberToken();
             $table->timestamps();
         });
