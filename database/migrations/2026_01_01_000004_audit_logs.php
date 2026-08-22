@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\AuditAction;
 
 return new class extends Migration
 {
@@ -11,14 +12,7 @@ return new class extends Migration
         Schema::create('audit_logs', function (Blueprint $table) {
             $table->string('audit_log_id')->primary();
             $table->foreignId('user_id')->constrained('users')->references('user_id');
-            $table->enum(
-                'audit_action_type',
-                [
-                    'INSERT',
-                    'UPDATE',
-                    'DELETE'
-                ]
-            )->default('INSERT');
+            $table->string('audit_action')->default(AuditAction::INSERT->value);
             $table->text('target');
             $table->json('metadata')->nullable();
             $table->timestamps();
