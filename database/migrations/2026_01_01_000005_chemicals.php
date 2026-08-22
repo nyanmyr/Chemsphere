@@ -3,6 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\SafetyClass;
+use App\GHSSymbol;
+use App\Unit;
 
 return new class extends Migration
 {
@@ -20,41 +23,9 @@ return new class extends Migration
             $table->decimal('current_quantity', $precision = 10, $scale = 3);
             $table->date('expiration_date');
             $table->date('arrival_date');
-            $table->enum(
-                'safety_class',
-                [
-                    'flammable',
-                    'corrosive',
-                    'reactive',
-                    'toxic'
-                ]
-            )->default('flammable');
-            $table->set(
-                'ghs_symbols',
-                [
-                    'GHS01',
-                    'GHS02',
-                    'GHS03',
-                    'GHS04',
-                    'GHS05',
-                    'GHS06',
-                    'GHS07',
-                    'GHS08',
-                    'GHS09'
-                ]
-            )->default('GHS01');
-            $table->enum(
-                'unit',
-                [
-                    'kilogram',
-                    'gram',
-                    'milligram',
-                    'microgram',
-                    'liter',
-                    'milliliter',
-                    'microliter'
-                ]
-            )->default('kilogram');
+            $table->set('safety_classes', array_column(SafetyClass::cases(), 'value'));
+            $table->set('ghs_symbols', array_column(GHSSymbol::cases(), 'value'));
+            $table->string('unit')->default(Unit::KILOGRAM->value);
             $table->timestamps();
         });
     }

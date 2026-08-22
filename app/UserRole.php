@@ -2,7 +2,7 @@
 
 namespace App;
 
-enum UserRole: string
+enum UserRole : string
 {
     case PENDING = 'pending';
     case SUSPENDED = 'suspended';
