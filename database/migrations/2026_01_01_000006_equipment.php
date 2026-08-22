@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\EquipmentStatus;
 
 return new class extends Migration
 {
@@ -15,15 +16,7 @@ return new class extends Migration
             $table->string('equipment_name');
             $table->string('model');
             $table->string('serial_id');
-            $table->enum(
-                'status',
-                [
-                    'available',
-                    'unavailable',
-                    'broken',
-                    'under maintenance'
-                ]
-            )->default('unavailable');
+            $table->string('status')->default(EquipmentStatus::UNAVAILABLE->value);
             $table->decimal('quantity', $precision = 10, $scale = 3);
             $table->date('purchase_date');
             $table->date('warranty_expiration');
