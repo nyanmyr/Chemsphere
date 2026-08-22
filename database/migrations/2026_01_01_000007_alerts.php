@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\ItemType;
 
 return new class extends Migration
 {
@@ -12,7 +13,7 @@ return new class extends Migration
             $table->id('alert_id');
             $table->foreignId('chemical_id')->constrained('chemicals')->references('chemical_id');
             $table->foreignId('equipment_id')->constrained('equipment')->references('equipment_id');
-            $table->enum('item_type', ['equipment', 'chemical']);
+            $table->string('item_type')->default(ItemType::CHEMICAL->value);
             $table->text('message')->nullable();
             $table->date('alert_date');
         });
