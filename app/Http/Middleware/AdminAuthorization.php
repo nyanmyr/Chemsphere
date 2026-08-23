@@ -10,7 +10,7 @@ class AdminAuthorization
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user() || $request->user()->user_role !== 'admin') {
+        if (!$request->user() || !$request->user()->user_role?->isAdmin()) {
             return redirect()->back(fallback: route('welcome'));
         }
 
