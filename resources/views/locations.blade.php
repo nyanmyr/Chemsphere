@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h1>Inventory</h1>
+    <h1>Locations</h1>
 
     <table>
         <thead>
@@ -34,6 +34,16 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit">Delete</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{{
+                        route(
+                            'locations.edit',
+                            $location->location_id
+                        )
+                    }}" method="GET">
+                        <button type="submit">Edit</button>
                     </form>
                 </td>
             </tr>

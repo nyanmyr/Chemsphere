@@ -61,4 +61,13 @@ Route::post('/locations/create', function () {
 ->name('locations.store');
 
 Route::delete('/locations/{id}', [LocationsController::class, 'delete'])
+->middleware(['auth', 'admin'])
 ->name('locations.delete');
+
+Route::get('/locations/{id}/edit', [LocationsController::class, 'edit'])
+->middleware(['auth', 'admin'])
+->name('locations.edit');
+
+Route::put('/locations/{id}', [LocationsController::class, 'update'])
+->middleware(['auth', 'admin'])
+->name('locations.update');
