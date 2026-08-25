@@ -12,22 +12,38 @@
         <thead>
             <tr>
                 <th>Chemical ID</th>
-                <th>Chemical Name</th>
-                <th>Hazard Color</th>
-                <th>Amount</th>
-                <th>Opened</th>
+                <th>Location ID</th>
+                <th>Created By</th>
+                <th>Name</th>
+                <th>Batch Number</th>
+                <th>Brand Name</th>
+                <th>Volume Per Unit</th>
+                <th>Initial Quantity</th>
+                <th>Current Number</th>
                 <th>Expiration Date</th>
+                <th>Arrival Date</th>
+                <th>Safety Classes</th>
+                <th>GHS Symbols</th>
+                <th>Unit</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($data as $chemical)
                 <tr>
                     <td>{{ $chemical->chemical_id }}</td>
+                    <td>{{ $chemical->location_id }}</td>
+                    <td>{{ $chemical->created_by }}</td>
                     <td>{{ $chemical->chemical_name }}</td>
-                    <td>{{ $chemical->hazard_color }}</td>
-                    <td>{{ $chemical->amount }}</td>
-                    <td>{{ $chemical->opened }}</td>
+                    <td>{{ $chemical->batch_number }}</td>
+                    <td>{{ $chemical->brand_name }}</td>
+                    <td>{{ $chemical->volume_per_unit}}</td>
+                    <td>{{ $chemical->initial_quantity }}</td>
+                    <td>{{ $chemical->current_quantity }}</td>
                     <td>{{ $chemical->expiration_date }}</td>
+                    <td>{{ $chemical->arrival_date }}</td>
+                    <td>{{ $chemical->safety_classes }}</td>
+                    <td>{{ $chemical->ghs_symbols }}</td>
+                    <td>{{ $chemical->unit }}</td>
                 </tr>
             @endforeach
         </tbody>
