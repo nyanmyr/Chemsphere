@@ -44,6 +44,7 @@
                 <td>{{ $chemical->safety_classes }}</td>
                 <td>{{ $chemical->ghs_symbols }}</td>
                 <td>{{ $chemical->unit }}</td>
+                @if($user?->user_role?->isAdmin())
                 <td>
                     <form action="{{
                         route(
@@ -56,6 +57,7 @@
                         <button type="submit">Delete</button>
                     </form>
                 </td>
+                @endif
             </tr>
             @endforeach
         </tbody>
