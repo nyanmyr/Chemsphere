@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Chemical extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'user_id';
-
+    protected $primaryKey = 'chemical_id';
     protected $fillable = [
         'location_id',
         'created_by',

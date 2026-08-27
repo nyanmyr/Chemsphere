@@ -111,3 +111,7 @@ Route::post('/inventory/create', function () {
 })
 ->middleware(['auth', 'admin'])
 ->name('inventory.store');
+
+Route::delete('/chemical/{id}', [ChemicalsController::class, 'delete'])
+->middleware(['auth', 'admin'])
+->name('inventory.delete');
