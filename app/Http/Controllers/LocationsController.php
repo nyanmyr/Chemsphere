@@ -35,14 +35,17 @@ class LocationsController extends Controller
 
     public function update(Request $request, $location_id)
     {
+        $validated = $request->validate([
+            'location_name' => 'required|string|max:255',
+            'description'   => 'nullable|string',
+        ]);
+
         $location = Location::where(
             'location_id',
             $location_id
         )->firstOrFail();
-        $location->update([
-            'location_name' => $request->location_name,
-            'description' => $request->description
-        ]);
+
+        $location->update($validated);
         return redirect()->route('locations')->with('success', 'Location updated successfully');
     }
 }
