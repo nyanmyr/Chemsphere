@@ -57,6 +57,16 @@
                         <button type="submit">Delete</button>
                     </form>
                 </td>
+                <td>
+                    <form action="{{
+                        route(
+                            'inventory.edit',
+                            $chemical->chemical_id
+                        )
+                    }}" method="GET">
+                        <button type="submit">Edit</button>
+                    </form>
+                </td>
                 @endif
             </tr>
             @endforeach
