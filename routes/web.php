@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChemicalsController;
@@ -85,9 +86,10 @@ Route::get('/inventory/create', function () {
 ->name('inventory.create');
 
 Route::post('/inventory/create', function () {
+    $user = Auth::user();
+
     $validated = request()->validate([
         'location_id' => 'required|integer|exists:locations,location_id',
-        'created_by'   => 'required|integer|exists:users,user_id',
         'chemical_name'   => 'required|string|max:255',
         'batch_number'   => 'required|string|max:255',
         'brand_name'   => 'required|string|max:255',
@@ -105,6 +107,7 @@ Route::post('/inventory/create', function () {
 
     $validated['safety_classes'] = implode(',', $validated['safety_classes'] ?? []);
     $validated['ghs_symbols'] = implode(',', $validated['ghs_symbols'] ?? []);
+    $validated['created_by'] = $user->user_id;
 
     Chemical::create($validated);
 

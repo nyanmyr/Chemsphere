@@ -22,17 +22,6 @@
         @enderror
 
         <br>
-        <label for="created_by">Created By</label>
-        <br>
-        <input type="number" id="created_by" name="created_by" value="{{
-            old('created_by', $chemical->created_by)
-        }}" required>
-
-        @error('created_by')
-        <div>{{ $message }}</div>
-        @enderror
-
-        <br>
         <label for="chemical_name">Name</label>
         <br>
         <input type="text" id="chemical_name" name="chemical_name" value="{{

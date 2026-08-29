@@ -45,7 +45,6 @@ class ChemicalsController extends Controller
     {
         $validated = $request->validate([
             'location_id' => 'required|integer|exists:locations,location_id',
-            'created_by' => 'required|integer|exists:users,user_id',
             'chemical_name' => 'required|string|max:255',
             'batch_number' => 'required|string|max:255',
             'brand_name' => 'required|string|max:255',
