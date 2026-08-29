@@ -11,11 +11,15 @@
     <form action="{{ route('inventory.update', $chemical->chemical_id) }}" method="POST">
         @csrf
         @method('PUT')
-        <label for="location_id">Name</label>
+        <label for="location_id">Location ID</label>
         <br>
         <input type="number" id="location_id" name="location_id" value="{{
             old('location_id', $chemical->location_id)
         }}" required>
+
+        @error('location_id')
+        <div>{{ $message }}</div>
+        @enderror
 
         <br>
         <label for="created_by">Created By</label>
@@ -24,12 +28,20 @@
             old('created_by', $chemical->created_by)
         }}" required>
 
+        @error('created_by')
+        <div>{{ $message }}</div>
+        @enderror
+
         <br>
         <label for="chemical_name">Name</label>
         <br>
         <input type="text" id="chemical_name" name="chemical_name" value="{{
             old('chemical_name', $chemical->chemical_name)
         }}" required>
+
+        @error('chemical_name')
+        <div>{{ $message }}</div>
+        @enderror
 
         <br>
         <label for="batch_number">Batch Number</label>
@@ -38,12 +50,20 @@
             old('batch_number', $chemical->batch_number)
         }}" required>
 
+        @error('batch_number')
+        <div>{{ $message }}</div>
+        @enderror
+
         <br>
         <label for="brand_name">Brand Name</label>
         <br>
         <input type="text" id="brand_name" name="brand_name" value="{{
             old('brand_name', $chemical->brand_name)
         }}" required>
+
+        @error('brand_name')
+        <div>{{ $message }}</div>
+        @enderror
 
         <br>
         <label for="volume_per_unit">Volume Per Unit</label>
@@ -52,12 +72,20 @@
             old('volume_per_unit', $chemical->volume_per_unit)
         }}" required>
 
+        @error('volume_per_unit')
+        <div>{{ $message }}</div>
+        @enderror
+
         <br>
         <label for="initial_quantity">Initial Quantity</label>
         <br>
         <input type="number" id="initial_quantity" name="initial_quantity" step="0.001" min="0" max="9999999999" value="{{
             old('initial_quantity', $chemical->initial_quantity)
         }}" required>
+
+        @error('initial_quantity')
+        <div>{{ $message }}</div>
+        @enderror
 
         <br>
         <label for="current_quantity">Current Quantity</label>
@@ -66,6 +94,10 @@
             old('current_quantity', $chemical->current_quantity)
         }}" required>
 
+        @error('current_quantity')
+        <div>{{ $message }}</div>
+        @enderror
+
         <br>
         <label for="expiration_date">Expiration Date</label>
         <br>
@@ -73,12 +105,20 @@
             old('expiration_date', $chemical->expiration_date)
         }}" required>
 
+        @error('expiration_date')
+        <div>{{ $message }}</div>
+        @enderror
+
         <br>
         <label for="arrival_date">Arrival Date</label>
         <br>
         <input type="date" id="arrival_date" name="arrival_date" value="{{
             old('arrival_date', $chemical->arrival_date)
         }}" required>
+
+        @error('arrival_date')
+        <div>{{ $message }}</div>
+        @enderror
 
         @php
         $raw_safety_classes = $chemical->safety_classes;
