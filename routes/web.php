@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChemicalsController;
 use App\Http\Controllers\LocationsController;
+use App\Http\Controllers\EquipmentController;
 use App\Models\Location;
 use App\Models\Chemical;
 use App\SafetyClass;
@@ -123,3 +124,8 @@ Route::get('/inventory/{id}/edit', [ChemicalsController::class, 'edit'])
 Route::put('/inventory/{id}', [ChemicalsController::class, 'update'])
 ->middleware(['auth', 'admin'])
 ->name('inventory.update');
+
+// locations routes
+Route::get('/equipment', [EquipmentController::class, 'equipment'])
+->middleware('auth')
+->name('equipment');

@@ -16,6 +16,7 @@
         </form>
         <a href="{{ route('inventory') }}">Inventory</a>
         <a href="{{ route('locations') }}">Locations</a>
+        <a href="{{ route('equipment') }}">Equipment</a>
     @else
         <a href="{{ route('login') }}">Login</a>
         <br>
