@@ -9,9 +9,11 @@ use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\EquipmentController;
 use App\Models\Location;
 use App\Models\Chemical;
+use App\Models\Equipment;
 use App\SafetyClass;
 use App\GHSSymbol;
 use App\Unit;
+use App\EquipmentStatus;
 
 // user routes
 Route::get('/', function () {
@@ -132,3 +134,34 @@ Route::put('/inventory/{id}', [ChemicalsController::class, 'update'])
 Route::get('/equipment', [EquipmentController::class, 'equipment'])
 ->middleware('auth')
 ->name('equipment');
+
+Route::get('/equipment/create', function () {
+    return view('create_equipment');
+})
+->middleware(['auth', 'admin'])
+->name('equipment.create');
+
+Route::post('/equipment/create', function () {
+    $user = Auth::user();
+
+    $validated = request()->validate([
+        'location_id' => 'required|integer|exists:locations,location_id',
+        'equipment_name'   => 'required|string|max:255',
+        'model'   => 'required|string|max:255',
+        'serial_id'   => 'required|string|max:255',
+        'status' => ['required', Rule::enum(EquipmentStatus::class)],
+        'quantity'   => 'required|numeric|min:0|max:9999997.999',
+        'purchase_date'   => 'required|date',
+        'warranty_expiration'   => 'required|date',
+        'last_maintenance'   => 'required|date',
+        'next_maintenance'   => 'required|date'
+    ]);
+
+    $validated['created_by'] = $user->user_id;
+
+    Equipment::create($validated);
+
+    return redirect()->route('equipment');
+})
+->middleware(['auth', 'admin'])
+->name('equipment.store');

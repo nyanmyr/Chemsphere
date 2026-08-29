@@ -46,6 +46,11 @@
     </table>
 
     <br>
+    @if($user?->user_role?->isAdmin())
+    <a href="{{ route('equipment.create') }}">Create</a>
+    @endif
+
+    <br>
     <a href="{{ route('welcome') }}">Return</a>
 </body>
 
