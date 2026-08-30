@@ -169,3 +169,11 @@ Route::post('/equipment/create', function () {
 Route::delete('/equipment/{id}', [EquipmentController::class, 'delete'])
 ->middleware(['auth', 'admin'])
 ->name('equipment.delete');
+
+Route::get('/equipment/{id}/edit', [EquipmentController::class, 'edit'])
+->middleware(['auth', 'admin'])
+->name('equipment.edit');
+
+Route::put('/equipment/{id}', [EquipmentController::class, 'update'])
+->middleware(['auth', 'admin'])
+->name('equipment.update');
