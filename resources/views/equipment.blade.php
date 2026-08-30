@@ -40,6 +40,20 @@
                 <td>{{ $equipment->warranty_expiration }}</td>
                 <td>{{ $equipment->last_maintenance }}</td>
                 <td>{{ $equipment->next_maintenance }}</td>
+                @if($user?->user_role?->isAdmin())
+                <td>
+                    <form action="{{
+                        route(
+                            'equipment.delete',
+                            $equipment->equipment_id
+                        )
+                    }}" method="POST" onsubmit="return confirm('Delete equipment?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+                @endif
             </tr>
             @endforeach
         </tbody>

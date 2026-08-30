@@ -165,3 +165,7 @@ Route::post('/equipment/create', function () {
 })
 ->middleware(['auth', 'admin'])
 ->name('equipment.store');
+
+Route::delete('/equipment/{id}', [EquipmentController::class, 'delete'])
+->middleware(['auth', 'admin'])
+->name('equipment.delete');
