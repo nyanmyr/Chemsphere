@@ -27,51 +27,45 @@
         </thead>
         <tbody>
             @foreach ($data as $equipment)
-            <tr>
-                <td>{{ $equipment->equipment_id }}</td>
-                <td>{{ $equipment->location_id }}</td>
-                <td>{{ $equipment->created_by }}</td>
-                <td>{{ $equipment->equipment_name }}</td>
-                <td>{{ $equipment->model }}</td>
-                <td>{{ $equipment->serial_id }}</td>
-                <td>{{ $equipment->status }}</td>
-                <td>{{ $equipment->quantity }}</td>
-                <td>{{ $equipment->purchase_date }}</td>
-                <td>{{ $equipment->warranty_expiration }}</td>
-                <td>{{ $equipment->last_maintenance }}</td>
-                <td>{{ $equipment->next_maintenance }}</td>
-                @if($user?->user_role?->isAdmin())
-                <td>
-                    <form action="{{
-                        route(
-                            'equipment.delete',
-                            $equipment->equipment_id
-                        )
-                    }}" method="POST" onsubmit="return confirm('Delete equipment?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-                <td>
-                    <form action="{{
-                        route(
-                            'equipment.edit',
-                            $equipment->equipment_id
-                        )
-                    }}" method="GET">
-                        <button type="submit">Edit</button>
-                    </form>
-                </td>
-                @endif
-            </tr>
+                <tr>
+                    <td>{{ $equipment->equipment_id }}</td>
+                    <td>{{ $equipment->location_id }}</td>
+                    <td>{{ $equipment->created_by }}</td>
+                    <td>{{ $equipment->equipment_name }}</td>
+                    <td>{{ $equipment->model }}</td>
+                    <td>{{ $equipment->serial_id }}</td>
+                    <td>{{ $equipment->status }}</td>
+                    <td>{{ $equipment->quantity }}</td>
+                    <td>{{ $equipment->purchase_date }}</td>
+                    <td>{{ $equipment->warranty_expiration }}</td>
+                    <td>{{ $equipment->last_maintenance }}</td>
+                    <td>{{ $equipment->next_maintenance }}</td>
+                    @if ($user?->user_role?->isAdmin())
+                        <td>
+                            <form
+                                action="{{ route('equipment.delete', $equipment->equipment_id) }}"
+                                method="POST" onsubmit="return confirm('Delete equipment?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form
+                                action="{{ route('equipment.edit', $equipment->equipment_id) }}"
+                                method="GET">
+                                <button type="submit">Edit</button>
+                            </form>
+                        </td>
+                    @endif
+                </tr>
             @endforeach
         </tbody>
     </table>
 
     <br>
-    @if($user?->user_role?->isAdmin())
-    <a href="{{ route('equipment.create') }}">Create</a>
+    @if ($user?->user_role?->isAdmin())
+        <a href="{{ route('equipment.create') }}">Create</a>
     @endif
 
     <br>

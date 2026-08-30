@@ -15,7 +15,7 @@
         <input type="number" id="location_id" name="location_id" required>
 
         @error('location_id')
-        <div>{{ $message }}</div>
+            <div>{{ $message }}</div>
         @enderror
 
         <br>
@@ -24,7 +24,7 @@
         <input type="text" id="equipment_name" name="equipment_name" required>
 
         @error('equipment_name')
-        <div>{{ $message }}</div>
+            <div>{{ $message }}</div>
         @enderror
 
         <br>
@@ -33,7 +33,7 @@
         <input type="text" id="model" name="model" required>
 
         @error('model')
-        <div>{{ $message }}</div>
+            <div>{{ $message }}</div>
         @enderror
 
         <br>
@@ -42,14 +42,14 @@
         <input type="text" id="serial_id" name="serial_id" required>
 
         @error('serial_id')
-        <div>{{ $message }}</div>
+            <div>{{ $message }}</div>
         @enderror
 
         <br>
         <label for="status">Status</label>
         <br>
         <select id="status" name="status">
-            @foreach(\App\EquipmentStatus::cases() as $class)
+            @foreach (\App\EquipmentStatus::cases() as $class)
                 <option value="{{ $class->value }}">{{ $class->value }}</option>
             @endforeach
         </select>
@@ -64,7 +64,7 @@
         <input type="number" id="quantity" name="quantity" step="0.001" min="0" max="9999999999" required>
 
         @error('quantity')
-        <div>{{ $message }}</div>
+            <div>{{ $message }}</div>
         @enderror
 
         <br>
@@ -73,7 +73,7 @@
         <input type="date" id="purchase_date" name="purchase_date" required>
 
         @error('purchase_date')
-        <div>{{ $message }}</div>
+            <div>{{ $message }}</div>
         @enderror
 
         <br>
@@ -82,7 +82,7 @@
         <input type="date" id="warranty_expiration" name="warranty_expiration" required>
 
         @error('warranty_expiration')
-        <div>{{ $message }}</div>
+            <div>{{ $message }}</div>
         @enderror
 
         <br>
@@ -91,7 +91,7 @@
         <input type="date" id="last_maintenance" name="last_maintenance" required>
 
         @error('last_maintenance')
-        <div>{{ $message }}</div>
+            <div>{{ $message }}</div>
         @enderror
 
         <br>
@@ -100,7 +100,7 @@
         <input type="date" id="next_maintenance" name="next_maintenance" required>
 
         @error('next_maintenance')
-        <div>{{ $message }}</div>
+            <div>{{ $message }}</div>
         @enderror
 
         <br>

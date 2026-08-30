@@ -65,9 +65,7 @@ class ChemicalsController extends Controller
                 fn($item) => $item instanceof \BackedEnum ? $item->value : $item,
                 $validated['safety_classes']
             ));
-        }
-        else
-        {
+        } else {
             $validated['safety_classes'] = "";
         }
 
@@ -76,9 +74,7 @@ class ChemicalsController extends Controller
                 fn($item) => $item instanceof \BackedEnum ? $item->value : $item,
                 $validated['ghs_symbols']
             ));
-        }
-        else
-        {
+        } else {
             $validated['ghs_symbols'] = "";
         }
 

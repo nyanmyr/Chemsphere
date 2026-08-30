@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head><title>Chemsphere | Register</title></head>
+
+<head>
+    <title>Chemsphere | Register</title>
+</head>
+
 <body>
     <h1>Register</h1>
 
-    @if($errors->any())
+    @if ($errors->any())
         <div style="color: red;">{{ $errors->first() }}</div>
     @endif
 
@@ -21,4 +25,5 @@
     <br>
     <a href="{{ route('google.login') }}">Register with Google</a>
 </body>
+
 </html>

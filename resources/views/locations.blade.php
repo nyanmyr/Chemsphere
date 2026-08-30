@@ -18,42 +18,36 @@
         </thead>
         <tbody>
             @foreach ($data as $location)
-            <tr>
-                <td>{{ $location->location_id }}</td>
-                <td>{{ $location->location_name }}</td>
-                <td>{{ $location->description }}</td>
-                @if($user?->user_role?->isAdmin())
-                <td>
-                    <form action="{{
-                        route(
-                            'locations.delete',
-                            $location->location_id
-                        )
-                    }}" method="POST" onsubmit="return confirm('Delete location?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-                <td>
-                    <form action="{{
-                        route(
-                            'locations.edit',
-                            $location->location_id
-                        )
-                    }}" method="GET">
-                        <button type="submit">Edit</button>
-                    </form>
-                </td>
-                @endif
-            </tr>
+                <tr>
+                    <td>{{ $location->location_id }}</td>
+                    <td>{{ $location->location_name }}</td>
+                    <td>{{ $location->description }}</td>
+                    @if ($user?->user_role?->isAdmin())
+                        <td>
+                            <form
+                                action="{{ route('locations.delete', $location->location_id) }}"
+                                method="POST" onsubmit="return confirm('Delete location?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form
+                                action="{{ route('locations.edit', $location->location_id) }}"
+                                method="GET">
+                                <button type="submit">Edit</button>
+                            </form>
+                        </td>
+                    @endif
+                </tr>
             @endforeach
         </tbody>
     </table>
 
     <br>
-    @if($user?->user_role?->isAdmin())
-    <a href="{{ route('locations.create') }}">Create</a>
+    @if ($user?->user_role?->isAdmin())
+        <a href="{{ route('locations.create') }}">Create</a>
     @endif
 
     <br>

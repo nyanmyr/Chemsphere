@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Equipment;
 use App\EquipmentStatus;
+use App\Models\Equipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-
 
 class EquipmentController extends Controller
 {
@@ -44,15 +43,15 @@ class EquipmentController extends Controller
     {
         $validated = $request->validate([
             'location_id' => 'required|integer|exists:locations,location_id',
-            'equipment_name'   => 'required|string|max:255',
-            'model'   => 'required|string|max:255',
-            'serial_id'   => 'required|string|max:255',
+            'equipment_name' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'serial_id' => 'required|string|max:255',
             'status' => ['required', Rule::enum(EquipmentStatus::class)],
-            'quantity'   => 'required|numeric|min:0|max:9999997.999',
-            'purchase_date'   => 'required|date',
-            'warranty_expiration'   => 'required|date',
-            'last_maintenance'   => 'required|date',
-            'next_maintenance'   => 'required|date'
+            'quantity' => 'required|numeric|min:0|max:9999997.999',
+            'purchase_date' => 'required|date',
+            'warranty_expiration' => 'required|date',
+            'last_maintenance' => 'required|date',
+            'next_maintenance' => 'required|date'
         ]);
 
         $equipment = Equipment::where(

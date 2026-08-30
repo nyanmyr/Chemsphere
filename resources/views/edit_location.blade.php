@@ -13,23 +13,22 @@
         @method('PUT')
         <label for="location_name">Name</label>
         <br>
-        <input type="text" id="location_name" name="location_name" value="{{
-            old('location_name', $location->location_name)
-        }}" required>
+        <input type="text" id="location_name" name="location_name"
+            value="{{ old('location_name', $location->location_name) }}" required>
 
         @error('location_name')
-        <div>{{ $message }}</div>
+            <div>{{ $message }}</div>
         @enderror
 
         <br>
         <label for="description">Description</label>
         <br>
-        <textarea id="description" name="description" rows="5" cols="40">{{old('location_name', $location->description)}}</textarea>
+        <textarea id="description" name="description" rows="5" cols="40">{{ old('location_name', $location->description) }}</textarea>
         <br>
         <button type="submit">Update</button>
 
         @error('description')
-        <div>{{ $message }}</div>
+            <div>{{ $message }}</div>
         @enderror
     </form>
 

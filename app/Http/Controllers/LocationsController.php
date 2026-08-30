@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Location;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class LocationsController extends Controller
 {
-    public function locations() {
+    public function locations()
+    {
         $data = DB::table('locations')->get();
         $user = Auth::user();
-        return view('locations', ['data'=>$data,'user'=>$user]);
+        return view('locations', ['data' => $data, 'user' => $user]);
     }
 
     public function delete($location_id)
@@ -37,7 +38,7 @@ class LocationsController extends Controller
     {
         $validated = $request->validate([
             'location_name' => 'required|string|max:255',
-            'description'   => 'nullable|string',
+            'description' => 'nullable|string',
         ]);
 
         $location = Location::where(

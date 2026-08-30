@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head><title>Chemsphere | Login</title></head>
+
+<head>
+    <title>Chemsphere | Login</title>
+</head>
+
 <body>
     <h1>Login</h1>
 
-    @if(session('message') || $errors->any())
+    @if (session('message') || $errors->any())
         <div style="color: red;">
             {{ session('message') ?? $errors->first() }}
         </div>
@@ -23,4 +27,5 @@
     <br>
     <a href="{{ route('google.login') }}">Login with Google</a>
 </body>
+
 </html>

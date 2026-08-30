@@ -1,19 +1,19 @@
 <?php
 
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use App\EquipmentStatus;
+use App\GHSSymbol;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChemicalsController;
-use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\EquipmentController;
-use App\Models\Location;
+use App\Http\Controllers\LocationsController;
 use App\Models\Chemical;
 use App\Models\Equipment;
+use App\Models\Location;
 use App\SafetyClass;
-use App\GHSSymbol;
 use App\Unit;
-use App\EquipmentStatus;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\Rule;
 
 // user routes
 Route::get('/', function () {
