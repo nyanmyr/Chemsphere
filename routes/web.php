@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChemicalsController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\LocationsController;
+use App\Http\Controllers\UsersController;
 use App\Models\Chemical;
 use App\Models\Equipment;
 use App\Models\Location;
@@ -177,3 +178,8 @@ Route::get('/equipment/{id}/edit', [EquipmentController::class, 'edit'])
 Route::put('/equipment/{id}', [EquipmentController::class, 'update'])
 ->middleware(['auth', 'admin'])
 ->name('equipment.update');
+
+// manage users routes
+Route::get('/users', [UsersController::class, 'users'])
+->middleware(['auth', 'admin'])
+->name('users');

@@ -17,6 +17,7 @@
         <a href="{{ route('inventory') }}">Inventory</a>
         <a href="{{ route('locations') }}">Locations</a>
         <a href="{{ route('equipment') }}">Equipment</a>
+        <a href="{{ route('users') }}">Manage Users</a>
     @else
         <a href="{{ route('login') }}">Login</a>
         <br>
