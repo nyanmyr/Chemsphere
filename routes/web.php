@@ -183,3 +183,11 @@ Route::put('/equipment/{id}', [EquipmentController::class, 'update'])
 Route::get('/users', [UsersController::class, 'users'])
 ->middleware(['auth', 'admin'])
 ->name('users');
+
+Route::get('/users/{id}/edit', [UsersController::class, 'edit'])
+->middleware(['auth', 'admin'])
+->name('users.edit');
+
+Route::put('/users/{id}', [UsersController::class, 'update'])
+->middleware(['auth', 'admin'])
+->name('users.update');

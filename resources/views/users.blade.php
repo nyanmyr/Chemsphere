@@ -18,11 +18,16 @@
         </thead>
         <tbody>
             @foreach ($data as $user)
-                <tr>
-                    <td>{{ $user->user_id }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->user_role }}</td>
-                </tr>
+            <tr>
+                <td>{{ $user->user_id }}</td>
+                <td>{{ $user->email }}</td>
+                <td>{{ $user->user_role }}</td>
+                <td>
+                    <form action="{{ route('users.edit', $user->user_id) }}" method="GET">
+                        <button type="submit">Edit</button>
+                    </form>
+                </td>
+            </tr>
             @endforeach
         </tbody>
     </table>
