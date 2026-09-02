@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditLog;
+use App\AuditAction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,6 +62,13 @@ class AuthController extends Controller
         }
 
         $request->session()->regenerate();
+
+        AuditLog::create([
+            'user_id' => $user->user_id,
+            'audit_action' => AuditAction::LOGIN,
+            'target' => 'placeholder',
+        ]);
+
         return redirect('/');
     }
 
@@ -109,6 +118,12 @@ class AuthController extends Controller
                     'google_id' => $googleUser->getId(),
                 ]);
 
+                AuditLog::create([
+                    'user_id' => $user->user_id,
+                    'audit_action' => AuditAction::LOGIN,
+                    'target' => 'placeholder',
+                ]);
+
                 Auth::login($user);
                 return redirect('/');
             }
@@ -128,6 +143,12 @@ class AuthController extends Controller
                     'google_id' => $googleUser->getId(),
                 ]);
             }
+
+            AuditLog::create([
+                'user_id' => $user->user_id,
+                'audit_action' => AuditAction::LOGIN,
+                'target' => 'placeholder',
+            ]);
 
             Auth::login($user);
             return redirect('/');

@@ -10,7 +10,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('audit_logs', function (Blueprint $table) {
-            $table->string('audit_log_id')->primary();
+            $table->id('audit_log_id');
             $table->foreignId('user_id')->constrained('users')->references('user_id');
             $table->string('audit_action')->default(AuditAction::INSERT->value);
             $table->text('target');
