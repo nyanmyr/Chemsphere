@@ -22,8 +22,6 @@
 
         <button type="submit">Register</button>
     </form>
-    <br>
-    <a href="{{ route('google.login') }}">Register with Google</a>
 </body>
 
 </html>
