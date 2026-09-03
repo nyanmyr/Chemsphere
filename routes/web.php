@@ -131,6 +131,14 @@ Route::put('/inventory/{id}', [ChemicalsController::class, 'update'])
 ->middleware(['auth', 'admin'])
 ->name('inventory.update');
 
+Route::get('/inventory/use/{id}/edit', [ChemicalsController::class, 'use_edit'])
+->middleware('auth')
+->name('inventory.use.edit');
+
+Route::put('/inventory/use/{id}', [ChemicalsController::class, 'use_update'])
+->middleware('auth')
+->name('inventory.use.update');
+
 // locations routes
 Route::get('/equipment', [EquipmentController::class, 'equipment'])
 ->middleware('auth')

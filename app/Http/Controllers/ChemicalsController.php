@@ -87,4 +87,36 @@ class ChemicalsController extends Controller
 
         return redirect()->route('inventory')->with('success', 'Location updated successfully');
     }
+
+    public function use_edit($chemical_id)
+    {
+        $chemical = Chemical::where(
+            'chemical_id',
+            $chemical_id
+        )->firstOrFail();
+
+        return view('use_chemical', compact('chemical'));
+    }
+
+    public function use_update(Request $request, $chemical_id)
+    {
+        $chemical = Chemical::where(
+            'chemical_id',
+            $chemical_id
+        )->firstOrFail();
+
+        $validated = $request->validate([
+            'use_amount' => 'required|numeric|min:0|max:' . $chemical['current_quantity']
+        ]);
+
+        $validated['current_quantity'] = $chemical['current_quantity'] - $validated['use_amount'];
+
+        if (($key = array_search('use_amount', $validated)) !== false) {
+            unset($validated[$key]);
+        }
+
+        $chemical->update($validated);
+
+        return redirect()->route('inventory')->with('success', 'Location updated successfully');
+    }
 }

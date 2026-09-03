@@ -19,7 +19,7 @@
                 <th>Brand Name</th>
                 <th>Volume Per Unit</th>
                 <th>Initial Quantity</th>
-                <th>Current Number</th>
+                <th>Current Quantity</th>
                 <th>Expiration Date</th>
                 <th>Arrival Date</th>
                 <th>Safety Classes</th>
@@ -44,6 +44,13 @@
                     <td>{{ $chemical->safety_classes }}</td>
                     <td>{{ $chemical->ghs_symbols }}</td>
                     <td>{{ $chemical->unit }}</td>
+                    <td>
+                        <form
+                            action="{{ route('inventory.use.edit', $chemical->chemical_id) }}"
+                            method="GET">
+                            <button type="submit">Use</button>
+                        </form>
+                    </td>
                     @if ($user?->user_role?->isAdmin())
                         <td>
                             <form
