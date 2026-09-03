@@ -74,6 +74,14 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        $user = Auth::user();
+
+        AuditLog::create([
+            'user_id' => $user->user_id,
+            'audit_action' => AuditAction::LOGOUT,
+            'target' => 'placeholder',
+        ]);
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
