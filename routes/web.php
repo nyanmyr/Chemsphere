@@ -110,7 +110,7 @@ Route::post('/inventory/create', function () {
 
     $validated['safety_classes'] = implode(',', $validated['safety_classes'] ?? []);
     $validated['ghs_symbols'] = implode(',', $validated['ghs_symbols'] ?? []);
-    $validated['created_by'] = $user->user_id;
+    $validated['created_by'] = $user['user_id'];
 
     Chemical::create($validated);
 
@@ -158,7 +158,7 @@ Route::post('/equipment/create', function () {
         'next_maintenance'   => 'required|date'
     ]);
 
-    $validated['created_by'] = $user->user_id;
+    $validated['created_by'] = $user['user_id'];
 
     Equipment::create($validated);
 

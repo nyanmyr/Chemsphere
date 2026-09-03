@@ -26,7 +26,7 @@ class AuthController extends Controller
         ]);
 
         AuditLog::create([
-            'user_id' => $user->user_id,
+            'user_id' => $user['user_id'],
             'audit_action' => AuditAction::REGISTER,
             'target' => 'placeholder',
         ]);
@@ -47,7 +47,7 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        if ($user->user_role === 'pending') {
+        if ($user['user_role'] === 'pending') {
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
@@ -55,8 +55,8 @@ class AuthController extends Controller
             return back()->withErrors(['email' => 'Your account is currently pending approval.']);
         }
 
-        if (is_null($user->google_id)) {
-            $userId = $user->user_id;
+        if ($user['google_id'] == null) {
+            $userId = $user['user_id'];
 
             Auth::logout();
             $request->session()->invalidate();
@@ -70,7 +70,7 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         AuditLog::create([
-            'user_id' => $user->user_id,
+            'user_id' => $user['user_id'],
             'audit_action' => AuditAction::LOGIN,
             'target' => 'placeholder',
         ]);
@@ -83,7 +83,7 @@ class AuthController extends Controller
         $user = Auth::user();
 
         AuditLog::create([
-            'user_id' => $user->user_id,
+            'user_id' => $user['user_id'],
             'audit_action' => AuditAction::LOGOUT,
             'target' => 'placeholder',
         ]);
@@ -116,13 +116,13 @@ class AuthController extends Controller
                     return redirect('/login')->withErrors(['email' => 'Account not found.']);
                 }
 
-                if ($user->email !== $googleUser->getEmail()) {
+                if ($user['email'] !== $googleUser->getEmail()) {
                     return redirect('/login')->withErrors([
-                        'email' => "Email mismatch! You tried signing into Google with '{$googleUser->getEmail()}', but your account is registered as '{$user->email}'."
+                        'email' => "Email mismatch! You tried signing into Google with '{$googleUser->getEmail()}', but your account is registered as '{$user['email']}'."
                     ]);
                 }
 
-                if (!is_null($user->google_id) && $user->google_id !== $googleUser->getId()) {
+                if ($user['google_id'] != null && $user['google_id'] !== $googleUser->getId()) {
                     return redirect('/login')->withErrors([
                         'email' => 'This account is already linked to a different Google account.'
                     ]);
@@ -133,7 +133,7 @@ class AuthController extends Controller
                 ]);
 
                 AuditLog::create([
-                    'user_id' => $user->user_id,
+                    'user_id' => $user['user_id'],
                     'audit_action' => AuditAction::LOGIN,
                     'target' => 'placeholder',
                 ]);
@@ -148,18 +148,18 @@ class AuthController extends Controller
                 return redirect('/login')->withErrors(['email' => 'No account found with this email. Please register first.']);
             }
 
-            if ($user->user_role === 'pending') {
+            if ($user['user_role'] === 'pending') {
                 return redirect('/login')->withErrors(['email' => 'Your account is currently pending approval.']);
             }
 
-            if (is_null($user->google_id)) {
+            if ($user['google_id'] == null) {
                 $user->update([
                     'google_id' => $googleUser->getId(),
                 ]);
             }
 
             AuditLog::create([
-                'user_id' => $user->user_id,
+                'user_id' => $user['user_id'],
                 'audit_action' => AuditAction::LOGIN,
                 'target' => 'placeholder',
             ]);
