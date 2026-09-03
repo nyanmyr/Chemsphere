@@ -25,6 +25,12 @@ class AuthController extends Controller
             'user_role' => 'pending'
         ]);
 
+        AuditLog::create([
+            'user_id' => $user->user_id,
+            'audit_action' => AuditAction::REGISTER,
+            'target' => 'placeholder',
+        ]);
+
         return redirect('/pending');
     }
 
