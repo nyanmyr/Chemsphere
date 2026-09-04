@@ -135,6 +135,12 @@ class ChemicalsController extends Controller
 
         $chemical->update($validated);
 
+        AuditLog::create([
+            'user_id' => Auth::user()['user_id'],
+            'audit_action' => AuditAction::UPDATE,
+            'target' => 'updated chemical',
+        ]);
+
         return redirect()->route('inventory')->with('success', 'Location updated successfully');
     }
 }
