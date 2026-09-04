@@ -8,6 +8,10 @@
 <body>
     <h1>Inventory</h1>
 
+    @error('current_quantity')
+        <div style="color: red;">{{ $message }}</div>
+    @enderror
+
     <table>
         <thead>
             <tr>

@@ -95,6 +95,10 @@ class ChemicalsController extends Controller
             $chemical_id
         )->firstOrFail();
 
+        if ($chemical['current_quantity'] <= 0) {
+            return back()->withErrors(['current_quantity' => 'Current quantity is 0']);
+        }
+
         return view('use_chemical', compact('chemical'));
     }
 
