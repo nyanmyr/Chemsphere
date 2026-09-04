@@ -1,5 +1,6 @@
 <?php
 
+use App\AuditAction;
 use App\EquipmentStatus;
 use App\GHSSymbol;
 use App\Http\Controllers\AuthController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\ChemicalsController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\UsersController;
+use App\Models\AuditLog;
 use App\Models\Chemical;
 use App\Models\Equipment;
 use App\Models\Location;
@@ -113,6 +115,12 @@ Route::post('/inventory/create', function () {
     $validated['created_by'] = $user['user_id'];
 
     Chemical::create($validated);
+
+    AuditLog::create([
+        'user_id' => $user['user_id'],
+        'audit_action' => AuditAction::CREATE,
+        'target' => 'create chemical',
+    ]);
 
     return redirect()->route('inventory');
 })

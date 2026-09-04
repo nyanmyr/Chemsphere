@@ -4,7 +4,7 @@ namespace App;
 
 enum AuditAction: string
 {
-    case INSERT = 'INSERT';
+    case CREATE = 'CREATE';
     case UPDATE = 'UPDATE';
     case DELETE = 'DELETE';
     case LOGIN = 'LOGIN';
