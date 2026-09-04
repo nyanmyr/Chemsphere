@@ -30,6 +30,12 @@ class ChemicalsController extends Controller
             $chemical_id
         )->firstOrFail()->delete();
 
+        AuditLog::create([
+            'user_id' => Auth::user()['user_id'],
+            'audit_action' => AuditAction::DELETE,
+            'target' => 'deleted chemical',
+        ]);
+
         return redirect()->route('inventory')->with('success', 'Location deleted successfully');
     }
 
