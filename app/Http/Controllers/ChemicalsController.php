@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\AuditAction;
 use App\GHSSymbol;
+use App\Models\AuditLog;
 use App\Models\Chemical;
 use App\SafetyClass;
 use App\Unit;
@@ -84,6 +86,12 @@ class ChemicalsController extends Controller
         )->firstOrFail();
 
         $chemical->update($validated);
+
+        AuditLog::create([
+            'user_id' => Auth::user()['user_id'],
+            'audit_action' => AuditAction::UPDATE,
+            'target' => 'updated chemical',
+        ]);
 
         return redirect()->route('inventory')->with('success', 'Location updated successfully');
     }
