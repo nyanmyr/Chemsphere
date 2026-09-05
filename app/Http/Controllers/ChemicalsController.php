@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\AuditAction;
+use App\ItemType;
 use App\GHSSymbol;
 use App\Models\AuditLog;
 use App\Models\Chemical;
 use App\SafetyClass;
 use App\Unit;
+use App\Models\UsageLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -139,6 +141,15 @@ class ChemicalsController extends Controller
             'user_id' => Auth::user()['user_id'],
             'audit_action' => AuditAction::UPDATE,
             'target' => 'updated chemical',
+        ]);
+
+        UsageLog::create([
+            'user_id' => Auth::user()['user_id'],
+            'location_id' => $chemical['location_id'],
+            'item_type' => ItemType::CHEMICAL,
+            'item_id' => $chemical['chemical_id'],
+            'quantity_used' => $validated['use_amount'],
+            'quantity_remaining' => $validated['current_quantity']
         ]);
 
         return redirect()->route('inventory')->with('success', 'Location updated successfully');
