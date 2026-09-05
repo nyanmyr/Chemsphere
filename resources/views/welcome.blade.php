@@ -23,9 +23,9 @@
         <a href="{{ route('inventory') }}">Inventory</a>
         <a href="{{ route('locations') }}">Locations</a>
         <a href="{{ route('equipment') }}">Equipment</a>
-        {{-- @if (auth()->user()->user_role->isRole(\App\UserRole::ADMIN)) --}}
+        @if (auth()->user()->user_role->isRole(\App\UserRole::ADMIN))
             <a href="{{ route('users') }}">Manage Users</a>
-        {{-- @endif --}}
+        @endif
 
     @else
         <a href="{{ route('login') }}">Login</a>

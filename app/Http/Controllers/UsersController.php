@@ -20,6 +20,10 @@ class UsersController extends Controller
 
     public function edit($user_id)
     {
+        if (Auth::user()['user_id'] == $user_id) {
+            return redirect()->back(fallback: route('welcome'))->withErrors(['id' => 'Cannot edit own role.']);
+        }
+
         $user = User::where(
             'user_id',
             $user_id
