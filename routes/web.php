@@ -57,11 +57,20 @@ Route::get('/locations/create', function () {
 ->name('locations.create');
 
 Route::post('/locations/create', function () {
+    $user = Auth::user();
+
     $validated = request()->validate([
         'location_name' => 'required|string|max:255',
         'description'   => 'nullable|string',
     ]);
+
     Location::create($validated);
+
+    AuditLog::create([
+        'user_id' => $user['user_id'],
+        'audit_action' => AuditAction::CREATE,
+        'target' => 'create chemical',
+    ]);
 
     return redirect()->route('locations');
 })

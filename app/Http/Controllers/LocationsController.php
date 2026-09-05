@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\AuditAction;
+use App\Models\AuditLog;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +24,13 @@ class LocationsController extends Controller
             'location_id',
             $location_id
         )->firstOrFail()->delete();
+
+        AuditLog::create([
+            'user_id' => Auth::user()['user_id'],
+            'audit_action' => AuditAction::DELETE,
+            'target' => 'deleted chemical',
+        ]);
+
         return redirect()->route('locations')->with('success', 'Location deleted successfully');
     }
 
@@ -45,6 +54,12 @@ class LocationsController extends Controller
             'location_id',
             $location_id
         )->firstOrFail();
+
+        AuditLog::create([
+            'user_id' => Auth::user()['user_id'],
+            'audit_action' => AuditAction::UPDATE,
+            'target' => 'updated chemical',
+        ]);
 
         $location->update($validated);
         return redirect()->route('locations')->with('success', 'Location updated successfully');
