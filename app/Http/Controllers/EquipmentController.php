@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\AuditAction;
 use App\EquipmentStatus;
+use App\ItemType;
 use App\Models\AuditLog;
 use App\Models\Equipment;
+use App\Models\UsageLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -75,6 +77,66 @@ class EquipmentController extends Controller
             'target' => 'updated equipment',
         ]);
 
-        return redirect()->route('equipment')->with('success', 'Location updated successfully');
+        return redirect()->route('equipment')->with('success', 'Equipment updated successfully');
+    }
+
+    public function use_edit($equipment_id)
+    {
+        $equipment = Equipment::where(
+            'equipment_id',
+            $equipment_id
+        )->firstOrFail();
+
+        if ($equipment['quantity'] <= 0) {
+            return back()->withErrors(['quantity' => 'Quantity is 0']);
+        }
+
+        switch($equipment['status']) {
+            case EquipmentStatus::UNAVAILABLE:
+                return back()->withErrors(['quantity' => 'Equipment currently unavailable']);
+            case EquipmentStatus::BROKEN:
+                return back()->withErrors(['quantity' => 'Equipment currently broken']);
+            case EquipmentStatus::UNDER_MAINTENANCE:
+                return back()->withErrors(['quantity' => 'Equipment currently under maintenance']);
+        }
+
+        return view('use_equipment', compact('equipment'));
+    }
+
+    public function use_update(Request $request, $equipment_id)
+    {
+        $equipment = Equipment::where(
+            'equipment_id',
+            $equipment_id
+        )->firstOrFail();
+
+        // $validated = $request->validate([
+        //     'use_amount' => 'required|numeric|min:0|max:' . $chemical['current_quantity']
+        // ]);
+
+        // $validated['current_quantity'] = $chemical['current_quantity'] - $validated['use_amount'];
+
+        // if (($key = array_search('use_amount', $validated)) !== false) {
+        //     unset($validated[$key]);
+        // }
+
+        // $chemical->update($validated);
+
+        AuditLog::create([
+            'user_id' => Auth::user()['user_id'],
+            'audit_action' => AuditAction::UPDATE,
+            'target' => 'updated equipment',
+        ]);
+
+        UsageLog::create([
+            'user_id' => Auth::user()['user_id'],
+            'location_id' => $equipment['location_id'],
+            'item_type' => ItemType::EQUIPMENT,
+            'item_id' => $equipment['equipment_id'],
+            'quantity_used' => 0.000,
+            'quantity_remaining' => $equipment['quantity']
+        ]);
+
+        return redirect()->route('equipment')->with('success', 'Equipment updated successfully');
     }
 }

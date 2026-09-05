@@ -211,6 +211,14 @@ Route::put('/equipment/{id}', [EquipmentController::class, 'update'])
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('equipment.update');
 
+Route::get('/equipment/use/{id}/edit', [EquipmentController::class, 'use_edit'])
+->middleware('auth')
+->name('equipment.use.edit');
+
+Route::put('/equipment/use/{id}', [EquipmentController::class, 'use_update'])
+->middleware('auth')
+->name('equipment.use.update');
+
 // manage users routes
 Route::get('/users', [UsersController::class, 'users'])
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value])

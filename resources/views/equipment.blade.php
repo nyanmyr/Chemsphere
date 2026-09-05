@@ -40,6 +40,13 @@
                     <td>{{ $equipment->warranty_expiration }}</td>
                     <td>{{ $equipment->last_maintenance }}</td>
                     <td>{{ $equipment->next_maintenance }}</td>
+                    <td>
+                        <form
+                            action="{{ route('equipment.use.edit', $equipment->equipment_id) }}"
+                            method="GET">
+                            <button type="submit">Use</button>
+                        </form>
+                    </td>
                     @if ($user?->user_role?->isAdmin())
                         <td>
                             <form
