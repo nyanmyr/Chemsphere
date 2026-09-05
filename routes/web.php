@@ -69,7 +69,7 @@ Route::post('/locations/create', function () {
     AuditLog::create([
         'user_id' => $user['user_id'],
         'audit_action' => AuditAction::CREATE,
-        'target' => 'create chemical',
+        'target' => 'create location',
     ]);
 
     return redirect()->route('locations');
@@ -187,6 +187,12 @@ Route::post('/equipment/create', function () {
     $validated['created_by'] = $user['user_id'];
 
     Equipment::create($validated);
+
+    AuditLog::create([
+        'user_id' => $user['user_id'],
+        'audit_action' => AuditAction::CREATE,
+        'target' => 'create equipment',
+    ]);
 
     return redirect()->route('equipment');
 })

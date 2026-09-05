@@ -28,7 +28,7 @@ class LocationsController extends Controller
         AuditLog::create([
             'user_id' => Auth::user()['user_id'],
             'audit_action' => AuditAction::DELETE,
-            'target' => 'deleted chemical',
+            'target' => 'deleted location',
         ]);
 
         return redirect()->route('locations')->with('success', 'Location deleted successfully');
@@ -58,7 +58,7 @@ class LocationsController extends Controller
         AuditLog::create([
             'user_id' => Auth::user()['user_id'],
             'audit_action' => AuditAction::UPDATE,
-            'target' => 'updated chemical',
+            'target' => 'updated location',
         ]);
 
         $location->update($validated);

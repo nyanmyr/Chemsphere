@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\AuditAction;
 use App\EquipmentStatus;
+use App\Models\AuditLog;
 use App\Models\Equipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +27,12 @@ class EquipmentController extends Controller
             'equipment_id',
             $equipment_id
         )->firstOrFail()->delete();
+
+        AuditLog::create([
+            'user_id' => Auth::user()['user_id'],
+            'audit_action' => AuditAction::DELETE,
+            'target' => 'deleted equipment',
+        ]);
 
         return redirect()->route('equipment')->with('success', 'Equipment deleted successfully');
     }
@@ -60,6 +68,12 @@ class EquipmentController extends Controller
         )->firstOrFail();
 
         $equipment->update($validated);
+
+        AuditLog::create([
+            'user_id' => Auth::user()['user_id'],
+            'audit_action' => AuditAction::UPDATE,
+            'target' => 'updated equipment',
+        ]);
 
         return redirect()->route('equipment')->with('success', 'Location updated successfully');
     }
