@@ -8,6 +8,12 @@
 <body>
     <h1>Welcome to Chemsphere</h1>
 
+    @if (session('message') || $errors->any())
+        <div style="color: red;">
+            {{ session('message') ?? $errors->first() }}
+        </div>
+    @endif
+
     @auth
         <p>Logged in as: {{ auth()->user()->email }}</p>
         <form action="{{ route('logout') }}" method="POST">
@@ -17,9 +23,9 @@
         <a href="{{ route('inventory') }}">Inventory</a>
         <a href="{{ route('locations') }}">Locations</a>
         <a href="{{ route('equipment') }}">Equipment</a>
-        @if (auth()->user()->user_role->isAdmin())
+        {{-- @if (auth()->user()->user_role->isRole(\App\UserRole::ADMIN)) --}}
             <a href="{{ route('users') }}">Manage Users</a>
-        @endif
+        {{-- @endif --}}
 
     @else
         <a href="{{ route('login') }}">Login</a>

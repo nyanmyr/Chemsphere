@@ -12,4 +12,8 @@ enum UserRole : string
     public function isAdmin(): bool {
         return $this === self::ADMIN;
     }
+
+    public function isRole(UserRole $role): bool {
+        return $this === $role;
+    }
 }

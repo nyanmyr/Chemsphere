@@ -14,6 +14,7 @@ use App\Models\Equipment;
 use App\Models\Location;
 use App\SafetyClass;
 use App\Unit;
+use App\UserRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
@@ -52,7 +53,7 @@ Route::get('/locations', [LocationsController::class, 'locations'])
 Route::get('/locations/create', function () {
     return view('create_location');
 })
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('locations.create');
 
 Route::post('/locations/create', function () {
@@ -64,19 +65,19 @@ Route::post('/locations/create', function () {
 
     return redirect()->route('locations');
 })
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('locations.store');
 
 Route::delete('/locations/{id}', [LocationsController::class, 'delete'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('locations.delete');
 
 Route::get('/locations/{id}/edit', [LocationsController::class, 'edit'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('locations.edit');
 
 Route::put('/locations/{id}', [LocationsController::class, 'update'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('locations.update');
 
 // inventory routes
@@ -87,7 +88,7 @@ Route::get('/inventory', [ChemicalsController::class, 'chemicals'])
 Route::get('/inventory/create', function () {
     return view('create_chemical');
 })
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('inventory.create');
 
 Route::post('/inventory/create', function () {
@@ -124,19 +125,19 @@ Route::post('/inventory/create', function () {
 
     return redirect()->route('inventory');
 })
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('inventory.store');
 
 Route::delete('/inventory/{id}', [ChemicalsController::class, 'delete'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('inventory.delete');
 
 Route::get('/inventory/{id}/edit', [ChemicalsController::class, 'edit'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('inventory.edit');
 
 Route::put('/inventory/{id}', [ChemicalsController::class, 'update'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('inventory.update');
 
 Route::get('/inventory/use/{id}/edit', [ChemicalsController::class, 'use_edit'])
@@ -155,7 +156,7 @@ Route::get('/equipment', [EquipmentController::class, 'equipment'])
 Route::get('/equipment/create', function () {
     return view('create_equipment');
 })
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('equipment.create');
 
 Route::post('/equipment/create', function () {
@@ -180,30 +181,30 @@ Route::post('/equipment/create', function () {
 
     return redirect()->route('equipment');
 })
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('equipment.store');
 
 Route::delete('/equipment/{id}', [EquipmentController::class, 'delete'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('equipment.delete');
 
 Route::get('/equipment/{id}/edit', [EquipmentController::class, 'edit'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('equipment.edit');
 
 Route::put('/equipment/{id}', [EquipmentController::class, 'update'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('equipment.update');
 
 // manage users routes
 Route::get('/users', [UsersController::class, 'users'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('users');
 
 Route::get('/users/{id}/edit', [UsersController::class, 'edit'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('users.edit');
 
 Route::put('/users/{id}', [UsersController::class, 'update'])
-->middleware(['auth', 'admin'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('users.update');
