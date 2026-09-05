@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\UserRole;
+use App\AuditAction;
+use App\Models\AuditLog;
 use App\Models\User;
+use App\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +46,12 @@ class UsersController extends Controller
         )->firstOrFail();
 
         $user->update($validated);
+
+        AuditLog::create([
+            'user_id' => Auth::user()['user_id'],
+            'audit_action' => AuditAction::UPDATE,
+            'target' => 'updated user role',
+        ]);
 
         return redirect()->route('users')->with('success', 'Location updated successfully');
     }
