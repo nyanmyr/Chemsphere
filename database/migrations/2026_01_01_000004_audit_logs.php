@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -24,17 +25,17 @@ return new class extends Migration
             BEGIN
                 SIGNAL SQLSTATE '45000'
                 SET MESSAGE_TEXT = 'Error: this table is immutable. Updates are forbidden.';
-            END
+            END;
         ");
 
         DB::unprepared("
             CREATE TRIGGER prevent_audit_logs_delete
-            BEFORE UPDATE on audit_logs
+            BEFORE DELETE on audit_logs
             FOR EACH ROW
             BEGIN
                 SIGNAL SQLSTATE '45000'
                 SET MESSAGE_TEXT = 'Error: this table is immutable. Deletions are forbidden.';
-            END
+            END;
         ");
     }
 
