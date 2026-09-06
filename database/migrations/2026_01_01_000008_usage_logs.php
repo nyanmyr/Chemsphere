@@ -18,12 +18,34 @@ return new class extends Migration
             $table->decimal('quantity_used', $precision = 10, $scale = 3);
             $table->decimal('quantity_remaining', $precision = 10, $scale = 3);
             $table->text('notes')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
         });
+
+        DB::unprepared("
+            CREATE TRIGGER prevent_usage_logs_update
+            BEFORE UPDATE on usage_logs
+            FOR EACH ROW
+            BEGIN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Error: this table is immutable. Updates are forbidden.';
+            END
+        ");
+
+        DB::unprepared("
+            CREATE TRIGGER prevent_usage_logs_delete
+            BEFORE UPDATE on usage_logs
+            FOR EACH ROW
+            BEGIN
+                SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Error: this table is immutable. Deletions are forbidden.';
+            END
+        ");
     }
 
     public function down(): void
     {
+        DB::unprepared('DROP TRIGGER IF EXISTS prevent_usage_logs_update');
+        DB::unprepared('DROP TRIGGER IF EXISTS prevent_usage_logs_delete');
         Schema::dropIfExists('usage_logs');
     }
 };

@@ -9,6 +9,8 @@ class UsageLog extends Model
 {
     use HasFactory;
 
+    public const UPDATED_AT = null;
+
     protected $primaryKey = 'usage_log_id';
 
     protected $fillable = [
@@ -20,4 +22,15 @@ class UsageLog extends Model
         'quantity_remaining',
         'notes'
     ];
+
+    protected static function booted(): void
+    {
+        static::updating(function () {
+            throw new \RuntimeException('Error: Audit logs cannot be updated.');
+        });
+
+        static::deleting(function () {
+            throw new \RuntimeException('Error: Audit logs cannot be deleted.');
+        });
+    }
 }
