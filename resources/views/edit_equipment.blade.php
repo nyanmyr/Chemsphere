@@ -120,7 +120,7 @@
         @enderror
 
         <br>
-        <button>Update</button>
+        <button type="submit">Update</button>
     </form>
 
     <br>

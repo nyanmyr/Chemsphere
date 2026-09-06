@@ -9,7 +9,7 @@
     <h1>Edit Inventory</h1>
 
     <div>ID: {{ old('chemical_id', $chemical->chemical_id) }}</div>
-    <div>Created By: {{ old('created_by', $equipment->created_by) }}</div>
+    <div>Created By: {{ old('created_by', $chemical->created_by) }}</div>
     <div>Created: {{ old('created_at', $chemical->created_at) }}</div>
     <div>Last Updated: {{ old('updated_at', $chemical->updated_at) }}</div>
     <br>
@@ -177,6 +177,7 @@
             <div>{{ $message }}</div>
         @enderror
 
+        <br>
         <button type="submit">Update</button>
     </form>
 

@@ -39,12 +39,12 @@
         <label for="notes">Additional Notes</label>
         <br>
         <textarea id="notes" name="notes" rows="5" cols="40" placeholder="Enter text here."></textarea>
-        <br>
 
         @error('description')
             <div>{{ $message }}</div>
         @enderror
 
+        <br>
         <button type="submit">Update</button>
     </form>
 
