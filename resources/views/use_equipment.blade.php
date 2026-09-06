@@ -8,17 +8,17 @@
 <body>
     <h1>Use Equipment</h1>
 
-    <div>ID: {{ old('user_id', $equipment->equipment_id) }}</div>
-    <div>Location ID: {{ old('email', $equipment->location_id) }}</div>
-    <div>Name : {{ old('email', $equipment->equipment_name) }}</div>
-    <div>Model: {{ old('email', $equipment->model) }}</div>
-    <div>Serial ID: {{ old('email', $equipment->serial_id) }}</div>
-    <div>Status: {{ old('email', $equipment->status) }}</div>
-    <div>Quantity: {{ old('email', $equipment->quantity) }}</div>
-    <div>Purchase Date: {{ old('email', $equipment->purchase_date) }}</div>
-    <div>Warranty Expiration: {{ old('email', $equipment->warranty_expiration) }}</div>
-    <div>Last Maintenance: {{ old('email', $equipment->last_maintenance) }}</div>
-    <div>Next Maintenance: {{ old('email', $equipment->next_maintenance) }}</div>
+    <div>ID: {{ old('equipment_id', $equipment->equipment_id) }}</div>
+    <div>Location ID: {{ old('location_id', $equipment->location_id) }}</div>
+    <div>Name : {{ old('equipment_name', $equipment->equipment_name) }}</div>
+    <div>Model: {{ old('model', $equipment->model) }}</div>
+    <div>Serial ID: {{ old('serial_id', $equipment->serial_id) }}</div>
+    <div>Status: {{ old('status', $equipment->status) }}</div>
+    <div>Quantity: {{ old('quantity', $equipment->quantity) }}</div>
+    <div>Purchase Date: {{ old('purchase_date', $equipment->purchase_date) }}</div>
+    <div>Warranty Expiration: {{ old('warranty_expiration', $equipment->warranty_expiration) }}</div>
+    <div>Last Maintenance: {{ old('last_maintenance', $equipment->last_maintenance) }}</div>
+    <div>Next Maintenance: {{ old('next_maintenance', $equipment->next_maintenance) }}</div>
 
     <form action="{{ route('equipment.use.update', $equipment->equipment_id) }}" method="POST">
         @csrf

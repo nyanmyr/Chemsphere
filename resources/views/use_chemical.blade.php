@@ -8,19 +8,19 @@
 <body>
     <h1>Use Chemical</h1>
 
-    <div>ID: {{ old('user_id', $chemical->chemical_id) }}</div>
-    <div>Location ID: {{ old('email', $chemical->location_id) }}</div>
-    <div>Created By: {{ old('email', $chemical->created_by) }}</div>
-    <div>Name : {{ old('email', $chemical->chemical_name) }}</div>
-    <div>Batch Number: {{ old('email', $chemical->batch_number) }}</div>
-    <div>Volume Per Unit: {{ old('email', $chemical->volume_per_unit) }}</div>
-    <div>Initial Quantity: {{ old('email', $chemical->initial_quantity) }}</div>
-    <div>Current Quantity: {{ old('email', $chemical->current_quantity) }}</div>
-    <div>Expiration Date: {{ old('email', $chemical->expiration_date) }}</div>
-    <div>Arrival Date: {{ old('email', $chemical->arrival_date) }}</div>
-    <div>Safety Classes: {{ old('email', $chemical->safety_classes) }}</div>
-    <div>GHS Symbols: {{ old('email', $chemical->ghs_symbols) }}</div>
-    <div>Unit: {{ old('email', $chemical->unit) }}</div>
+    <div>ID: {{ old('chemical_id', $chemical->chemical_id) }}</div>
+    <div>Location ID: {{ old('location_id', $chemical->location_id) }}</div>
+    <div>Created By: {{ old('created_by', $chemical->created_by) }}</div>
+    <div>Name : {{ old('chemical_name', $chemical->chemical_name) }}</div>
+    <div>Batch Number: {{ old('batch_number', $chemical->batch_number) }}</div>
+    <div>Volume Per Unit: {{ old('volume_per_unit', $chemical->volume_per_unit) }}</div>
+    <div>Initial Quantity: {{ old('initial_quantity', $chemical->initial_quantity) }}</div>
+    <div>Current Quantity: {{ old('current_quantity', $chemical->current_quantity) }}</div>
+    <div>Expiration Date: {{ old('expiration_date', $chemical->expiration_date) }}</div>
+    <div>Arrival Date: {{ old('arrival_date', $chemical->arrival_date) }}</div>
+    <div>Safety Classes: {{ old('safety_classes', $chemical->safety_classes) }}</div>
+    <div>GHS Symbols: {{ old('ghs_symbols', $chemical->ghs_symbols) }}</div>
+    <div>Unit: {{ old('unit', $chemical->unit) }}</div>
 
     <form action="{{ route('inventory.use.update', $chemical->chemical_id) }}" method="POST">
         @csrf

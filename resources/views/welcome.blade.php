@@ -15,7 +15,7 @@
     @endif
 
     @auth
-        <p>Logged in as: {{ auth()->user()->email }}</p>
+        <p>Logged in as: {{ Auth::user()['email'] }}</p>
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit">Logout</button>
@@ -23,7 +23,7 @@
         <a href="{{ route('inventory') }}">Inventory</a>
         <a href="{{ route('locations') }}">Locations</a>
         <a href="{{ route('equipment') }}">Equipment</a>
-        @if (auth()->user()->user_role->isRole(\App\UserRole::ADMIN))
+        @if (Auth::user()['user_role']->isRole(\App\UserRole::ADMIN))
             <a href="{{ route('users') }}">Manage Users</a>
         @endif
 
