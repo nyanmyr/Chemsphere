@@ -110,15 +110,21 @@ class EquipmentController extends Controller
             $equipment_id
         )->firstOrFail();
 
-        // $validated = $request->validate([
-        //     'use_amount' => 'required|numeric|min:0|max:' . $chemical['current_quantity']
-        // ]);
+        $validated = $request->validate([
+            'notes' => 'nullable|string',
+        ]);
+
+        $notes = $validated['notes'];
 
         // $validated['current_quantity'] = $chemical['current_quantity'] - $validated['use_amount'];
 
         // if (($key = array_search('use_amount', $validated)) !== false) {
         //     unset($validated[$key]);
         // }
+
+        if (($key = array_search('notes', $validated)) !== false) {
+            unset($validated[$key]);
+        }
 
         // $chemical->update($validated);
 
@@ -134,7 +140,8 @@ class EquipmentController extends Controller
             'item_type' => ItemType::EQUIPMENT,
             'item_id' => $equipment['equipment_id'],
             'quantity_used' => 0.000,
-            'quantity_remaining' => $equipment['quantity']
+            'quantity_remaining' => $equipment['quantity'],
+            'notes' => $notes
         ]);
 
         return redirect()->route('equipment')->with('success', 'Equipment updated successfully');

@@ -23,7 +23,15 @@
     <form action="{{ route('equipment.use.update', $equipment->equipment_id) }}" method="POST">
         @csrf
         @method('PUT')
+        <br>
+        <label for="notes">Additional Notes</label>
+        <br>
+        <textarea id="notes" name="notes" rows="5" cols="40" placeholder="Enter text here."></textarea>
+        <br>
 
+        @error('description')
+            <div>{{ $message }}</div>
+        @enderror
 
         <button type="submit">Update</button>
     </form>
