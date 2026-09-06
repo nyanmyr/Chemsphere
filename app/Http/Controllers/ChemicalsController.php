@@ -126,12 +126,19 @@ class ChemicalsController extends Controller
         )->firstOrFail();
 
         $validated = $request->validate([
-            'use_amount' => 'required|numeric|min:0|max:' . $chemical['current_quantity']
+            'use_amount' => 'required|numeric|min:0|max:' . $chemical['current_quantity'],
+            'notes' => 'nullable|string',
         ]);
 
         $validated['current_quantity'] = $chemical['current_quantity'] - $validated['use_amount'];
 
+        $notes = $validated['notes'];
+
         if (($key = array_search('use_amount', $validated)) !== false) {
+            unset($validated[$key]);
+        }
+
+        if (($key = array_search('notes', $validated)) !== false) {
             unset($validated[$key]);
         }
 
@@ -149,7 +156,8 @@ class ChemicalsController extends Controller
             'item_type' => ItemType::CHEMICAL,
             'item_id' => $chemical['chemical_id'],
             'quantity_used' => $validated['use_amount'],
-            'quantity_remaining' => $validated['current_quantity']
+            'quantity_remaining' => $validated['current_quantity'],
+            'notes' => $notes
         ]);
 
         return redirect()->route('inventory')->with('success', 'Location updated successfully');
