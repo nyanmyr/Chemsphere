@@ -8,6 +8,12 @@
 <body>
     <h1>Edit Location</h1>
 
+    <div>ID: {{ old('location_id', $location->location_id) }}</div>
+    <div>Created By: {{ old('created_by', $location->created_by) }}</div>
+    <div>Created: {{ old('created_at', $location->created_at) }}</div>
+    <div>Last Updated: {{ old('updated_at', $location->updated_at) }}</div>
+    <br>
+
     <form action="{{ route('locations.update', $location->location_id) }}" method="POST">
         @csrf
         @method('PUT')

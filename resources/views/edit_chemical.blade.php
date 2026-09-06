@@ -8,6 +8,12 @@
 <body>
     <h1>Edit Inventory</h1>
 
+    <div>ID: {{ old('chemical_id', $chemical->chemical_id) }}</div>
+    <div>Created By: {{ old('created_by', $equipment->created_by) }}</div>
+    <div>Created: {{ old('created_at', $chemical->created_at) }}</div>
+    <div>Last Updated: {{ old('updated_at', $chemical->updated_at) }}</div>
+    <br>
+
     <form action="{{ route('inventory.update', $chemical->chemical_id) }}" method="POST">
         @csrf
         @method('PUT')

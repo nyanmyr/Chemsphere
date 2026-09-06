@@ -8,6 +8,12 @@
 <body>
     <h1>Edit Equipment</h1>
 
+    <div>ID: {{ old('equipment_id', $equipment->equipment_id) }}</div>
+    <div>Created By: {{ old('created_by', $equipment->created_by) }}</div>
+    <div>Created: {{ old('created_at', $equipment->created_at) }}</div>
+    <div>Last Updated: {{ old('updated_at', $equipment->updated_at) }}</div>
+    <br>
+
     <form action="{{ route('equipment.update', $equipment->equipment_id) }}" method="POST">
         @csrf
         @method('PUT')
