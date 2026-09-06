@@ -26,11 +26,11 @@ class UsageLog extends Model
     protected static function booted(): void
     {
         static::updating(function () {
-            throw new \RuntimeException('Error: Audit logs cannot be updated.');
+            throw new \RuntimeException('Error: Usage logs cannot be updated.');
         });
 
         static::deleting(function () {
-            throw new \RuntimeException('Error: Audit logs cannot be deleted.');
+            throw new \RuntimeException('Error: Usage logs cannot be deleted.');
         });
     }
 }
