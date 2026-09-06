@@ -26,7 +26,7 @@ class LocationsController extends Controller
         )->firstOrFail()->delete();
 
         AuditLog::create([
-            'user_id' => Auth::user()['user_id'],
+            'created_by' => Auth::user()['user_id'],
             'audit_action' => AuditAction::DELETE,
             'target' => 'deleted location',
         ]);
@@ -56,7 +56,7 @@ class LocationsController extends Controller
         )->firstOrFail();
 
         AuditLog::create([
-            'user_id' => Auth::user()['user_id'],
+            'created_by' => Auth::user()['user_id'],
             'audit_action' => AuditAction::UPDATE,
             'target' => 'updated location',
         ]);

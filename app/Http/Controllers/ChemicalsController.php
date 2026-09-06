@@ -33,7 +33,7 @@ class ChemicalsController extends Controller
         )->firstOrFail()->delete();
 
         AuditLog::create([
-            'user_id' => Auth::user()['user_id'],
+            'created_by' => Auth::user()['user_id'],
             'audit_action' => AuditAction::DELETE,
             'target' => 'deleted chemical',
         ]);
@@ -96,7 +96,7 @@ class ChemicalsController extends Controller
         $chemical->update($validated);
 
         AuditLog::create([
-            'user_id' => Auth::user()['user_id'],
+            'created_by' => Auth::user()['user_id'],
             'audit_action' => AuditAction::UPDATE,
             'target' => 'updated chemical',
         ]);
@@ -138,13 +138,13 @@ class ChemicalsController extends Controller
         $chemical->update($validated);
 
         AuditLog::create([
-            'user_id' => Auth::user()['user_id'],
+            'created_by' => Auth::user()['user_id'],
             'audit_action' => AuditAction::UPDATE,
             'target' => 'updated chemical',
         ]);
 
         UsageLog::create([
-            'user_id' => Auth::user()['user_id'],
+            'created_by' => Auth::user()['user_id'],
             'location_id' => $chemical['location_id'],
             'item_type' => ItemType::CHEMICAL,
             'item_id' => $chemical['chemical_id'],

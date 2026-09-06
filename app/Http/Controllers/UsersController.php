@@ -48,7 +48,7 @@ class UsersController extends Controller
         $user->update($validated);
 
         AuditLog::create([
-            'user_id' => Auth::user()['user_id'],
+            'created_by' => Auth::user()['user_id'],
             'audit_action' => AuditAction::UPDATE,
             'target' => 'updated user role',
         ]);

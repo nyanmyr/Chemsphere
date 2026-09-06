@@ -11,8 +11,8 @@ return new class extends Migration
     {
         Schema::create('audit_logs', function (Blueprint $table) {
             $table->id('audit_log_id');
-            $table->foreignId('user_id')->constrained('users')->references('user_id');
-            $table->string('audit_action')->default(AuditAction::INSERT->value);
+            $table->foreignId('created_by')->constrained('users')->references('user_id');
+            $table->string('audit_action');
             $table->text('target');
             $table->json('metadata')->nullable();
             $table->timestamps();

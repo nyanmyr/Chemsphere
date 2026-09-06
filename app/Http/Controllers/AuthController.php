@@ -26,7 +26,7 @@ class AuthController extends Controller
         ]);
 
         AuditLog::create([
-            'user_id' => $user['user_id'],
+            'created_by' => $user['user_id'],
             'audit_action' => AuditAction::REGISTER,
             'target' => 'placeholder',
         ]);
@@ -70,7 +70,7 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         AuditLog::create([
-            'user_id' => $user['user_id'],
+            'created_by' => $user['user_id'],
             'audit_action' => AuditAction::LOGIN,
             'target' => 'placeholder',
         ]);
@@ -83,7 +83,7 @@ class AuthController extends Controller
         $user = Auth::user();
 
         AuditLog::create([
-            'user_id' => $user['user_id'],
+            'created_by' => $user['user_id'],
             'audit_action' => AuditAction::LOGOUT,
             'target' => 'placeholder',
         ]);
@@ -133,7 +133,7 @@ class AuthController extends Controller
                 ]);
 
                 AuditLog::create([
-                    'user_id' => $user['user_id'],
+                    'created_by' => $user['user_id'],
                     'audit_action' => AuditAction::LOGIN,
                     'target' => 'placeholder',
                 ]);
@@ -159,7 +159,7 @@ class AuthController extends Controller
             }
 
             AuditLog::create([
-                'user_id' => $user['user_id'],
+                'created_by' => $user['user_id'],
                 'audit_action' => AuditAction::LOGIN,
                 'target' => 'placeholder',
             ]);

@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('usage_logs', function (Blueprint $table) {
             $table->id('usage_log_id');
-            $table->foreignId('user_id')->constrained('users')->references('user_id');
+            $table->foreignId('created_by')->constrained('users')->references('user_id');
             $table->foreignId('location_id')->constrained('locations')->references('location_id');
             $table->string('item_type')->default(ItemType::CHEMICAL->value);
             $table->unsignedBigInteger('item_id');

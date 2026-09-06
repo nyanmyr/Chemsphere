@@ -12,7 +12,7 @@ class UsageLog extends Model
     protected $primaryKey = 'usage_log_id';
 
     protected $fillable = [
-        'user_id',
+        'created_by',
         'location_id',
         'item_type',
         'item_id',

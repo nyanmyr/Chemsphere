@@ -64,10 +64,12 @@ Route::post('/locations/create', function () {
         'description'   => 'nullable|string',
     ]);
 
+    $validated['created_by'] = $user['user_id'];
+
     Location::create($validated);
 
     AuditLog::create([
-        'user_id' => $user['user_id'],
+        'created_by' => $user['user_id'],
         'audit_action' => AuditAction::CREATE,
         'target' => 'create location',
     ]);
@@ -127,7 +129,7 @@ Route::post('/inventory/create', function () {
     Chemical::create($validated);
 
     AuditLog::create([
-        'user_id' => $user['user_id'],
+        'created_by' => $user['user_id'],
         'audit_action' => AuditAction::CREATE,
         'target' => 'create chemical',
     ]);
@@ -189,7 +191,7 @@ Route::post('/equipment/create', function () {
     Equipment::create($validated);
 
     AuditLog::create([
-        'user_id' => $user['user_id'],
+        'created_by' => $user['user_id'],
         'audit_action' => AuditAction::CREATE,
         'target' => 'create equipment',
     ]);

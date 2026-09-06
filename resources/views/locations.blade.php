@@ -12,6 +12,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Created By</th>
                 <th>Name</th>
                 <th>Description</th>
             </tr>
@@ -20,6 +21,7 @@
             @foreach ($data as $location)
                 <tr>
                     <td>{{ $location->location_id }}</td>
+                    <td>{{ $location->created_by }}</td>
                     <td>{{ $location->location_name }}</td>
                     <td>{{ $location->description }}</td>
                     @if ($user?->user_role?->isAdmin())

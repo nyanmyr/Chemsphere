@@ -12,6 +12,7 @@ class Location extends Model
     protected $primaryKey = 'location_id';
 
     protected $fillable = [
+        'created_by',
         'location_name',
         'description'
     ];

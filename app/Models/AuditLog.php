@@ -12,7 +12,7 @@ class AuditLog extends Model
     protected $primaryKey = 'audit_log_id';
 
     protected $fillable = [
-        'user_id',
+        'created_by',
         'audit_action',
         'target',
         'metadata'

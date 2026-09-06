@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id('location_id');
+            $table->foreignId('created_by')->constrained('users')->references('user_id');
             $table->string('location_name');
             $table->text('description')->nullable();
             $table->timestamps();

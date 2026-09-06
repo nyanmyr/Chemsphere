@@ -31,7 +31,7 @@ class EquipmentController extends Controller
         )->firstOrFail()->delete();
 
         AuditLog::create([
-            'user_id' => Auth::user()['user_id'],
+            'created_by' => Auth::user()['user_id'],
             'audit_action' => AuditAction::DELETE,
             'target' => 'deleted equipment',
         ]);
@@ -72,7 +72,7 @@ class EquipmentController extends Controller
         $equipment->update($validated);
 
         AuditLog::create([
-            'user_id' => Auth::user()['user_id'],
+            'created_by' => Auth::user()['user_id'],
             'audit_action' => AuditAction::UPDATE,
             'target' => 'updated equipment',
         ]);
@@ -123,13 +123,13 @@ class EquipmentController extends Controller
         // $chemical->update($validated);
 
         AuditLog::create([
-            'user_id' => Auth::user()['user_id'],
+            'created_by' => Auth::user()['user_id'],
             'audit_action' => AuditAction::UPDATE,
             'target' => 'updated equipment',
         ]);
 
         UsageLog::create([
-            'user_id' => Auth::user()['user_id'],
+            'created_by' => Auth::user()['user_id'],
             'location_id' => $equipment['location_id'],
             'item_type' => ItemType::EQUIPMENT,
             'item_id' => $equipment['equipment_id'],
