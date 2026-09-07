@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('model');
             $table->string('serial_id');
             $table->string('status')->default(EquipmentStatus::UNAVAILABLE->value);
-            $table->decimal('quantity', $precision = 10, $scale = 3);
+            $table->decimal('initial_quantity', $precision = 10, $scale = 3);
+            $table->decimal('current_quantity', $precision = 10, $scale = 3);
             $table->date('purchase_date');
             $table->date('warranty_expiration');
             $table->date('last_maintenance');

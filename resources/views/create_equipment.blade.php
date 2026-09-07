@@ -59,11 +59,22 @@
         @enderror
 
         <br>
-        <label for="quantity">Quantity</label>
+        <label for="initial_quantity">Initial Quantity</label>
         <br>
-        <input type="number" id="quantity" name="quantity" step="0.001" min="0" max="9999999999" value="{{ old('quantity') }}" required>
+        <input type="number" id="initial_quantity" name="initial_quantity" step="0.001" min="0"
+            max="9999999999" value="{{ old('initial_quantity') }}" required>
 
-        @error('quantity')
+        @error('initial_quantity')
+            <div>{{ $message }}</div>
+        @enderror
+
+        <br>
+        <label for="current_quantity">Current Quantity</label>
+        <br>
+        <input type="number" id="current_quantity" name="current_quantity" step="0.001" min="0"
+            max="9999999999" value="{{ old('current_quantity') }}" required>
+
+        @error('current_quantity')
             <div>{{ $message }}</div>
         @enderror
 

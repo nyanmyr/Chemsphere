@@ -24,6 +24,16 @@
         @csrf
         @method('PUT')
         <br>
+        <label for="use_amount">Use Amount</label>
+        <br>
+        <input type="number" id="use_amount" name="use_amount" step="0.001" min="0"
+            max="{{ old('current_quantity', $equipment->current_quantity) }}" value="{{ old('use_amount') }}" required>
+
+        @error('use_amount')
+            <div>{{ $message }}</div>
+        @enderror
+
+        <br>
         <label for="notes">Additional Notes</label>
         <br>
         <textarea id="notes" name="notes" rows="5" cols="40" placeholder="Enter text here.">{{ old('notes') }}</textarea>

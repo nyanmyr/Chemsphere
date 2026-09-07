@@ -57,7 +57,8 @@ class EquipmentController extends Controller
             'model' => 'required|string|max:255',
             'serial_id' => 'required|string|max:255',
             'status' => ['required', Rule::enum(EquipmentStatus::class)],
-            'quantity' => 'required|numeric|min:0|max:9999997.999',
+            'initial_quantity' => 'required|numeric|min:0|max:9999997.999',
+            'current_quantity' => 'required|numeric|min:0|max:9999997.999',
             'purchase_date' => 'required|date',
             'warranty_expiration' => 'required|date',
             'last_maintenance' => 'required|date',
@@ -111,16 +112,17 @@ class EquipmentController extends Controller
         )->firstOrFail();
 
         $validated = $request->validate([
+            'use_amount' => 'required|numeric|min:0|max:' . $equipment['current_quantity'],
             'notes' => 'nullable|string',
         ]);
 
+        $validated['current_quantity'] = $equipment['current_quantity'] - $validated['use_amount'];
+
         $notes = $validated['notes'];
 
-        // $validated['current_quantity'] = $chemical['current_quantity'] - $validated['use_amount'];
-
-        // if (($key = array_search('use_amount', $validated)) !== false) {
-        //     unset($validated[$key]);
-        // }
+        if (($key = array_search('use_amount', $validated)) !== false) {
+            unset($validated[$key]);
+        }
 
         if (($key = array_search('notes', $validated)) !== false) {
             unset($validated[$key]);
