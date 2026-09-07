@@ -12,7 +12,7 @@
         @csrf
         <label for="location_id">Location ID</label>
         <br>
-        <input type="number" id="location_id" name="location_id" required>
+        <input type="number" id="location_id" name="location_id" value="{{ old('location_id') }}" required>
 
         @error('location_id')
             <div>{{ $message }}</div>
@@ -21,7 +21,7 @@
         <br>
         <label for="equipment_name">Name</label>
         <br>
-        <input type="text" id="equipment_name" name="equipment_name" required>
+        <input type="text" id="equipment_name" name="equipment_name" value="{{ old('equipment_name') }}" required>
 
         @error('equipment_name')
             <div>{{ $message }}</div>
@@ -30,7 +30,7 @@
         <br>
         <label for="model">Model</label>
         <br>
-        <input type="text" id="model" name="model" required>
+        <input type="text" id="model" name="model" value="{{ old('model') }}" required>
 
         @error('model')
             <div>{{ $message }}</div>
@@ -39,7 +39,7 @@
         <br>
         <label for="serial_id">Serial ID</label>
         <br>
-        <input type="text" id="serial_id" name="serial_id" required>
+        <input type="text" id="serial_id" name="serial_id" value="{{ old('serial_id') }}" required>
 
         @error('serial_id')
             <div>{{ $message }}</div>
@@ -61,7 +61,7 @@
         <br>
         <label for="quantity">Quantity</label>
         <br>
-        <input type="number" id="quantity" name="quantity" step="0.001" min="0" max="9999999999" required>
+        <input type="number" id="quantity" name="quantity" step="0.001" min="0" max="9999999999" value="{{ old('quantity') }}" required>
 
         @error('quantity')
             <div>{{ $message }}</div>
@@ -70,7 +70,7 @@
         <br>
         <label for="purchase_date">Purchase Date</label>
         <br>
-        <input type="date" id="purchase_date" name="purchase_date" required>
+        <input type="date" id="purchase_date" name="purchase_date" value="{{ old('purchase_date') }}" required>
 
         @error('purchase_date')
             <div>{{ $message }}</div>
@@ -79,7 +79,7 @@
         <br>
         <label for="warranty_expiration">Warranty Expiration</label>
         <br>
-        <input type="date" id="warranty_expiration" name="warranty_expiration" required>
+        <input type="date" id="warranty_expiration" name="warranty_expiration" value="{{ old('warranty_expiration') }}" required>
 
         @error('warranty_expiration')
             <div>{{ $message }}</div>
@@ -88,7 +88,7 @@
         <br>
         <label for="last_maintenance">Last Maintenance</label>
         <br>
-        <input type="date" id="last_maintenance" name="last_maintenance" required>
+        <input type="date" id="last_maintenance" name="last_maintenance" value="{{ old('last_maintenance') }}" required>
 
         @error('last_maintenance')
             <div>{{ $message }}</div>
@@ -97,7 +97,7 @@
         <br>
         <label for="next_maintenance">Next Maintenance</label>
         <br>
-        <input type="date" id="next_maintenance" name="next_maintenance" required>
+        <input type="date" id="next_maintenance" name="next_maintenance" value="{{ old('next_maintenance') }}" required>
 
         @error('next_maintenance')
             <div>{{ $message }}</div>

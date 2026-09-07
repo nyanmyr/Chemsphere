@@ -12,7 +12,7 @@
         @csrf
         <label for="location_id">Location ID</label>
         <br>
-        <input type="number" id="location_id" name="location_id" required>
+        <input type="number" id="location_id" name="location_id" value="{{ old('location_id') }}" required>
 
         @error('location_id')
             <div>{{ $message }}</div>
@@ -21,7 +21,7 @@
         <br>
         <label for="chemical_name">Name</label>
         <br>
-        <input type="text" id="chemical_name" name="chemical_name" required>
+        <input type="text" id="chemical_name" name="chemical_name" value="{{ old('chemical_name') }}" required>
 
         @error('chemical_name')
             <div>{{ $message }}</div>
@@ -30,7 +30,7 @@
         <br>
         <label for="batch_number">Batch Number</label>
         <br>
-        <input type="text" id="batch_number" name="batch_number" required>
+        <input type="text" id="batch_number" name="batch_number" value="{{ old('batch_number') }}" required>
 
         @error('batch_number')
             <div>{{ $message }}</div>
@@ -39,7 +39,7 @@
         <br>
         <label for="brand_name">Brand Name</label>
         <br>
-        <input type="text" id="brand_name" name="brand_name" required>
+        <input type="text" id="brand_name" name="brand_name" value="{{ old('brand_name') }}" required>
 
         @error('brand_name')
             <div>{{ $message }}</div>
@@ -48,8 +48,7 @@
         <br>
         <label for="volume_per_unit">Volume Per Unit</label>
         <br>
-        <input type="number" id="volume_per_unit" name="volume_per_unit" step="0.001" min="0" max="9999999999"
-            required>
+        <input type="number" id="volume_per_unit" name="volume_per_unit" step="0.001" min="0" max="9999999999" value="{{ old('volume_per_unit') }}" required>
 
         @error('volume_per_unit')
             <div>{{ $message }}</div>
@@ -59,7 +58,7 @@
         <label for="initial_quantity">Initial Quantity</label>
         <br>
         <input type="number" id="initial_quantity" name="initial_quantity" step="0.001" min="0"
-            max="9999999999" required>
+            max="9999999999" value="{{ old('initial_quantity') }}" required>
 
         @error('initial_quantity')
             <div>{{ $message }}</div>
@@ -69,7 +68,7 @@
         <label for="current_quantity">Current Quantity</label>
         <br>
         <input type="number" id="current_quantity" name="current_quantity" step="0.001" min="0"
-            max="9999999999" required>
+            max="9999999999" value="{{ old('current_quantity') }}" required>
 
         @error('current_quantity')
             <div>{{ $message }}</div>
@@ -78,7 +77,7 @@
         <br>
         <label for="expiration_date">Expiration Date</label>
         <br>
-        <input type="date" id="expiration_date" name="expiration_date" required>
+        <input type="date" id="expiration_date" name="expiration_date" value="{{ old('expiration_date') }}" required>
 
         @error('expiration_date')
             <div>{{ $message }}</div>
@@ -87,7 +86,7 @@
         <br>
         <label for="arrival_date">Arrival Date</label>
         <br>
-        <input type="date" id="arrival_date" name="arrival_date" required>
+        <input type="date" id="arrival_date" name="arrival_date" value="{{ old('arrival_date') }}" required>
 
         @error('arrival_date')
             <div>{{ $message }}</div>

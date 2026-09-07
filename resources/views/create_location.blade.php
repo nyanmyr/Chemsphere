@@ -12,7 +12,7 @@
         @csrf
         <label for="location_name">Name</label>
         <br>
-        <input type="text" id="location_name" name="location_name" required>
+        <input type="text" id="location_name" name="location_name" value="{{ old('location_name') }}" required>
 
         @error('location_name')
             <div>{{ $message }}</div>
@@ -21,7 +21,7 @@
         <br>
         <label for="description">Description</label>
         <br>
-        <textarea id="description" name="description" rows="5" cols="40" placeholder="Enter text here."></textarea>
+        <textarea id="description" name="description" rows="5" cols="40" placeholder="Enter text here.">{{ old('description') }}</textarea>
         <br>
 
         @error('description')
