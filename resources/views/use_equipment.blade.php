@@ -26,9 +26,9 @@
         <br>
         <label for="notes">Additional Notes</label>
         <br>
-        <textarea id="notes" name="notes" rows="5" cols="40" placeholder="Enter text here."></textarea>
+        <textarea id="notes" name="notes" rows="5" cols="40" placeholder="Enter text here.">{{ old('notes') }}</textarea>
 
-        @error('description')
+        @error('notes')
             <div>{{ $message }}</div>
         @enderror
 

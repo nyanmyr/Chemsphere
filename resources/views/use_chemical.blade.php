@@ -29,7 +29,7 @@
         <label for="use_amount">Use Amount</label>
         <br>
         <input type="number" id="use_amount" name="use_amount" step="0.001" min="0"
-            max="{{ old('current_quantity', $chemical->current_quantity) }}" value="0.000" required>
+            max="{{ old('current_quantity', $chemical->current_quantity) }}" value="{{ old('use_amount') }}" required>
 
         @error('use_amount')
             <div>{{ $message }}</div>
@@ -38,9 +38,9 @@
         <br>
         <label for="notes">Additional Notes</label>
         <br>
-        <textarea id="notes" name="notes" rows="5" cols="40" placeholder="Enter text here."></textarea>
+        <textarea id="notes" name="notes" rows="5" cols="40" placeholder="Enter text here.">{{ old('notes') }}</textarea>
 
-        @error('description')
+        @error('notes')
             <div>{{ $message }}</div>
         @enderror
 
