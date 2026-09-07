@@ -18,7 +18,8 @@
                 <th>Model</th>
                 <th>Serial ID</th>
                 <th>Status</th>
-                <th>Quantity</th>
+                <th>Initial Quantity</th>
+                <th>Current Quantity</th>
                 <th>Purchase Date</th>
                 <th>Warranty Expiration</th>
                 <th>Last Maintenance</th>
@@ -35,7 +36,8 @@
                     <td>{{ $equipment->model }}</td>
                     <td>{{ $equipment->serial_id }}</td>
                     <td>{{ $equipment->status }}</td>
-                    <td>{{ $equipment->quantity }}</td>
+                    <td>{{ $equipment->initial_quantity }}</td>
+                    <td>{{ $equipment->current_quantity }}</td>
                     <td>{{ $equipment->purchase_date }}</td>
                     <td>{{ $equipment->warranty_expiration }}</td>
                     <td>{{ $equipment->last_maintenance }}</td>
