@@ -12,6 +12,21 @@
         <div style="color: red;">{{ $message }}</div>
     @enderror
 
+    <form action="{{ route('inventory') }}" method="GET">
+        <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            size="100"
+            placeholder="Search name, batch, or brand..."
+        >
+        <button type="submit">Search</button>
+
+        @if(request('search'))
+            <a href="{{ route('inventory') }}">Clear</a>
+        @endif
+    </form>
+
     <table>
         <thead>
             <tr>

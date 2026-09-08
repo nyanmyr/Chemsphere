@@ -17,12 +17,23 @@ use Illuminate\Validation\Rule;
 
 class ChemicalsController extends Controller
 {
-    public function chemicals()
+    public function chemicals(Request $request)
     {
-        $data = DB::table('chemicals')->get();
+        $search = $request->input('search');
+
+        $data = DB::table('chemicals')
+        ->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('chemical_name', 'LIKE', "%{$search}%")
+                ->orWhere('batch_number', 'LIKE', "%{$search}%")
+                ->orWhere('brand_name', 'LIKE', "%{$search}%");
+            });
+        })
+        ->get();
+
         $user = Auth::user();
 
-        return view('inventory', ['data' => $data, 'user' => $user]);
+        return view('inventory', compact('data', 'user'));
     }
 
     public function delete($chemical_id)
