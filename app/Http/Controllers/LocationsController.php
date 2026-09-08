@@ -11,11 +11,22 @@ use Illuminate\Support\Facades\DB;
 
 class LocationsController extends Controller
 {
-    public function locations()
+    public function locations(Request $request)
     {
-        $data = DB::table('locations')->get();
+        $search = $request->input('search');
+
+        $data = DB::table('locations')
+        ->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('location_name', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+        })
+        ->get();
+
         $user = Auth::user();
-        return view('locations', ['data' => $data, 'user' => $user]);
+
+        return view('locations', compact('data', 'user'));
     }
 
     public function delete($location_id)

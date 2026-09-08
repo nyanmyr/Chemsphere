@@ -8,6 +8,21 @@
 <body>
     <h1>Locations</h1>
 
+    <form action="{{ route('locations') }}" method="GET">
+        <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            size="100"
+            placeholder="Search name or description..."
+        >
+        <button type="submit">Search</button>
+
+        @if(request('search'))
+            <a href="{{ route('locations') }}">Clear</a>
+        @endif
+    </form>
+
     <table>
         <thead>
             <tr>
