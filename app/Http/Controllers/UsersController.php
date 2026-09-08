@@ -13,11 +13,21 @@ use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
-    public function users()
+    public function users(Request $request)
     {
-        $data = DB::table('users')->get();
+        $search = $request->input('search');
+
+        $data = DB::table('users')
+        ->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('email', 'LIKE', "%{$search}%");
+            });
+        })
+        ->get();
+
         $user = Auth::user();
-        return view('users', ['data' => $data, 'user' => $user]);
+
+        return view('users', compact('data', 'user'));
     }
 
     public function edit($user_id)

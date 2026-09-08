@@ -14,6 +14,21 @@
         </div>
     @endif
 
+    <form action="{{ route('users') }}" method="GET">
+        <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            size="100"
+            placeholder="Search email..."
+        >
+        <button type="submit">Search</button>
+
+        @if(request('search'))
+            <a href="{{ route('users') }}">Clear</a>
+        @endif
+    </form>
+
     <table>
         <thead>
             <tr>
