@@ -26,7 +26,7 @@
     <table>
         <thead>
             <tr>
-                <th>Chemical ID</th>
+                <th>Equipment ID</th>
                 <th>Location ID</th>
                 <th>Created By</th>
                 <th>Name</th>
