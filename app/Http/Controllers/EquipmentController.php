@@ -15,12 +15,23 @@ use Illuminate\Validation\Rule;
 
 class EquipmentController extends Controller
 {
-    public function equipment()
+    public function equipment(Request $request)
     {
-        $data = DB::table('equipment')->get();
+        $search = $request->input('search');
+
+        $data = DB::table('equipment')
+        ->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('equipment_name', 'LIKE', "%{$search}%")
+                ->orWhere('model', 'LIKE', "%{$search}%")
+                ->orWhere('serial_id', 'LIKE', "%{$search}%");
+            });
+        })
+        ->get();
+
         $user = Auth::user();
 
-        return view('equipment', ['data' => $data, 'user' => $user]);
+        return view('equipment', compact('data', 'user'));
     }
 
     public function delete($equipment_id)
