@@ -29,6 +29,43 @@ class LocationsController extends Controller
         return view('locations', compact('data', 'user'));
     }
 
+    public function locationsIDSearch(Request $request, string $type)
+    {
+        $validSearchTypes = [
+            'created_by' => 'created_by'
+        ];
+
+        // 2. Catch unsupported search types
+        if (!array_key_exists($type, $validSearchTypes)) {
+            return redirect()
+                ->route('locations')
+                ->with('error', "Search type '{$type}' is not currently supported.");
+        }
+
+        $column = $validSearchTypes[$type];
+        $min = $request->input('min');
+        $max = $request->input('max');
+
+        $query = Location::query();
+
+        $query->when(filled($min), function ($q) use ($column, $min) {
+            return $q->where($column, '>=', (int) $min);
+        });
+
+        $query->when(filled($max), function ($q) use ($column, $max) {
+            return $q->where($column, '<=', (int) $max);
+        });
+
+        $data = $query->get();
+
+        if ($data->isEmpty()) {
+            session()->now('error', 'No location records found matching your range criteria.');
+        }
+
+        $user = Auth::user();
+
+        return view('locations', compact('data', 'user'));
+    }
     public function delete($location_id)
     {
         $location = Location::where(
