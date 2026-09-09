@@ -10,29 +10,27 @@
 
     <form action="{{ route('locations') }}" method="GET">
         <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search name or description...">
-        <button type="submit">Search</button>
 
-        @if(request()->filled('search'))
-        <a href="{{ route('locations') }}">Clear</a>
-        @endif
-    </form>
+        <br>
+        <label>Search by Location ID:</label>
+        <br>
+        <label for="location_id_min">Min</label>
+        <input id="location_id_min" type="number" name="location_id_min" value="{{ request('location_id_min') }}" min="1" step="1" size="20" placeholder="min…">
+        <br>
+        <label for="location_id_max">Max</label>
+        <input id="location_id_max" type="number" name="location_id_max" value="{{ request('location_id_max') }}" min="1" step="1" size="20" placeholder="max…">
 
-    <form action="{{ route('locations.search.created_by', ['type' => 'created_by']) }}" method="GET">
+        <br>
         <label>Search by Created By:</label>
         <br>
-
-        <label for="min">Min</label>
-        <input id="min" type="number" name="min" value="{{ request('min') }}" min="0" step="1" size="20" placeholder="min…">
+        <label for="created_by_min">Min</label>
+        <input id="created_by_min" type="number" name="created_by_min" value="{{ request('created_by_min') }}" min="1" step="1" size="20" placeholder="min…">
         <br>
+        <label for="created_by_max">Max</label>
+        <input id="created_by_max" type="number" name="created_by_max" value="{{ request('created_by_max') }}" min="1" step="1" size="20" placeholder="max…">
 
-        <label for="max">Max</label>
-        <input id="max" type="number" name="max" value="{{ request('max') }}" min="0" step="1" size="20" placeholder="max…">
-
+        <br>
         <button type="submit">Search</button>
-
-        @if(request()->filled('min') || request()->filled('max'))
-        <a href="{{ route('locations') }}">Clear</a>
-        @endif
     </form>
 
     @if(session('error'))

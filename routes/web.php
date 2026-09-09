@@ -96,10 +96,6 @@ Route::get('/inventory', [ChemicalsController::class, 'chemicals'])
 ->middleware('auth')
 ->name('inventory');
 
-Route::get('/locations/search/{type}', [LocationsController::class, 'locationsIDSearch'])
-->middleware('auth')
-->name('locations.search.created_by');
-
 Route::get('/inventory/create', function () {
     return view('create_chemical');
 })

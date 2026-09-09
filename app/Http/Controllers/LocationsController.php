@@ -13,47 +13,39 @@ class LocationsController extends Controller
 {
     public function locations(Request $request)
     {
-        $search = $request->input('search');
-
-        $data = DB::table('locations')
-        ->when($search, function ($query, $search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('location_name', 'LIKE', "%{$search}%")
-                ->orWhere('description', 'LIKE', "%{$search}%");
-            });
-        })
-        ->get();
-
         $user = Auth::user();
 
-        return view('locations', compact('data', 'user'));
-    }
-
-    public function locationsIDSearch(Request $request, string $type)
-    {
-        $validSearchTypes = [
-            'created_by' => 'created_by'
-        ];
-
-        // 2. Catch unsupported search types
-        if (!array_key_exists($type, $validSearchTypes)) {
-            return redirect()
-                ->route('locations')
-                ->with('error', "Search type '{$type}' is not currently supported.");
-        }
-
-        $column = $validSearchTypes[$type];
-        $min = $request->input('min');
-        $max = $request->input('max');
+        $validate = $request->validate([
+            'search' => 'nullable|string|max:255',
+            'location_id_min' => 'nullable|integer',
+            'location_id_max' => 'nullable|integer',
+            'created_by_min' => 'nullable|integer',
+            'created_by_max' => 'nullable|integer',
+        ]);
 
         $query = Location::query();
 
-        $query->when(filled($min), function ($q) use ($column, $min) {
-            return $q->where($column, '>=', (int) $min);
+        $query->when($request->filled('search'), function ($q) use ($request) {
+            $q->where(function ($sub) use ($request) {
+                $sub->where('location_name', 'LIKE', "%{$request->search}%")
+                    ->orWhere('description', 'LIKE', "%{$request->search}%");
+            });
         });
 
-        $query->when(filled($max), function ($q) use ($column, $max) {
-            return $q->where($column, '<=', (int) $max);
+        $query->when($request->filled('location_id_min'), function ($q) use ($request) {
+            $q->where('location_id', '>=', $request->location_id_min);
+        });
+
+        $query->when($request->filled('location_id_max'), function ($q) use ($request) {
+            $q->where('location_id', '<=', $request->location_id_max);
+        });
+
+        $query->when($request->filled('created_by_min'), function ($q) use ($request) {
+            $q->where('created_by', '>=', $request->created_by_min);
+        });
+
+        $query->when($request->filled('created_by_max'), function ($q) use ($request) {
+            $q->where('created_by', '<=', $request->created_by_max);
         });
 
         $data = $query->get();
@@ -62,10 +54,9 @@ class LocationsController extends Controller
             session()->now('error', 'No location records found matching your range criteria.');
         }
 
-        $user = Auth::user();
-
         return view('locations', compact('data', 'user'));
     }
+
     public function delete($location_id)
     {
         $location = Location::where(
