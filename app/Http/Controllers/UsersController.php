@@ -15,17 +15,32 @@ class UsersController extends Controller
 {
     public function users(Request $request)
     {
-        $search = $request->input('search');
-
-        $data = DB::table('users')
-        ->when($search, function ($query, $search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('email', 'LIKE', "%{$search}%");
-            });
-        })
-        ->get();
-
         $user = Auth::user();
+
+        $validate = $request->validate([
+            'search' => 'nullable|string|max:255',
+            'search_user_role' => 'nullable|array',
+        ]);
+
+        $query = User::query();
+
+        $query->when($request->filled('search'), function ($q) use ($request) {
+            $q->where(function ($q) use ($request) {
+                $q->where('email', 'LIKE', "%{$request->search}%");
+            });
+        });
+
+        $query->when($request->filled('search_user_role'), function ($q) use ($request) {
+            $q->whereIn('user_role', (array) $request->search_user_role);
+        });
+
+        $data = $query->get();
+
+        if ($data->isEmpty()) {
+            session()->now('error', 'No location records found matching your range criteria.');
+        }
+
+        $search = $request->input('search');
 
         return view('users', compact('data', 'user'));
     }
