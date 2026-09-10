@@ -9,9 +9,9 @@
     <h1>Login</h1>
 
     @if (session('message') || $errors->any())
-        <div style="color: red;">
-            {{ session('message') ?? $errors->first() }}
-        </div>
+    <div style="color: red;">
+        {{ session('message') ?? $errors->first() }}
+    </div>
     @endif
 
     <form action="/login" method="POST">

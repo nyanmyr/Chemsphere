@@ -9,21 +9,15 @@
     <h1>Inventory</h1>
 
     @error('current_quantity')
-        <div style="color: red;">{{ $message }}</div>
+    <div style="color: red;">{{ $message }}</div>
     @enderror
 
     <form action="{{ route('inventory') }}" method="GET">
-        <input
-            type="text"
-            name="search"
-            value="{{ request('search') }}"
-            size="100"
-            placeholder="Search name, batch, or brand..."
-        >
+        <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search name, batch, or brand...">
         <button type="submit">Search</button>
 
         @if(request('search'))
-            <a href="{{ route('inventory') }}">Clear</a>
+        <a href="{{ route('inventory') }}">Clear</a>
         @endif
     </form>
 
@@ -48,54 +42,48 @@
         </thead>
         <tbody>
             @foreach ($data as $chemical)
-                <tr>
-                    <td>{{ $chemical->chemical_id }}</td>
-                    <td>{{ $chemical->location_id }}</td>
-                    <td>{{ $chemical->created_by }}</td>
-                    <td>{{ $chemical->chemical_name }}</td>
-                    <td>{{ $chemical->batch_number }}</td>
-                    <td>{{ $chemical->brand_name }}</td>
-                    <td>{{ $chemical->volume_per_unit }}</td>
-                    <td>{{ $chemical->initial_quantity }}</td>
-                    <td>{{ $chemical->current_quantity }}</td>
-                    <td>{{ $chemical->expiration_date }}</td>
-                    <td>{{ $chemical->arrival_date }}</td>
-                    <td>{{ $chemical->safety_classes }}</td>
-                    <td>{{ $chemical->ghs_symbols }}</td>
-                    <td>{{ $chemical->unit }}</td>
-                    <td>
-                        <form
-                            action="{{ route('inventory.use.edit', $chemical->chemical_id) }}"
-                            method="GET">
-                            <button type="submit">Use</button>
-                        </form>
-                    </td>
-                    @if ($user?->user_role?->isAdmin())
-                        <td>
-                            <form
-                                action="{{ route('inventory.delete', $chemical->chemical_id) }}"
-                                method="POST" onsubmit="return confirm('Delete chemical?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">Delete</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form
-                                action="{{ route('inventory.edit', $chemical->chemical_id) }}"
-                                method="GET">
-                                <button type="submit">Edit</button>
-                            </form>
-                        </td>
-                    @endif
-                </tr>
+            <tr>
+                <td>{{ $chemical->chemical_id }}</td>
+                <td>{{ $chemical->location_id }}</td>
+                <td>{{ $chemical->created_by }}</td>
+                <td>{{ $chemical->chemical_name }}</td>
+                <td>{{ $chemical->batch_number }}</td>
+                <td>{{ $chemical->brand_name }}</td>
+                <td>{{ $chemical->volume_per_unit }}</td>
+                <td>{{ $chemical->initial_quantity }}</td>
+                <td>{{ $chemical->current_quantity }}</td>
+                <td>{{ $chemical->expiration_date }}</td>
+                <td>{{ $chemical->arrival_date }}</td>
+                <td>{{ $chemical->safety_classes }}</td>
+                <td>{{ $chemical->ghs_symbols }}</td>
+                <td>{{ $chemical->unit }}</td>
+                <td>
+                    <form action="{{ route('inventory.use.edit', $chemical->chemical_id) }}" method="GET">
+                        <button type="submit">Use</button>
+                    </form>
+                </td>
+                @if ($user?->user_role?->isAdmin())
+                <td>
+                    <form action="{{ route('inventory.delete', $chemical->chemical_id) }}" method="POST" onsubmit="return confirm('Delete chemical?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{{ route('inventory.edit', $chemical->chemical_id) }}" method="GET">
+                        <button type="submit">Edit</button>
+                    </form>
+                </td>
+                @endif
+            </tr>
             @endforeach
         </tbody>
     </table>
 
     <br>
     @if ($user?->user_role?->isAdmin())
-        <a href="{{ route('inventory.create') }}">Create</a>
+    <a href="{{ route('inventory.create') }}">Create</a>
     @endif
 
     <br>

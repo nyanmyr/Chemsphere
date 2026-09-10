@@ -15,7 +15,7 @@
         <input type="text" id="location_name" name="location_name" value="{{ old('location_name') }}" required>
 
         @error('location_name')
-            <div>{{ $message }}</div>
+        <div>{{ $message }}</div>
         @enderror
 
         <br>
