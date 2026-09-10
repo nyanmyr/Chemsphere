@@ -19,19 +19,57 @@ class ChemicalsController extends Controller
 {
     public function chemicals(Request $request)
     {
-        $search = $request->input('search');
-
-        $data = DB::table('chemicals')
-        ->when($search, function ($query, $search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('chemical_name', 'LIKE', "%{$search}%")
-                ->orWhere('batch_number', 'LIKE', "%{$search}%")
-                ->orWhere('brand_name', 'LIKE', "%{$search}%");
-            });
-        })
-        ->get();
-
         $user = Auth::user();
+
+        $validate = $request->validate([
+            'search' => 'nullable|string|max:255',
+            'chemical_id_min' => 'nullable|integer',
+            'chemical_id_max' => 'nullable|integer',
+            'location_id_min' => 'nullable|integer',
+            'location_id_max' => 'nullable|integer',
+            'created_by_min' => 'nullable|integer',
+            'created_by_max' => 'nullable|integer',
+        ]);
+
+        $query = chemical::query();
+
+        $query->when($request->filled('search'), function ($q) use ($request) {
+            $q->where(function ($sub) use ($request) {
+                $sub->where('chemical_name', 'LIKE', "%{$request->search}%")
+                    ->orWhere('batch_number', 'LIKE', "%{$request->search}%")
+                    ->orWhere('brand_name', 'LIKE', "%{$request->search}%");
+            });
+        });
+
+        $query->when($request->filled('chemical_id_min'), function ($q) use ($request) {
+            $q->where('chemical_id', '>=', $request->chemical_id_min);
+        });
+
+        $query->when($request->filled('chemical_id_max'), function ($q) use ($request) {
+            $q->where('chemical_id', '<=', $request->chemical_id_max);
+        });
+
+        $query->when($request->filled('location_id_min'), function ($q) use ($request) {
+            $q->where('location_id', '>=', $request->location_id_min);
+        });
+
+        $query->when($request->filled('location_id_max'), function ($q) use ($request) {
+            $q->where('location_id', '<=', $request->location_id_max);
+        });
+
+        $query->when($request->filled('created_by_min'), function ($q) use ($request) {
+            $q->where('created_by', '>=', $request->created_by_min);
+        });
+
+        $query->when($request->filled('created_by_max'), function ($q) use ($request) {
+            $q->where('created_by', '<=', $request->created_by_max);
+        });
+
+        $data = $query->get();
+
+        if ($data->isEmpty()) {
+            session()->now('error', 'No chemical records found matching your range criteria.');
+        }
 
         return view('inventory', compact('data', 'user'));
     }
