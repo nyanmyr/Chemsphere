@@ -12,7 +12,7 @@
         <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search name or description...">
 
         <br>
-        <label>Search by Location ID:</label>
+        <label>Search by ID:</label>
         <br>
         <label for="location_id_min">Min</label>
         <input id="location_id_min" type="number" name="location_id_min" value="{{ request('location_id_min') }}" min="1" step="1" size="20" placeholder="min…">

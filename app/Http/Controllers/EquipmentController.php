@@ -17,19 +17,57 @@ class EquipmentController extends Controller
 {
     public function equipment(Request $request)
     {
-        $search = $request->input('search');
-
-        $data = DB::table('equipment')
-        ->when($search, function ($query, $search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('equipment_name', 'LIKE', "%{$search}%")
-                ->orWhere('model', 'LIKE', "%{$search}%")
-                ->orWhere('serial_id', 'LIKE', "%{$search}%");
-            });
-        })
-        ->get();
-
         $user = Auth::user();
+
+        $validate = $request->validate([
+            'search' => 'nullable|string|max:255',
+            'equipment_id_min' => 'nullable|integer',
+            'equipment_id_max' => 'nullable|integer',
+            'location_id_min' => 'nullable|integer',
+            'location_id_max' => 'nullable|integer',
+            'created_by_min' => 'nullable|integer',
+            'created_by_max' => 'nullable|integer',
+        ]);
+
+        $query = Equipment::query();
+
+        $query->when($request->filled('search'), function ($q) use ($request) {
+            $q->where(function ($sub) use ($request) {
+                $sub->where('equipment_name', 'LIKE', "%{$request->search}%")
+                    ->orWhere('model', 'LIKE', "%{$request->search}%")
+                    ->orWhere('serial_id', 'LIKE', "%{$request->search}%");
+            });
+        });
+
+        $query->when($request->filled('equipment_id_min'), function ($q) use ($request) {
+            $q->where('equipment_id', '>=', $request->equipment_id_min);
+        });
+
+        $query->when($request->filled('equipment_id_max'), function ($q) use ($request) {
+            $q->where('equipment_id', '<=', $request->equipment_id_max);
+        });
+
+        $query->when($request->filled('location_id_min'), function ($q) use ($request) {
+            $q->where('location_id', '>=', $request->location_id_min);
+        });
+
+        $query->when($request->filled('location_id_max'), function ($q) use ($request) {
+            $q->where('location_id', '<=', $request->location_id_max);
+        });
+
+        $query->when($request->filled('created_by_min'), function ($q) use ($request) {
+            $q->where('created_by', '>=', $request->created_by_min);
+        });
+
+        $query->when($request->filled('created_by_max'), function ($q) use ($request) {
+            $q->where('created_by', '<=', $request->created_by_max);
+        });
+
+        $data = $query->get();
+
+        if ($data->isEmpty()) {
+            session()->now('error', 'No equipment records found matching your range criteria.');
+        }
 
         return view('equipment', compact('data', 'user'));
     }
