@@ -27,6 +27,7 @@ class EquipmentController extends Controller
             'location_id_max' => 'nullable|integer',
             'created_by_min' => 'nullable|integer',
             'created_by_max' => 'nullable|integer',
+            'search_status' => 'nullable|array',
         ]);
 
         $query = Equipment::query();
@@ -61,6 +62,10 @@ class EquipmentController extends Controller
 
         $query->when($request->filled('created_by_max'), function ($q) use ($request) {
             $q->where('created_by', '<=', $request->created_by_max);
+        });
+
+        $query->when($request->filled('search_status'), function ($q) use ($request) {
+            $q->whereIn('status', (array) $request->search_status);
         });
 
         $data = $query->get();

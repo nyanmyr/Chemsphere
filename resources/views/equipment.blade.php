@@ -38,6 +38,16 @@
         <label for="created_by_max">Max</label>
         <input id="created_by_max" type="number" name="created_by_max" value="{{ request('created_by_max') }}" min="1" step="1" size="20" placeholder="max…">
 
+        <br>
+        <label for="search_status">Search by Unit:</label>
+        <select id="search_status" name="search_status[]" size="1" multiple>
+            @foreach (\App\EquipmentStatus::cases() as $class)
+            <option value="{{ $class->value }}" @selected(in_array($class->value, (array) request('search_status', old('search_status', $user->search_status->value ?? $user->search_status ?? []))))>
+                {{ $class->value }}
+            </option>
+            @endforeach
+        </select>
+
         <button type="submit">Search</button>
 
         @if(request('search'))
