@@ -42,6 +42,36 @@
         <label for="created_by_max">Max</label>
         <input id="created_by_max" type="number" name="created_by_max" value="{{ request('created_by_max') }}" min="1" step="1" size="20" placeholder="max…">
 
+        <br>
+        <label for="search_safety_classes">Search by Safety Class:</label>
+        <select id="search_safety_classes" name="search_safety_classes[]" size="1" multiple>
+            @foreach (\App\SafetyClass::cases() as $class)
+            <option value="{{ $class->value }}" @selected(in_array($class->value, (array) request('search_safety_classes', old('search_safety_classes', $user->search_safety_classes->value ?? $user->search_safety_classes ?? []))))>
+                {{ $class->value }}
+            </option>
+            @endforeach
+        </select>
+
+        <br>
+        <label for="search_ghs_symbols">Search by GHS Symbol:</label>
+        <select id="search_ghs_symbols" name="search_ghs_symbols[]" size="1" multiple>
+            @foreach (\App\GHSSymbol::cases() as $class)
+            <option value="{{ $class->value }}" @selected(in_array($class->value, (array) request('search_ghs_symbols', old('search_ghs_symbols', $user->search_ghs_symbols->value ?? $user->search_ghs_symbols ?? []))))>
+                {{ $class->value }}
+            </option>
+            @endforeach
+        </select>
+
+        <br>
+        <label for="search_unit">Search by Unit:</label>
+        <select id="search_unit" name="search_unit[]" size="1" multiple>
+            @foreach (\App\Unit::cases() as $class)
+            <option value="{{ $class->value }}" @selected(in_array($class->value, (array) request('search_unit', old('search_unit', $user->search_unit->value ?? $user->search_unit ?? []))))>
+                {{ $class->value }}
+            </option>
+            @endforeach
+        </select>
+
         <button type="submit">Search</button>
 
         @if(request('search'))

@@ -29,6 +29,9 @@ class ChemicalsController extends Controller
             'location_id_max' => 'nullable|integer',
             'created_by_min' => 'nullable|integer',
             'created_by_max' => 'nullable|integer',
+            'search_safety_classes' => 'nullable|array',
+            'search_ghs_symbols' => 'nullable|array',
+            'search_unit' => 'nullable|array',
         ]);
 
         $query = chemical::query();
@@ -63,6 +66,34 @@ class ChemicalsController extends Controller
 
         $query->when($request->filled('created_by_max'), function ($q) use ($request) {
             $q->where('created_by', '<=', $request->created_by_max);
+        });
+
+        $query->when($request->filled('search_user_role'), function ($q) use ($request) {
+            $q->whereIn('user_role', (array) $request->search_user_role);
+        });
+
+        $query->when($request->filled('search_safety_classes'), function ($q) use ($request) {
+            $classes = (array) $request->search_safety_classes;
+
+            $q->where(function ($sub) use ($classes) {
+                foreach ($classes as $class) {
+                    $sub->orWhereRaw('FIND_IN_SET(?, safety_classes)', [$class]);
+                }
+            });
+        });
+
+        $query->when($request->filled('search_ghs_symbols'), function ($q) use ($request) {
+            $classes = (array) $request->search_ghs_symbols;
+
+            $q->where(function ($sub) use ($classes) {
+                foreach ($classes as $class) {
+                    $sub->orWhereRaw('FIND_IN_SET(?, ghs_symbols)', [$class]);
+                }
+            });
+        });
+
+        $query->when($request->filled('search_unit'), function ($q) use ($request) {
+            $q->whereIn('unit', (array) $request->search_unit);
         });
 
         $data = $query->get();
