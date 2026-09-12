@@ -18,6 +18,15 @@
         <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search email...">
 
         <br>
+        <label>Search by ID:</label>
+        <br>
+        <label for="search_user_id_min">Min</label>
+        <input id="search_user_id_min" type="number" name="search_user_id_min" value="{{ request('search_user_id_min') }}" min="1" step="1" size="20" placeholder="min…">
+        <br>
+        <label for="search_user_id_max">Max</label>
+        <input id="search_user_id_max" type="number" name="search_user_id_max" value="{{ request('search_user_id_max') }}" min="1" step="1" size="20" placeholder="max…">
+
+        <br>
         <label for="search_user_role">Search by Role:</label>
         <select id="search_user_role" name="search_user_role[]" size="1" multiple>
             @foreach (\App\UserRole::cases() as $class)

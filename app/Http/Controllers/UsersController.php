@@ -19,6 +19,8 @@ class UsersController extends Controller
 
         $validate = $request->validate([
             'search' => 'nullable|string|max:255',
+            'search_user_id_min' => 'nullable|integer|min:1',
+            'search_user_id_max' => 'nullable|integer|min:1',
             'search_user_role' => 'nullable|array',
         ]);
 
@@ -28,6 +30,14 @@ class UsersController extends Controller
             $q->where(function ($q) use ($request) {
                 $q->where('email', 'LIKE', "%{$request->search}%");
             });
+        });
+
+        $query->when($request->filled('search_user_id_min'), function ($q) use ($request) {
+            $q->where('user_id', '>=', $request->search_user_id_min);
+        });
+
+        $query->when($request->filled('search_user_id_max'), function ($q) use ($request) {
+            $q->where('user_id', '<=', $request->search_user_id_max);
         });
 
         $query->when($request->filled('search_user_role'), function ($q) use ($request) {
