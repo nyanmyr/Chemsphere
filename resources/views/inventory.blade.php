@@ -43,6 +43,33 @@
         <input id="created_by_max" type="number" name="created_by_max" value="{{ request('created_by_max') }}" min="1" step="1" size="20" placeholder="max…">
 
         <br>
+        <label>Search by Volume Per Unit:</label>
+        <br>
+        <label for="search_volume_per_unit_min">Min</label>
+        <input id="search_volume_per_unit_min" type="number" name="search_volume_per_unit_min" value="{{ request('search_volume_per_unit_min') }}" min="0" step="0.001" size="20" placeholder="min…">
+        <br>
+        <label for="search_volume_per_unit_max">Max</label>
+        <input id="search_volume_per_unit_max" type="number" name="search_volume_per_unit_max" value="{{ request('search_volume_per_unit_max') }}" min="0" step="0.001" size="20" placeholder="max…">
+
+        <br>
+        <label>Search by Initial Quantity:</label>
+        <br>
+        <label for="search_initial_quantity_min">Min</label>
+        <input id="search_initial_quantity_min" type="number" name="search_initial_quantity_min" value="{{ request('search_initial_quantity_min') }}" min="0" step="0.001" size="20" placeholder="min…">
+        <br>
+        <label for="search_initial_quantity_max">Max</label>
+        <input id="search_initial_quantity_max" type="number" name="search_initial_quantity_max" value="{{ request('search_initial_quantity_max') }}" min="0" step="0.001" size="20" placeholder="max…">
+
+        <br>
+        <label>Search by Current Quantity:</label>
+        <br>
+        <label for="search_current_quantity_min">Min</label>
+        <input id="search_current_quantity_min" type="number" name="search_current_quantity_min" value="{{ request('search_current_quantity_min') }}" min="0" step="0.001" size="20" placeholder="min…">
+        <br>
+        <label for="search_current_quantity_max">Max</label>
+        <input id="search_current_quantity_max" type="number" name="search_current_quantity_max" value="{{ request('search_current_quantity_max') }}" min="0" step="0.001" size="20" placeholder="max…">
+
+        <br>
         <label for="search_safety_classes">Search by Safety Class:</label>
         <select id="search_safety_classes" name="search_safety_classes[]" size="1" multiple>
             @foreach (\App\SafetyClass::cases() as $class)

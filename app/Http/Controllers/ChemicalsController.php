@@ -29,6 +29,12 @@ class ChemicalsController extends Controller
             'location_id_max' => 'nullable|integer',
             'created_by_min' => 'nullable|integer',
             'created_by_max' => 'nullable|integer',
+            'search_volume_per_unit_min' => 'nullable|numeric|min:0|max:9999997.999',
+            'search_volume_per_unit_max' => 'nullable|numeric|min:0|max:9999997.999',
+            'search_initial_quantity_min' => 'nullable|numeric|min:0|max:9999997.999',
+            'search_initial_quantity_max' => 'nullable|numeric|min:0|max:9999997.999',
+            'search_current_quantity_min' => 'nullable|numeric|min:0|max:9999997.999',
+            'search_current_quantity_max' => 'nullable|numeric|min:0|max:9999997.999',
             'search_safety_classes' => 'nullable|array',
             'search_ghs_symbols' => 'nullable|array',
             'search_unit' => 'nullable|array',
@@ -66,6 +72,30 @@ class ChemicalsController extends Controller
 
         $query->when($request->filled('created_by_max'), function ($q) use ($request) {
             $q->where('created_by', '<=', $request->created_by_max);
+        });
+
+        $query->when($request->filled('search_volume_per_unit_min'), function ($q) use ($request) {
+            $q->where('volume_per_unit', '>=', $request->search_volume_per_unit_min);
+        });
+
+        $query->when($request->filled('search_volume_per_unit_max'), function ($q) use ($request) {
+            $q->where('volume_per_unit', '<=', $request->search_volume_per_unit_max);
+        });
+
+        $query->when($request->filled('search_initial_quantity_min'), function ($q) use ($request) {
+            $q->where('initial_quantity', '>=', $request->search_initial_quantity_min);
+        });
+
+        $query->when($request->filled('search_initial_quantity_max'), function ($q) use ($request) {
+            $q->where('initial_quantity', '<=', $request->search_initial_quantity_max);
+        });
+
+        $query->when($request->filled('search_current_quantity_min'), function ($q) use ($request) {
+            $q->where('current_quantity', '>=', $request->search_current_quantity_min);
+        });
+
+        $query->when($request->filled('search_current_quantity_max'), function ($q) use ($request) {
+            $q->where('current_quantity', '<=', $request->search_current_quantity_max);
         });
 
         $query->when($request->filled('search_user_role'), function ($q) use ($request) {
