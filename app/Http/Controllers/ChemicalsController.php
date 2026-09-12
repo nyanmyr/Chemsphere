@@ -23,18 +23,18 @@ class ChemicalsController extends Controller
 
         $validate = $request->validate([
             'search' => 'nullable|string|max:255',
-            'chemical_id_min' => 'nullable|integer',
-            'chemical_id_max' => 'nullable|integer',
-            'location_id_min' => 'nullable|integer',
-            'location_id_max' => 'nullable|integer',
-            'created_by_min' => 'nullable|integer',
-            'created_by_max' => 'nullable|integer',
-            'search_volume_per_unit_min' => 'nullable|numeric|min:0|max:9999997.999',
-            'search_volume_per_unit_max' => 'nullable|numeric|min:0|max:9999997.999',
-            'search_initial_quantity_min' => 'nullable|numeric|min:0|max:9999997.999',
-            'search_initial_quantity_max' => 'nullable|numeric|min:0|max:9999997.999',
-            'search_current_quantity_min' => 'nullable|numeric|min:0|max:9999997.999',
-            'search_current_quantity_max' => 'nullable|numeric|min:0|max:9999997.999',
+            'search_chemical_id_min' => 'nullable|integer|min:1',
+            'search_chemical_id_max' => 'nullable|integer|min:1',
+            'search_location_id_min' => 'nullable|integer|min:1',
+            'search_location_id_max' => 'nullable|integer|min:1',
+            'search_created_by_min' => 'nullable|integer|min:1',
+            'search_created_by_max' => 'nullable|integer|min:1',
+            'search_volume_per_unit_min' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_volume_per_unit_max' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_initial_quantity_min' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_initial_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_current_quantity_min' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_current_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_safety_classes' => 'nullable|array',
             'search_ghs_symbols' => 'nullable|array',
             'search_unit' => 'nullable|array',
@@ -50,28 +50,28 @@ class ChemicalsController extends Controller
             });
         });
 
-        $query->when($request->filled('chemical_id_min'), function ($q) use ($request) {
-            $q->where('chemical_id', '>=', $request->chemical_id_min);
+        $query->when($request->filled('search_chemical_id_min'), function ($q) use ($request) {
+            $q->where('chemical_id', '>=', $request->search_chemical_id_min);
         });
 
-        $query->when($request->filled('chemical_id_max'), function ($q) use ($request) {
-            $q->where('chemical_id', '<=', $request->chemical_id_max);
+        $query->when($request->filled('search_chemical_id_max'), function ($q) use ($request) {
+            $q->where('chemical_id', '<=', $request->search_chemical_id_max);
         });
 
-        $query->when($request->filled('location_id_min'), function ($q) use ($request) {
-            $q->where('location_id', '>=', $request->location_id_min);
+        $query->when($request->filled('search_location_id_min'), function ($q) use ($request) {
+            $q->where('location_id', '>=', $request->search_location_id_min);
         });
 
-        $query->when($request->filled('location_id_max'), function ($q) use ($request) {
-            $q->where('location_id', '<=', $request->location_id_max);
+        $query->when($request->filled('search_location_id_max'), function ($q) use ($request) {
+            $q->where('location_id', '<=', $request->search_location_id_max);
         });
 
-        $query->when($request->filled('created_by_min'), function ($q) use ($request) {
-            $q->where('created_by', '>=', $request->created_by_min);
+        $query->when($request->filled('search_created_by_min'), function ($q) use ($request) {
+            $q->where('created_by', '>=', $request->search_created_by_min);
         });
 
-        $query->when($request->filled('created_by_max'), function ($q) use ($request) {
-            $q->where('created_by', '<=', $request->created_by_max);
+        $query->when($request->filled('search_created_by_max'), function ($q) use ($request) {
+            $q->where('created_by', '<=', $request->search_created_by_max);
         });
 
         $query->when($request->filled('search_volume_per_unit_min'), function ($q) use ($request) {
@@ -168,9 +168,9 @@ class ChemicalsController extends Controller
             'chemical_name' => 'required|string|max:255',
             'batch_number' => 'required|string|max:255',
             'brand_name' => 'required|string|max:255',
-            'volume_per_unit' => 'required|numeric|min:0|max:9999997.999',
-            'initial_quantity' => 'required|numeric|min:0|max:9999997.999',
-            'current_quantity' => 'required|numeric|min:0|max:9999997.999',
+            'volume_per_unit' => 'required|numeric|min:0|max:9999999999.999',
+            'initial_quantity' => 'required|numeric|min:0|max:9999999999.999',
+            'current_quantity' => 'required|numeric|min:0|max:9999999999.999',
             'expiration_date' => 'required|date',
             'arrival_date' => 'required|date',
             'safety_classes' => 'nullable|array',

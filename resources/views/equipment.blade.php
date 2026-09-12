@@ -14,29 +14,29 @@
         <br>
         <label>Search by ID:</label>
         <br>
-        <label for="equipment_id_min">Min</label>
-        <input id="equipment_id_min" type="number" name="equipment_id_min" value="{{ request('equipment_id_min') }}" min="1" step="1" size="20" placeholder="min…">
+        <label for="search_equipment_id_min">Min</label>
+        <input id="search_equipment_id_min" type="number" name="search_equipment_id_min" value="{{ request('search_equipment_id_min') }}" min="1" step="1" size="20" placeholder="min…">
         <br>
-        <label for="equipment_id_max">Max</label>
-        <input id="equipment_id_max" type="number" name="equipment_id_max" value="{{ request('equipment_id_max') }}" min="1" step="1" size="20" placeholder="max…">
+        <label for="search_equipment_id_max">Max</label>
+        <input id="search_equipment_id_max" type="number" name="search_equipment_id_max" value="{{ request('search_equipment_id_max') }}" min="1" step="1" size="20" placeholder="max…">
 
         <br>
         <label>Search by Location ID:</label>
         <br>
-        <label for="location_id_min">Min</label>
-        <input id="location_id_min" type="number" name="location_id_min" value="{{ request('location_id_min') }}" min="1" step="1" size="20" placeholder="min…">
+        <label for="search_location_id_min">Min</label>
+        <input id="search_location_id_min" type="number" name="search_location_id_min" value="{{ request('search_location_id_min') }}" min="1" step="1" size="20" placeholder="min…">
         <br>
-        <label for="location_id_max">Max</label>
-        <input id="location_id_max" type="number" name="location_id_max" value="{{ request('location_id_max') }}" min="1" step="1" size="20" placeholder="max…">
+        <label for="search_location_id_max">Max</label>
+        <input id="search_location_id_max" type="number" name="search_location_id_max" value="{{ request('search_location_id_max') }}" min="1" step="1" size="20" placeholder="max…">
 
         <br>
         <label>Search by Created By:</label>
         <br>
-        <label for="created_by_min">Min</label>
-        <input id="created_by_min" type="number" name="created_by_min" value="{{ request('created_by_min') }}" min="1" step="1" size="20" placeholder="min…">
+        <label for="search_created_by_min">Min</label>
+        <input id="search_created_by_min" type="number" name="search_created_by_min" value="{{ request('search_created_by_min') }}" min="1" step="1" size="20" placeholder="min…">
         <br>
-        <label for="created_by_max">Max</label>
-        <input id="created_by_max" type="number" name="created_by_max" value="{{ request('created_by_max') }}" min="1" step="1" size="20" placeholder="max…">
+        <label for="search_created_by_max">Max</label>
+        <input id="search_created_by_max" type="number" name="search_created_by_max" value="{{ request('search_created_by_max') }}" min="1" step="1" size="20" placeholder="max…">
 
         <br>
         <label for="search_status">Search by Unit:</label>

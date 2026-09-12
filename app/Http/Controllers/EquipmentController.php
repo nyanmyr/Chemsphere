@@ -21,12 +21,12 @@ class EquipmentController extends Controller
 
         $validate = $request->validate([
             'search' => 'nullable|string|max:255',
-            'equipment_id_min' => 'nullable|integer',
-            'equipment_id_max' => 'nullable|integer',
-            'location_id_min' => 'nullable|integer',
-            'location_id_max' => 'nullable|integer',
-            'created_by_min' => 'nullable|integer',
-            'created_by_max' => 'nullable|integer',
+            'search_equipment_id_min' => 'nullable|integer|min:1',
+            'search_equipment_id_max' => 'nullable|integer|min:1',
+            'search_location_id_min' => 'nullable|integer|min:1',
+            'search_location_id_max' => 'nullable|integer|min:1',
+            'search_created_by_min' => 'nullable|integer|min:1',
+            'search_created_by_max' => 'nullable|integer|min:1',
             'search_status' => 'nullable|array',
         ]);
 
@@ -40,28 +40,28 @@ class EquipmentController extends Controller
             });
         });
 
-        $query->when($request->filled('equipment_id_min'), function ($q) use ($request) {
-            $q->where('equipment_id', '>=', $request->equipment_id_min);
+        $query->when($request->filled('search_equipment_id_min'), function ($q) use ($request) {
+            $q->where('equipment_id', '>=', $request->search_equipment_id_min);
         });
 
-        $query->when($request->filled('equipment_id_max'), function ($q) use ($request) {
-            $q->where('equipment_id', '<=', $request->equipment_id_max);
+        $query->when($request->filled('search_equipment_id_max'), function ($q) use ($request) {
+            $q->where('equipment_id', '<=', $request->search_equipment_id_max);
         });
 
-        $query->when($request->filled('location_id_min'), function ($q) use ($request) {
-            $q->where('location_id', '>=', $request->location_id_min);
+        $query->when($request->filled('search_location_id_min'), function ($q) use ($request) {
+            $q->where('location_id', '>=', $request->search_location_id_min);
         });
 
-        $query->when($request->filled('location_id_max'), function ($q) use ($request) {
-            $q->where('location_id', '<=', $request->location_id_max);
+        $query->when($request->filled('search_location_id_max'), function ($q) use ($request) {
+            $q->where('location_id', '<=', $request->search_location_id_max);
         });
 
-        $query->when($request->filled('created_by_min'), function ($q) use ($request) {
-            $q->where('created_by', '>=', $request->created_by_min);
+        $query->when($request->filled('search_created_by_min'), function ($q) use ($request) {
+            $q->where('created_by', '>=', $request->search_created_by_min);
         });
 
-        $query->when($request->filled('created_by_max'), function ($q) use ($request) {
-            $q->where('created_by', '<=', $request->created_by_max);
+        $query->when($request->filled('search_created_by_max'), function ($q) use ($request) {
+            $q->where('created_by', '<=', $request->search_created_by_max);
         });
 
         $query->when($request->filled('search_status'), function ($q) use ($request) {
@@ -111,8 +111,8 @@ class EquipmentController extends Controller
             'model' => 'required|string|max:255',
             'serial_id' => 'required|string|max:255',
             'status' => ['required', Rule::enum(EquipmentStatus::class)],
-            'initial_quantity' => 'required|numeric|min:0|max:9999997.999',
-            'current_quantity' => 'required|numeric|min:0|max:9999997.999',
+            'initial_quantity' => 'required|numeric|min:0|max:9999999999.999',
+            'current_quantity' => 'required|numeric|min:0|max:9999999999.999',
             'purchase_date' => 'required|date',
             'warranty_expiration' => 'required|date',
             'last_maintenance' => 'required|date',

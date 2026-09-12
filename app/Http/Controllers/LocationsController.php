@@ -17,10 +17,10 @@ class LocationsController extends Controller
 
         $validate = $request->validate([
             'search' => 'nullable|string|max:255',
-            'location_id_min' => 'nullable|integer',
-            'location_id_max' => 'nullable|integer',
-            'created_by_min' => 'nullable|integer',
-            'created_by_max' => 'nullable|integer',
+            'search_location_id_min' => 'nullable|integer|min:1',
+            'search_location_id_max' => 'nullable|integer|min:1',
+            'search_created_by_min' => 'nullable|integer|min:1',
+            'search_created_by_max' => 'nullable|integer|min:1',
         ]);
 
         $query = Location::query();
@@ -32,20 +32,20 @@ class LocationsController extends Controller
             });
         });
 
-        $query->when($request->filled('location_id_min'), function ($q) use ($request) {
-            $q->where('location_id', '>=', $request->location_id_min);
+        $query->when($request->filled('search_location_id_min'), function ($q) use ($request) {
+            $q->where('location_id', '>=', $request->search_location_id_min);
         });
 
-        $query->when($request->filled('location_id_max'), function ($q) use ($request) {
-            $q->where('location_id', '<=', $request->location_id_max);
+        $query->when($request->filled('search_location_id_max'), function ($q) use ($request) {
+            $q->where('location_id', '<=', $request->search_location_id_max);
         });
 
-        $query->when($request->filled('created_by_min'), function ($q) use ($request) {
-            $q->where('created_by', '>=', $request->created_by_min);
+        $query->when($request->filled('search_created_by_min'), function ($q) use ($request) {
+            $q->where('created_by', '>=', $request->search_created_by_min);
         });
 
-        $query->when($request->filled('created_by_max'), function ($q) use ($request) {
-            $q->where('created_by', '<=', $request->created_by_max);
+        $query->when($request->filled('search_created_by_max'), function ($q) use ($request) {
+            $q->where('created_by', '<=', $request->search_created_by_max);
         });
 
         $data = $query->get();
