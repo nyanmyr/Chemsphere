@@ -39,7 +39,7 @@
         <input id="search_created_by_max" type="number" name="search_created_by_max" value="{{ request('search_created_by_max') }}" min="1" step="1" size="20" placeholder="max…">
 
         <br>
-        <label for="search_status">Search by Unit:</label>
+        <label for="search_status">Search by Status:</label>
         <select id="search_status" name="search_status[]" size="1" multiple>
             @foreach (\App\EquipmentStatus::cases() as $class)
             <option value="{{ $class->value }}" @selected(in_array($class->value, (array) request('search_status', old('search_status', $user->search_status->value ?? $user->search_status ?? []))))>
@@ -47,6 +47,24 @@
             </option>
             @endforeach
         </select>
+
+        <br>
+        <label>Search by Initial Quantity:</label>
+        <br>
+        <label for="search_initial_quantity_min">Min</label>
+        <input id="search_initial_quantity_min" type="number" name="search_initial_quantity_min" value="{{ request('search_initial_quantity_min') }}" min="0" step="0.001" size="20" placeholder="min…">
+        <br>
+        <label for="search_initial_quantity_max">Max</label>
+        <input id="search_initial_quantity_max" type="number" name="search_initial_quantity_max" value="{{ request('search_initial_quantity_max') }}" min="0" step="0.001" size="20" placeholder="max…">
+
+        <br>
+        <label>Search by Current Quantity:</label>
+        <br>
+        <label for="search_current_quantity_min">Min</label>
+        <input id="search_current_quantity_min" type="number" name="search_current_quantity_min" value="{{ request('search_current_quantity_min') }}" min="0" step="0.001" size="20" placeholder="min…">
+        <br>
+        <label for="search_current_quantity_max">Max</label>
+        <input id="search_current_quantity_max" type="number" name="search_current_quantity_max" value="{{ request('search_current_quantity_max') }}" min="0" step="0.001" size="20" placeholder="max…">
 
         <button type="submit">Search</button>
 

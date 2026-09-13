@@ -28,6 +28,10 @@ class EquipmentController extends Controller
             'search_created_by_min' => 'nullable|integer|min:1',
             'search_created_by_max' => 'nullable|integer|min:1',
             'search_status' => 'nullable|array',
+            'search_initial_quantity_min' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_initial_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_current_quantity_min' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_current_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
         ]);
 
         $query = Equipment::query();
@@ -66,6 +70,22 @@ class EquipmentController extends Controller
 
         $query->when($request->filled('search_status'), function ($q) use ($request) {
             $q->whereIn('status', (array) $request->search_status);
+        });
+
+        $query->when($request->filled('search_initial_quantity_min'), function ($q) use ($request) {
+            $q->where('initial_quantity', '>=', $request->search_initial_quantity_min);
+        });
+
+        $query->when($request->filled('search_initial_quantity_max'), function ($q) use ($request) {
+            $q->where('initial_quantity', '<=', $request->search_initial_quantity_max);
+        });
+
+        $query->when($request->filled('search_current_quantity_min'), function ($q) use ($request) {
+            $q->where('current_quantity', '>=', $request->search_current_quantity_min);
+        });
+
+        $query->when($request->filled('search_current_quantity_max'), function ($q) use ($request) {
+            $q->where('current_quantity', '<=', $request->search_current_quantity_max);
         });
 
         $data = $query->get();
