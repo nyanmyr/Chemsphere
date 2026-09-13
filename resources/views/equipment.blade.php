@@ -8,6 +8,10 @@
 <body>
     <h1>Equipment</h1>
 
+    @if(session('error'))
+    <div style="color: red;">{{ session('error') }}</div>
+    @endif
+
     <form action="{{ route('equipment') }}" method="GET">
         <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search name, model, or serial...">
 
