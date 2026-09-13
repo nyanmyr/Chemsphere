@@ -66,6 +66,42 @@
         <label for="search_current_quantity_max">Max</label>
         <input id="search_current_quantity_max" type="number" name="search_current_quantity_max" value="{{ request('search_current_quantity_max') }}" min="0" step="0.001" size="20" placeholder="max…">
 
+        <br>
+        <label>Search by Purchase Date:</label>
+        <br>
+        <label for="search_purchase_date_min">Min</label>
+        <input id="search_purchase_date_min" type="date" name="search_purchase_date_min" value="{{ request('search_purchase_date_min') }}" size="20" placeholder="min…">
+        <br>
+        <label for="search_purchase_date_max">Max</label>
+        <input id="search_purchase_date_max" type="date" name="search_purchase_date_max" value="{{ request('search_purchase_date_max') }}" size="20" placeholder="max…">
+
+        <br>
+        <label>Search by Warranty Expiration:</label>
+        <br>
+        <label for="search_warranty_expiration_min">Min</label>
+        <input id="search_warranty_expiration_min" type="date" name="search_warranty_expiration_min" value="{{ request('search_warranty_expiration_min') }}" size="20" placeholder="min…">
+        <br>
+        <label for="search_warranty_expiration_max">Max</label>
+        <input id="search_warranty_expiration_max" type="date" name="search_warranty_expiration_max" value="{{ request('search_warranty_expiration_max') }}" size="20" placeholder="max…">
+
+        <br>
+        <label>Search by Last Maintenance:</label>
+        <br>
+        <label for="search_last_maintenance_min">Min</label>
+        <input id="search_last_maintenance_min" type="date" name="search_last_maintenance_min" value="{{ request('search_last_maintenance_min') }}" size="20" placeholder="min…">
+        <br>
+        <label for="search_last_maintenance_max">Max</label>
+        <input id="search_last_maintenance_max" type="date" name="search_last_maintenance_max" value="{{ request('search_last_maintenance_max') }}" size="20" placeholder="max…">
+
+        <br>
+        <label>Search by Next Maintenance:</label>
+        <br>
+        <label for="search_next_maintenance_min">Min</label>
+        <input id="search_next_maintenance_min" type="date" name="search_next_maintenance_min" value="{{ request('search_next_maintenance_min') }}" size="20" placeholder="min…">
+        <br>
+        <label for="search_next_maintenance_max">Max</label>
+        <input id="search_next_maintenance_max" type="date" name="search_next_maintenance_max" value="{{ request('search_next_maintenance_max') }}" size="20" placeholder="max…">
+
         <button type="submit">Search</button>
 
         @if(request('search'))

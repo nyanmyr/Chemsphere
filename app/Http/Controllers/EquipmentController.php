@@ -32,6 +32,14 @@ class EquipmentController extends Controller
             'search_initial_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_current_quantity_min' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_current_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_purchase_date_min' => 'nullable|date',
+            'search_purchase_date_max' => 'nullable|date',
+            'search_warranty_expiration_min' => 'nullable|date',
+            'search_warranty_expiration_max' => 'nullable|date',
+            'search_last_maintenance_min' => 'nullable|date',
+            'search_last_maintenance_max' => 'nullable|date',
+            'search_next_maintenance_min' => 'nullable|date',
+            'search_next_maintenance_max' => 'nullable|date',
         ]);
 
         $query = Equipment::query();
@@ -86,6 +94,38 @@ class EquipmentController extends Controller
 
         $query->when($request->filled('search_current_quantity_max'), function ($q) use ($request) {
             $q->where('current_quantity', '<=', $request->search_current_quantity_max);
+        });
+
+        $query->when($request->filled('search_purchase_date_min'), function ($q) use ($request) {
+            $q->whereDate('purchase_date', '>=', $request->search_purchase_date_min);
+        });
+
+        $query->when($request->filled('search_purchase_date_max'), function ($q) use ($request) {
+            $q->whereDate('purchase_date', '<=', $request->search_purchase_date_max);
+        });
+
+        $query->when($request->filled('search_warranty_expiration_min'), function ($q) use ($request) {
+            $q->whereDate('warranty_expiration', '>=', $request->search_warranty_expiration_min);
+        });
+
+        $query->when($request->filled('search_warranty_expiration_max'), function ($q) use ($request) {
+            $q->whereDate('warranty_expiration', '<=', $request->search_warranty_expiration_max);
+        });
+
+        $query->when($request->filled('search_last_maintenance_min'), function ($q) use ($request) {
+            $q->whereDate('last_maintenance', '>=', $request->search_last_maintenance_min);
+        });
+
+        $query->when($request->filled('search_last_maintenance_max'), function ($q) use ($request) {
+            $q->whereDate('last_maintenance', '<=', $request->search_last_maintenance_max);
+        });
+
+        $query->when($request->filled('search_next_maintenance_min'), function ($q) use ($request) {
+            $q->whereDate('next_maintenance', '>=', $request->search_next_maintenance_min);
+        });
+
+        $query->when($request->filled('search_next_maintenance_max'), function ($q) use ($request) {
+            $q->whereDate('next_maintenance', '<=', $request->search_next_maintenance_max);
         });
 
         $data = $query->get();
