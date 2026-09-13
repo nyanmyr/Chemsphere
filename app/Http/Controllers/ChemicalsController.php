@@ -35,6 +35,10 @@ class ChemicalsController extends Controller
             'search_initial_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_current_quantity_min' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_current_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_expiration_date_min' => 'nullable|date',
+            'search_expiration_date_max' => 'nullable|date',
+            'search_arrival_date_min' => 'nullable|date',
+            'search_arrival_date_max' => 'nullable|date',
             'search_safety_classes' => 'nullable|array',
             'search_ghs_symbols' => 'nullable|array',
             'search_unit' => 'nullable|array',
@@ -96,6 +100,22 @@ class ChemicalsController extends Controller
 
         $query->when($request->filled('search_current_quantity_max'), function ($q) use ($request) {
             $q->where('current_quantity', '<=', $request->search_current_quantity_max);
+        });
+
+        $query->when($request->filled('search_expiration_date_min'), function ($q) use ($request) {
+            $q->whereDate('expiration_date', '>=', $request->search_expiration_date_min);
+        });
+
+        $query->when($request->filled('search_expiration_date_max'), function ($q) use ($request) {
+            $q->whereDate('expiration_date', '<=', $request->search_expiration_date_max);
+        });
+
+        $query->when($request->filled('search_arrival_date_min'), function ($q) use ($request) {
+            $q->whereDate('arrival_date', '>=', $request->search_arrival_date_min);
+        });
+
+        $query->when($request->filled('search_arrival_date_max'), function ($q) use ($request) {
+            $q->whereDate('arrival_date', '<=', $request->search_arrival_date_max);
         });
 
         $query->when($request->filled('search_user_role'), function ($q) use ($request) {

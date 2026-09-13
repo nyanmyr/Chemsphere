@@ -70,6 +70,24 @@
         <input id="search_current_quantity_max" type="number" name="search_current_quantity_max" value="{{ request('search_current_quantity_max') }}" min="0" step="0.001" size="20" placeholder="max…">
 
         <br>
+        <label>Search by Expiration Date:</label>
+        <br>
+        <label for="search_expiration_date_min">Min</label>
+        <input id="search_expiration_date_min" type="date" name="search_expiration_date_min" value="{{ request('search_expiration_date_min') }}" size="20" placeholder="min…">
+        <br>
+        <label for="search_expiration_date_max">Max</label>
+        <input id="search_expiration_date_max" type="date" name="search_expiration_date_max" value="{{ request('search_expiration_date_max') }}" size="20" placeholder="max…">
+
+        <br>
+        <label>Search by Arrival Date:</label>
+        <br>
+        <label for="search_arrival_date_min">Min</label>
+        <input id="search_arrival_date_min" type="date" name="search_arrival_date_min" value="{{ request('search_arrival_date_min') }}" size="20" placeholder="min…">
+        <br>
+        <label for="search_arrival_date_max">Max</label>
+        <input id="search_arrival_date_max" type="date" name="search_arrival_date_max" value="{{ request('search_arrival_date_max') }}" size="20" placeholder="max…">
+
+        <br>
         <label for="search_safety_classes">Search by Safety Class:</label>
         <select id="search_safety_classes" name="search_safety_classes[]" size="1" multiple>
             @foreach (\App\SafetyClass::cases() as $class)
