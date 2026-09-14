@@ -3,6 +3,7 @@
 use App\AuditAction;
 use App\EquipmentStatus;
 use App\GHSSymbol;
+use App\Http\Controllers\AuditLogsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChemicalsController;
 use App\Http\Controllers\EquipmentController;
@@ -239,3 +240,8 @@ Route::put('/users/{id}', [UsersController::class, 'update'])
 Route::get('/usagelogs', [UsageLogsController::class, 'usageLogs'])
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('usage_logs');
+
+// usage log routes
+Route::get('/auditlogs', [AuditLogsController::class, 'auditLogs'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
+->name('audit_logs');

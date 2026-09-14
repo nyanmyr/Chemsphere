@@ -26,6 +26,7 @@
     @if (Auth::user()['user_role']->isRole(\App\UserRole::ADMIN))
     <a href="{{ route('users') }}">Manage Users</a>
     <a href="{{ route('usage_logs') }}">Usage Logs</a>
+    <a href="{{ route('audit_logs') }}">Audit Logs</a>
     @endif
 
     @else
