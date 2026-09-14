@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChemicalsController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\LocationsController;
+use App\Http\Controllers\UsageLogsController;
 use App\Http\Controllers\UsersController;
 use App\Models\AuditLog;
 use App\Models\Chemical;
@@ -233,3 +234,8 @@ Route::get('/users/{id}/edit', [UsersController::class, 'edit'])
 Route::put('/users/{id}', [UsersController::class, 'update'])
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('users.update');
+
+// usage log routes
+Route::get('/usagelogs', [UsageLogsController::class, 'usageLogs'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value])
+->name('usage_logs');
