@@ -147,10 +147,13 @@ class ChemicalsController extends Controller
         });
 
         $data = $query->get();
+        $count = $data->count();
 
         if ($data->isEmpty()) {
             session()->now('error', 'No chemical records found matching your range criteria.');
         }
+
+        session()->now('results', "Results found: $count");
 
         return view('inventory', compact('data', 'user'));
     }

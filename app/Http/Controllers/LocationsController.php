@@ -49,10 +49,13 @@ class LocationsController extends Controller
         });
 
         $data = $query->get();
+        $count = $data->count();
 
         if ($data->isEmpty()) {
             session()->now('error', 'No location records found matching your range criteria.');
         }
+
+        session()->now('results', "Results found: $count");
 
         return view('locations', compact('data', 'user'));
     }

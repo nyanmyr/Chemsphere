@@ -129,10 +129,13 @@ class EquipmentController extends Controller
         });
 
         $data = $query->get();
+        $count = $data->count();
 
         if ($data->isEmpty()) {
             session()->now('error', 'No equipment records found matching your range criteria.');
         }
+
+        session()->now('results', "Results found: $count");
 
         return view('equipment', compact('data', 'user'));
     }
