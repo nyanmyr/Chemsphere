@@ -43,7 +43,7 @@ class ChemicalsController extends Controller
             'search_unit' => 'nullable|array',
         ]);
 
-        $query = chemical::query();
+        $query = Chemical::query();
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($sub) use ($request) {
@@ -145,14 +145,11 @@ class ChemicalsController extends Controller
             $q->whereIn('unit', (array) $request->search_unit);
         });
 
-        $data = $query->get();
-        $count = $data->count();
+        $data = $query->paginate(10)->withQueryString();
 
         if ($data->isEmpty()) {
             session()->now('error', 'No chemical records found matching your range criteria.');
         }
-
-        session()->now('results', "Results found: $count");
 
         return view('inventory', compact('data', 'user'));
     }
