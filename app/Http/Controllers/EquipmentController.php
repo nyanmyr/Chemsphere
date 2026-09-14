@@ -10,7 +10,6 @@ use App\Models\Equipment;
 use App\Models\UsageLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class EquipmentController extends Controller
