@@ -8,6 +8,12 @@
 <body>
     <h1>Usage Logs</h1>
 
+    @if (session('message') || session('error') || $errors->any())
+    <div style="color: red;">
+        {{ session('error') ?? session('message') ?? $errors->first() }}
+    </div>
+    @endif
+
     <table>
         <thead>
             <tr>
@@ -36,6 +42,8 @@
             @endforeach
         </tbody>
     </table>
+
+    {{ $data->links('pagination::bootstrap-5') }}
 
     <br>
     <a href="{{ route('welcome') }}">Return</a>

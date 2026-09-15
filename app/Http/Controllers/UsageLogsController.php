@@ -13,7 +13,12 @@ class UsageLogsController extends Controller
         $user = Auth::user();
 
         $query = UsageLog::query();
-        $data = $query->get();
+
+        $data = $query->paginate(10)->withQueryString();
+
+        if ($data->isEmpty()) {
+            session()->now('error', 'No usage log records found matching your range criteria.');
+        }
 
         return view('usage_logs', compact('data', 'user'));
     }
