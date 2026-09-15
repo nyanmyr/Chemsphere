@@ -47,14 +47,11 @@ class LocationsController extends Controller
             $q->where('created_by', '<=', $request->search_created_by_max);
         });
 
-        $data = $query->get();
-        $count = $data->count();
+        $data = $query->paginate(10)->withQueryString();
 
         if ($data->isEmpty()) {
             session()->now('error', 'No location records found matching your range criteria.');
         }
-
-        session()->now('results', "Results found: $count");
 
         return view('locations', compact('data', 'user'));
     }
