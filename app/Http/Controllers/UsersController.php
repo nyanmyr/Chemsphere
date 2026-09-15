@@ -43,14 +43,11 @@ class UsersController extends Controller
             $q->whereIn('user_role', (array) $request->search_user_role);
         });
 
-        $data = $query->get();
-        $count = $data->count();
+        $data = $query->paginate(10)->withQueryString();
 
         if ($data->isEmpty()) {
             session()->now('error', 'No location records found matching your range criteria.');
         }
-
-        session()->now('results', "Results found: $count");
 
         return view('users', compact('data', 'user'));
     }

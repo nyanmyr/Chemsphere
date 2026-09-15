@@ -14,10 +14,6 @@
     </div>
     @endif
 
-    @if(session('results'))
-    <div>{{ session('results') }}</div>
-    @endif
-
     <form action="{{ route('users') }}" method="GET">
         <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search email...">
 
@@ -72,6 +68,8 @@
             @endforeach
         </tbody>
     </table>
+
+    {{ $data->links('pagination::bootstrap-5') }}
 
     <br>
     <a href="{{ route('welcome') }}">Return</a>
