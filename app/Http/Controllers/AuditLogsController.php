@@ -13,7 +13,12 @@ class AuditLogsController extends Controller
         $user = Auth::user();
 
         $query = AuditLog::query();
-        $data = $query->get();
+
+        $data = $query->paginate(10)->withQueryString();
+
+        if ($data->isEmpty()) {
+            session()->now('error', 'No usage log records found matching your range criteria.');
+        }
 
         return view('audit_logs', compact('data', 'user'));
     }
