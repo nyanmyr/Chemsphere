@@ -127,14 +127,11 @@ class EquipmentController extends Controller
             $q->whereDate('next_maintenance', '<=', $request->search_next_maintenance_max);
         });
 
-        $data = $query->get();
-        $count = $data->count();
+        $data = $query->paginate(10)->withQueryString();
 
         if ($data->isEmpty()) {
             session()->now('error', 'No equipment records found matching your range criteria.');
         }
-
-        session()->now('results', "Results found: $count");
 
         return view('equipment', compact('data', 'user'));
     }

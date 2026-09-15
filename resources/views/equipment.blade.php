@@ -12,10 +12,6 @@
     <div style="color: red;">{{ session('error') }}</div>
     @endif
 
-    @if(session('results'))
-    <div>{{ session('results') }}</div>
-    @endif
-
     <form action="{{ route('equipment') }}" method="GET">
         <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search name, model, or serial...">
 
@@ -174,6 +170,8 @@
             @endforeach
         </tbody>
     </table>
+
+    {{ $data->links('pagination::bootstrap-5') }}
 
     <br>
     @if ($user?->user_role?->isAdmin())
