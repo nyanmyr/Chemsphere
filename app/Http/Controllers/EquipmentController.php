@@ -201,17 +201,17 @@ class EquipmentController extends Controller
             $equipment_id
         )->firstOrFail();
 
-        if ($equipment['quantity'] <= 0) {
-            return back()->withErrors(['quantity' => 'Quantity is 0']);
+        if ($equipment['current_quantity'] <= 0) {
+            return back()->withErrors(['error' => 'Current quantity is 0']);
         }
 
         switch($equipment['status']) {
-            case EquipmentStatus::UNAVAILABLE:
-                return back()->withErrors(['quantity' => 'Equipment currently unavailable']);
-            case EquipmentStatus::BROKEN:
-                return back()->withErrors(['quantity' => 'Equipment currently broken']);
-            case EquipmentStatus::UNDER_MAINTENANCE:
-                return back()->withErrors(['quantity' => 'Equipment currently under maintenance']);
+            case EquipmentStatus::UNAVAILABLE->value:
+                return back()->withErrors(['error' => 'Equipment currently unavailable']);
+            case EquipmentStatus::BROKEN->value:
+                return back()->withErrors(['error' => 'Equipment currently broken']);
+            case EquipmentStatus::UNDER_MAINTENANCE->value:
+                return back()->withErrors(['error' => 'Equipment currently under maintenance']);
         }
 
         return view('use_equipment', compact('equipment'));
@@ -241,7 +241,7 @@ class EquipmentController extends Controller
             unset($validated[$key]);
         }
 
-        // $chemical->update($validated);
+        $equipment->update($validated);
 
         AuditLog::create([
             'created_by' => Auth::user()['user_id'],
@@ -254,8 +254,8 @@ class EquipmentController extends Controller
             'location_id' => $equipment['location_id'],
             'item_type' => ItemType::EQUIPMENT,
             'item_id' => $equipment['equipment_id'],
-            'quantity_used' => 0.000,
-            'quantity_remaining' => $equipment['quantity'],
+            'quantity_used' => $validated['use_amount'],
+            'quantity_remaining' => $validated['current_quantity'],
             'notes' => $notes
         ]);
 

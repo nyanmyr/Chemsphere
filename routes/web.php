@@ -161,7 +161,7 @@ Route::put('/inventory/use/{id}', [ChemicalsController::class, 'use_update'])
 ->middleware('auth')
 ->name('inventory.use.update');
 
-// locations routes
+// equipment routes
 Route::get('/equipment', [EquipmentController::class, 'equipment'])
 ->middleware('auth')
 ->name('equipment');

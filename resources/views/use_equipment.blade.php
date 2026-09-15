@@ -14,7 +14,8 @@
     <div>Model: {{ old('model', $equipment->model) }}</div>
     <div>Serial ID: {{ old('serial_id', $equipment->serial_id) }}</div>
     <div>Status: {{ old('status', $equipment->status) }}</div>
-    <div>Quantity: {{ old('quantity', $equipment->quantity) }}</div>
+    <div>Initial Quantity: {{ old('initial_quantity', $equipment->initial_quantity) }}</div>
+    <div>Current Quantity: {{ old('current_quantity', $equipment->current_quantity) }}</div>
     <div>Purchase Date: {{ old('purchase_date', $equipment->purchase_date) }}</div>
     <div>Warranty Expiration: {{ old('warranty_expiration', $equipment->warranty_expiration) }}</div>
     <div>Last Maintenance: {{ old('last_maintenance', $equipment->last_maintenance) }}</div>
