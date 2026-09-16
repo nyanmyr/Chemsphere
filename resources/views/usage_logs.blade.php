@@ -84,7 +84,7 @@
         <button type="submit">Search</button>
 
         @if(request('search'))
-        <a href="{{ route('inventory') }}">Clear</a>
+        <a href="{{ route('usage_logs') }}">Clear</a>
         @endif
     </form>
 
