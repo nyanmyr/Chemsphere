@@ -27,20 +27,20 @@ class UsersController extends Controller
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($q) use ($request) {
-                $q->where('email', 'LIKE', "%{$request->search}%");
+                $q->where('email', 'LIKE', "%{$request['search']}%");
             });
         });
 
         $query->when($request->filled('search_user_id_min'), function ($q) use ($request) {
-            $q->where('user_id', '>=', $request->search_user_id_min);
+            $q->where('user_id', '>=', $request['search_user_id_min']);
         });
 
         $query->when($request->filled('search_user_id_max'), function ($q) use ($request) {
-            $q->where('user_id', '<=', $request->search_user_id_max);
+            $q->where('user_id', '<=', $request['search_user_id_max']);
         });
 
         $query->when($request->filled('search_user_role'), function ($q) use ($request) {
-            $q->whereIn('user_role', (array) $request->search_user_role);
+            $q->whereIn('user_role', (array) $request['search_user_role']);
         });
 
         $data = $query->paginate(10)->withQueryString();

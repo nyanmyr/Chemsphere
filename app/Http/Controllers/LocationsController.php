@@ -26,25 +26,25 @@ class LocationsController extends Controller
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($sub) use ($request) {
-                $sub->where('location_name', 'LIKE', "%{$request->search}%")
-                    ->orWhere('description', 'LIKE', "%{$request->search}%");
+                $sub->where('location_name', 'LIKE', "%{$request['search']}%")
+                    ->orWhere('description', 'LIKE', "%{$request['search']}%");
             });
         });
 
         $query->when($request->filled('search_location_id_min'), function ($q) use ($request) {
-            $q->where('location_id', '>=', $request->search_location_id_min);
+            $q->where('location_id', '>=', $request['search_location_id_min']);
         });
 
         $query->when($request->filled('search_location_id_max'), function ($q) use ($request) {
-            $q->where('location_id', '<=', $request->search_location_id_max);
+            $q->where('location_id', '<=', $request['search_location_id_max']);
         });
 
         $query->when($request->filled('search_created_by_min'), function ($q) use ($request) {
-            $q->where('created_by', '>=', $request->search_created_by_min);
+            $q->where('created_by', '>=', $request['search_created_by_min']);
         });
 
         $query->when($request->filled('search_created_by_max'), function ($q) use ($request) {
-            $q->where('created_by', '<=', $request->search_created_by_max);
+            $q->where('created_by', '<=', $request['search_created_by_max']);
         });
 
         $data = $query->paginate(10)->withQueryString();

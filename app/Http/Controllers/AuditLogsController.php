@@ -25,28 +25,28 @@ class AuditLogsController extends Controller
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($q) use ($request) {
-                $q->where('target', 'LIKE', "%{$request->search}%");
+                $q->where('target', 'LIKE', "%{$request['search']}%");
             });
         });
 
         $query->when($request->filled('search_audit_log_id_min'), function ($q) use ($request) {
-            $q->where('audit_log_id', '>=', $request->search_audit_log_id_min);
+            $q->where('audit_log_id', '>=', $request['search_audit_log_id_min']);
         });
 
         $query->when($request->filled('search_audit_log_id_max'), function ($q) use ($request) {
-            $q->where('audit_log_id', '<=', $request->search_audit_log_id_max);
+            $q->where('audit_log_id', '<=', $request['search_audit_log_id_max']);
         });
 
         $query->when($request->filled('search_created_by_min'), function ($q) use ($request) {
-            $q->where('created_by', '>=', $request->search_created_by_min);
+            $q->where('created_by', '>=', $request['search_created_by_min']);
         });
 
         $query->when($request->filled('search_created_by_max'), function ($q) use ($request) {
-            $q->where('created_by', '<=', $request->search_created_by_max);
+            $q->where('created_by', '<=', $request['search_created_by_max']);
         });
 
         $query->when($request->filled('search_audit_action'), function ($q) use ($request) {
-            $q->whereIn('audit_action', (array) $request->search_audit_action);
+            $q->whereIn('audit_action', (array) $request['search_audit_action']);
         });
 
         $data = $query->paginate(10)->withQueryString();

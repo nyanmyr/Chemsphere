@@ -47,82 +47,78 @@ class ChemicalsController extends Controller
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($sub) use ($request) {
-                $sub->where('chemical_name', 'LIKE', "%{$request->search}%")
-                    ->orWhere('batch_number', 'LIKE', "%{$request->search}%")
-                    ->orWhere('brand_name', 'LIKE', "%{$request->search}%");
+                $sub->where('chemical_name', 'LIKE', "%{$request['search']}%")
+                    ->orWhere('batch_number', 'LIKE', "%{$request['search']}%")
+                    ->orWhere('brand_name', 'LIKE', "%{$request['search']}%");
             });
         });
 
         $query->when($request->filled('search_chemical_id_min'), function ($q) use ($request) {
-            $q->where('chemical_id', '>=', $request->search_chemical_id_min);
+            $q->where('chemical_id', '>=', $request['search_chemical_id_min']);
         });
 
         $query->when($request->filled('search_chemical_id_max'), function ($q) use ($request) {
-            $q->where('chemical_id', '<=', $request->search_chemical_id_max);
+            $q->where('chemical_id', '<=', $request['search_chemical_id_max']);
         });
 
         $query->when($request->filled('search_location_id_min'), function ($q) use ($request) {
-            $q->where('location_id', '>=', $request->search_location_id_min);
+            $q->where('location_id', '>=', $request['search_location_id_min']);
         });
 
         $query->when($request->filled('search_location_id_max'), function ($q) use ($request) {
-            $q->where('location_id', '<=', $request->search_location_id_max);
+            $q->where('location_id', '<=', $request['search_location_id_max']);
         });
 
         $query->when($request->filled('search_created_by_min'), function ($q) use ($request) {
-            $q->where('created_by', '>=', $request->search_created_by_min);
+            $q->where('created_by', '>=', $request['search_created_by_min']);
         });
 
         $query->when($request->filled('search_created_by_max'), function ($q) use ($request) {
-            $q->where('created_by', '<=', $request->search_created_by_max);
+            $q->where('created_by', '<=', $request['search_created_by_max']);
         });
 
         $query->when($request->filled('search_volume_per_unit_min'), function ($q) use ($request) {
-            $q->where('volume_per_unit', '>=', $request->search_volume_per_unit_min);
+            $q->where('volume_per_unit', '>=', $request['search_volume_per_unit_min']);
         });
 
         $query->when($request->filled('search_volume_per_unit_max'), function ($q) use ($request) {
-            $q->where('volume_per_unit', '<=', $request->search_volume_per_unit_max);
+            $q->where('volume_per_unit', '<=', $request['search_volume_per_unit_max']);
         });
 
         $query->when($request->filled('search_initial_quantity_min'), function ($q) use ($request) {
-            $q->where('initial_quantity', '>=', $request->search_initial_quantity_min);
+            $q->where('initial_quantity', '>=', $request['search_initial_quantity_min']);
         });
 
         $query->when($request->filled('search_initial_quantity_max'), function ($q) use ($request) {
-            $q->where('initial_quantity', '<=', $request->search_initial_quantity_max);
+            $q->where('initial_quantity', '<=', $request['search_initial_quantity_max']);
         });
 
         $query->when($request->filled('search_current_quantity_min'), function ($q) use ($request) {
-            $q->where('current_quantity', '>=', $request->search_current_quantity_min);
+            $q->where('current_quantity', '>=', $request['search_current_quantity_min']);
         });
 
         $query->when($request->filled('search_current_quantity_max'), function ($q) use ($request) {
-            $q->where('current_quantity', '<=', $request->search_current_quantity_max);
+            $q->where('current_quantity', '<=', $request['search_current_quantity_max']);
         });
 
         $query->when($request->filled('search_expiration_date_min'), function ($q) use ($request) {
-            $q->whereDate('expiration_date', '>=', $request->search_expiration_date_min);
+            $q->whereDate('expiration_date', '>=', $request['search_expiration_date_min']);
         });
 
         $query->when($request->filled('search_expiration_date_max'), function ($q) use ($request) {
-            $q->whereDate('expiration_date', '<=', $request->search_expiration_date_max);
+            $q->whereDate('expiration_date', '<=', $request['search_expiration_date_max']);
         });
 
         $query->when($request->filled('search_arrival_date_min'), function ($q) use ($request) {
-            $q->whereDate('arrival_date', '>=', $request->search_arrival_date_min);
+            $q->whereDate('arrival_date', '>=', $request['search_arrival_date_min']);
         });
 
         $query->when($request->filled('search_arrival_date_max'), function ($q) use ($request) {
-            $q->whereDate('arrival_date', '<=', $request->search_arrival_date_max);
-        });
-
-        $query->when($request->filled('search_user_role'), function ($q) use ($request) {
-            $q->whereIn('user_role', (array) $request->search_user_role);
+            $q->whereDate('arrival_date', '<=', $request['search_arrival_date_max']);
         });
 
         $query->when($request->filled('search_safety_classes'), function ($q) use ($request) {
-            $classes = (array) $request->search_safety_classes;
+            $classes = (array) $request['search_safety_classes'];
 
             $q->where(function ($sub) use ($classes) {
                 foreach ($classes as $class) {
@@ -132,7 +128,7 @@ class ChemicalsController extends Controller
         });
 
         $query->when($request->filled('search_ghs_symbols'), function ($q) use ($request) {
-            $classes = (array) $request->search_ghs_symbols;
+            $classes = (array) $request['search_ghs_symbols'];
 
             $q->where(function ($sub) use ($classes) {
                 foreach ($classes as $class) {
@@ -142,7 +138,7 @@ class ChemicalsController extends Controller
         });
 
         $query->when($request->filled('search_unit'), function ($q) use ($request) {
-            $q->whereIn('unit', (array) $request->search_unit);
+            $q->whereIn('unit', (array) $request['search_unit']);
         });
 
         $data = $query->paginate(10)->withQueryString();

@@ -45,86 +45,86 @@ class EquipmentController extends Controller
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($sub) use ($request) {
-                $sub->where('equipment_name', 'LIKE', "%{$request->search}%")
-                    ->orWhere('model', 'LIKE', "%{$request->search}%")
-                    ->orWhere('serial_id', 'LIKE', "%{$request->search}%");
+                $sub->where('equipment_name', 'LIKE', "%{$request['search']}%")
+                    ->orWhere('model', 'LIKE', "%{$request['search']}%")
+                    ->orWhere('serial_id', 'LIKE', "%{$request['search']}%");
             });
         });
 
         $query->when($request->filled('search_equipment_id_min'), function ($q) use ($request) {
-            $q->where('equipment_id', '>=', $request->search_equipment_id_min);
+            $q->where('equipment_id', '>=', $request['search_equipment_id_min']);
         });
 
         $query->when($request->filled('search_equipment_id_max'), function ($q) use ($request) {
-            $q->where('equipment_id', '<=', $request->search_equipment_id_max);
+            $q->where('equipment_id', '<=', $request['search_equipment_id_max']);
         });
 
         $query->when($request->filled('search_location_id_min'), function ($q) use ($request) {
-            $q->where('location_id', '>=', $request->search_location_id_min);
+            $q->where('location_id', '>=', $request['search_location_id_min']);
         });
 
         $query->when($request->filled('search_location_id_max'), function ($q) use ($request) {
-            $q->where('location_id', '<=', $request->search_location_id_max);
+            $q->where('location_id', '<=', $request['search_location_id_max']);
         });
 
         $query->when($request->filled('search_created_by_min'), function ($q) use ($request) {
-            $q->where('created_by', '>=', $request->search_created_by_min);
+            $q->where('created_by', '>=', $request['search_created_by_min']);
         });
 
         $query->when($request->filled('search_created_by_max'), function ($q) use ($request) {
-            $q->where('created_by', '<=', $request->search_created_by_max);
+            $q->where('created_by', '<=', $request['search_created_by_max']);
         });
 
         $query->when($request->filled('search_status'), function ($q) use ($request) {
-            $q->whereIn('status', (array) $request->search_status);
+            $q->whereIn('status', (array) $request['search_status']);
         });
 
         $query->when($request->filled('search_initial_quantity_min'), function ($q) use ($request) {
-            $q->where('initial_quantity', '>=', $request->search_initial_quantity_min);
+            $q->where('initial_quantity', '>=', $request['search_initial_quantity_min']);
         });
 
         $query->when($request->filled('search_initial_quantity_max'), function ($q) use ($request) {
-            $q->where('initial_quantity', '<=', $request->search_initial_quantity_max);
+            $q->where('initial_quantity', '<=', $request['search_initial_quantity_max']);
         });
 
         $query->when($request->filled('search_current_quantity_min'), function ($q) use ($request) {
-            $q->where('current_quantity', '>=', $request->search_current_quantity_min);
+            $q->where('current_quantity', '>=', $request['search_current_quantity_min']);
         });
 
         $query->when($request->filled('search_current_quantity_max'), function ($q) use ($request) {
-            $q->where('current_quantity', '<=', $request->search_current_quantity_max);
+            $q->where('current_quantity', '<=', $request['search_current_quantity_max']);
         });
 
         $query->when($request->filled('search_purchase_date_min'), function ($q) use ($request) {
-            $q->whereDate('purchase_date', '>=', $request->search_purchase_date_min);
+            $q->whereDate('purchase_date', '>=', $request['search_purchase_date_min']);
         });
 
         $query->when($request->filled('search_purchase_date_max'), function ($q) use ($request) {
-            $q->whereDate('purchase_date', '<=', $request->search_purchase_date_max);
+            $q->whereDate('purchase_date', '<=', $request['search_purchase_date_max']);
         });
 
         $query->when($request->filled('search_warranty_expiration_min'), function ($q) use ($request) {
-            $q->whereDate('warranty_expiration', '>=', $request->search_warranty_expiration_min);
+            $q->whereDate('warranty_expiration', '>=', $request['search_warranty_expiration_min']);
         });
 
         $query->when($request->filled('search_warranty_expiration_max'), function ($q) use ($request) {
-            $q->whereDate('warranty_expiration', '<=', $request->search_warranty_expiration_max);
+            $q->whereDate('warranty_expiration', '<=', $request['search_warranty_expiration_max']);
         });
 
         $query->when($request->filled('search_last_maintenance_min'), function ($q) use ($request) {
-            $q->whereDate('last_maintenance', '>=', $request->search_last_maintenance_min);
+            $q->whereDate('last_maintenance', '>=', $request['search_last_maintenance_min']);
         });
 
         $query->when($request->filled('search_last_maintenance_max'), function ($q) use ($request) {
-            $q->whereDate('last_maintenance', '<=', $request->search_last_maintenance_max);
+            $q->whereDate('last_maintenance', '<=', $request['search_last_maintenance_max']);
         });
 
         $query->when($request->filled('search_next_maintenance_min'), function ($q) use ($request) {
-            $q->whereDate('next_maintenance', '>=', $request->search_next_maintenance_min);
+            $q->whereDate('next_maintenance', '>=', $request['search_next_maintenance_min']);
         });
 
         $query->when($request->filled('search_next_maintenance_max'), function ($q) use ($request) {
-            $q->whereDate('next_maintenance', '<=', $request->search_next_maintenance_max);
+            $q->whereDate('next_maintenance', '<=', $request['search_next_maintenance_max']);
         });
 
         $data = $query->paginate(10)->withQueryString();
