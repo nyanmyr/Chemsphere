@@ -34,6 +34,8 @@
         <input id="search_created_by_max" type="number" name="search_created_by_max" value="{{ request('search_created_by_max') }}" min="1" step="1" size="20" placeholder="max…">
 
         <br>
+        <button type="reset">Clear</button>
+        <br>
         <button type="submit">Search</button>
     </form>
 

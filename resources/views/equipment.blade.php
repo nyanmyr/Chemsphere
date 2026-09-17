@@ -106,6 +106,9 @@
         <label for="search_next_maintenance_max">Max</label>
         <input id="search_next_maintenance_max" type="date" name="search_next_maintenance_max" value="{{ request('search_next_maintenance_max') }}" size="20" placeholder="max…">
 
+        <br>
+        <button type="reset">Clear</button>
+        <br>
         <button type="submit">Search</button>
 
         @if(request('search'))

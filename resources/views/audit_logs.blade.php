@@ -45,6 +45,9 @@
             @endforeach
         </select>
 
+        <br>
+        <button type="reset">Clear</button>
+        <br>
         <button type="submit">Search</button>
 
         @if(request('search'))

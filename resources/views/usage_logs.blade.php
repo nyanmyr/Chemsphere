@@ -81,6 +81,9 @@
         <label for="search_quantity_remaining_max">Max</label>
         <input id="search_quantity_remaining_max" type="number" name="search_quantity_remaining_max" value="{{ request('search_quantity_remaining_max') }}" min="0" step="0.001" size="20" placeholder="max…">
 
+        <br>
+        <button type="reset">Clear</button>
+        <br>
         <button type="submit">Search</button>
 
         @if(request('search'))
