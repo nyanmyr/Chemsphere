@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\ItemType;
 
 return new class extends Migration
 {
@@ -12,10 +11,11 @@ return new class extends Migration
         Schema::create('alerts', function (Blueprint $table) {
             $table->id('alert_id');
             $table->foreignId('chemical_id')->constrained('chemicals')->references('chemical_id');
-            $table->foreignId('equipment_id')->constrained('equipment')->references('equipment_id');
-            $table->string('item_type')->default(ItemType::CHEMICAL->value);
             $table->text('message')->nullable();
-            $table->date('alert_date');
+            $table->string('alert_type')->nullable();
+            $table->morphs('notifiable');
+            $table->timestamp('read_at')->nullable();
+            $table->timestamps();
         });
     }
 

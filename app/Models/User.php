@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Alert;
 use App\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -32,5 +34,15 @@ class User extends Authenticatable
             'password' => 'hashed',
             'user_role' => UserRole::class
         ];
+    }
+
+    public function alerts(): MorphMany
+    {
+        return $this->morphMany(Alert::class, 'notifiable');
+    }
+
+    public function scopeReceivesAlerts($query)
+    {
+        return $query->whereIn('user_role', [UserRole::USER, UserRole::ADMIN]);
     }
 }

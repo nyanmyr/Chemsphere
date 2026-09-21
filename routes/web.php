@@ -3,6 +3,7 @@
 use App\AuditAction;
 use App\EquipmentStatus;
 use App\GHSSymbol;
+use App\Http\Controllers\AlertsController;
 use App\Http\Controllers\AuditLogsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChemicalsController;
@@ -245,3 +246,12 @@ Route::get('/usagelogs', [UsageLogsController::class, 'usageLogs'])
 Route::get('/auditlogs', [AuditLogsController::class, 'auditLogs'])
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('audit_logs');
+
+// alert routes
+Route::get('/alerts', [AlertsController::class, 'alerts'])
+->middleware('auth')
+->name('alerts');
+
+Route::patch('/alerts/{alert}/read', [AlertsController::class, 'markAsRead'])
+->middleware('auth')
+->name('alerts.read');

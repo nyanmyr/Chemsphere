@@ -23,6 +23,7 @@
     <a href="{{ route('inventory') }}">Inventory</a>
     <a href="{{ route('locations') }}">Locations</a>
     <a href="{{ route('equipment') }}">Equipment</a>
+    <a href="{{ route('alerts') }}">Alerts</a>
     @if (Auth::user()['user_role']->isRole(\App\UserRole::ADMIN))
     <a href="{{ route('users') }}">Manage Users</a>
     <a href="{{ route('usage_logs') }}">Usage Logs</a>
