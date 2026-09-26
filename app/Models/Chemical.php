@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Chemical extends Model
 {
-    use HasFactory;
+    use HasFactory, BroadcastsEvents;
 
     protected $primaryKey = 'chemical_id';
 
@@ -39,5 +42,10 @@ class Chemical extends Model
     public function alerts(): HasMany
     {
         return $this->hasMany(Alert::class, 'chemical_id', 'chemical_id');
+    }
+
+    public function broadcastOn(string $event): array
+    {
+        return [new PrivateChannel('inventory')];
     }
 }
