@@ -55,3 +55,31 @@ document.addEventListener('DOMContentLoaded', () => {
         .listen('.EquipmentUpdated', refreshEquipmentTable)
         .listen('.EquipmentDeleted', refreshEquipmentTable);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const table = document.getElementById('locations-table');
+
+    if (!table) {
+        return;
+    }
+
+    const refreshLocationsTable = async () => {
+        const response = await fetch(window.location.href, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+
+        const html = await response.text();
+        const fresh = new DOMParser()
+            .parseFromString(html, 'text/html')
+            .getElementById('locations-table');
+
+        if (fresh) {
+            document.getElementById('locations-table').replaceWith(fresh);
+        }
+    };
+
+    window.Echo.private('locations')
+        .listen('.LocationCreated', refreshLocationsTable)
+        .listen('.LocationUpdated', refreshLocationsTable)
+        .listen('.LocationDeleted', refreshLocationsTable);
+});

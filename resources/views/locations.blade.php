@@ -3,6 +3,7 @@
 
 <head>
     <title>Chemsphere | Locations</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -39,42 +40,44 @@
         <button type="submit">Search</button>
     </form>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Created By</th>
-                <th>Name</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $location)
-            <tr>
-                <td>{{ $location->location_id }}</td>
-                <td>{{ $location->created_by }}</td>
-                <td>{{ $location->location_name }}</td>
-                <td>{{ $location->description }}</td>
-                @if ($user?->user_role?->isAdmin())
-                <td>
-                    <form action="{{ route('locations.delete', $location->location_id) }}" method="POST" onsubmit="return confirm('Delete location?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-                <td>
-                    <form action="{{ route('locations.edit', $location->location_id) }}" method="GET">
-                        <button type="submit">Edit</button>
-                    </form>
-                </td>
-                @endif
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div id="locations-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Created By</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data as $location)
+                <tr>
+                    <td>{{ $location->location_id }}</td>
+                    <td>{{ $location->created_by }}</td>
+                    <td>{{ $location->location_name }}</td>
+                    <td>{{ $location->description }}</td>
+                    @if ($user?->user_role?->isAdmin())
+                    <td>
+                        <form action="{{ route('locations.delete', $location->location_id) }}" method="POST" onsubmit="return confirm('Delete location?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{{ route('locations.edit', $location->location_id) }}" method="GET">
+                            <button type="submit">Edit</button>
+                        </form>
+                    </td>
+                    @endif
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
 
-    {{ $data->links('pagination::bootstrap-5') }}
+        {{ $data->links('pagination::bootstrap-5') }}
+    </div>
 
     <br>
     @if ($user?->user_role?->isAdmin())

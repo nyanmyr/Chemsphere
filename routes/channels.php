@@ -10,3 +10,7 @@ Broadcast::channel('inventory', function (User $user) {
 Broadcast::channel('equipment', function (User $user) {
     return true;
 });
+
+Broadcast::channel('locations', function (User $user) {
+    return true;
+});
