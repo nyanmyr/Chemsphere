@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\AlertType;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Alert extends Model
 {
-    use HasFactory;
+    use HasFactory, BroadcastsEvents;
 
     protected $primaryKey = 'alert_id';
 
@@ -51,5 +53,10 @@ class Alert extends Model
         if (is_null($this->read_at)) {
             $this->forceFill(['read_at' => now()])->save();
         }
+    }
+
+    public function broadcastOn(string $event): array
+    {
+        return [new PrivateChannel('alerts')];
     }
 }

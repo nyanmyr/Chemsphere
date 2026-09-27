@@ -83,3 +83,31 @@ document.addEventListener('DOMContentLoaded', () => {
         .listen('.LocationUpdated', refreshLocationsTable)
         .listen('.LocationDeleted', refreshLocationsTable);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const table = document.getElementById('alerts-table');
+
+    if (!table) {
+        return;
+    }
+
+    const refreshAlertTable = async () => {
+        const response = await fetch(window.location.href, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+
+        const html = await response.text();
+        const fresh = new DOMParser()
+            .parseFromString(html, 'text/html')
+            .getElementById('alerts-table');
+
+        if (fresh) {
+            document.getElementById('alerts-table').replaceWith(fresh);
+        }
+    };
+
+    window.Echo.private('alerts')
+        .listen('.AlertCreated', refreshAlertTable)
+        .listen('.AlertUpdated', refreshAlertTable)
+        .listen('.AlertDeleted', refreshAlertTable);
+});

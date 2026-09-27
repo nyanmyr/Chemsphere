@@ -14,3 +14,7 @@ Broadcast::channel('equipment', function (User $user) {
 Broadcast::channel('locations', function (User $user) {
     return true;
 });
+
+Broadcast::channel('alerts', function (User $user) {
+    return true;
+});
