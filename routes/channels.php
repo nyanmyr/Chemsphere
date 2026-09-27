@@ -6,3 +6,7 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('inventory', function (User $user) {
     return true;
 });
+
+Broadcast::channel('equipment', function (User $user) {
+    return true;
+});

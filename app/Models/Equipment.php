@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Equipment extends Model
 {
-    use HasFactory;
+    use HasFactory, BroadcastsEvents;
 
     protected $primaryKey = 'equipment_id';
 
@@ -25,4 +27,19 @@ class Equipment extends Model
         'last_maintenance',
         'next_maintenance'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'purchase_date' => 'date',
+            'warranty_expiration'    => 'date',
+            'last_maintenance'    => 'date',
+            'next_maintenance'    => 'date'
+        ];
+    }
+
+    public function broadcastOn(string $event): array
+    {
+        return [new PrivateChannel('equipment')];
+    }
 }

@@ -27,3 +27,31 @@ document.addEventListener('DOMContentLoaded', () => {
         .listen('.ChemicalUpdated', refreshInventoryTable)
         .listen('.ChemicalDeleted', refreshInventoryTable);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const table = document.getElementById('equipment-table');
+
+    if (!table) {
+        return;
+    }
+
+    const refreshEquipmentTable = async () => {
+        const response = await fetch(window.location.href, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+
+        const html = await response.text();
+        const fresh = new DOMParser()
+            .parseFromString(html, 'text/html')
+            .getElementById('equipment-table');
+
+        if (fresh) {
+            document.getElementById('equipment-table').replaceWith(fresh);
+        }
+    };
+
+    window.Echo.private('equipment')
+        .listen('.EquipmentCreated', refreshEquipmentTable)
+        .listen('.EquipmentUpdated', refreshEquipmentTable)
+        .listen('.EquipmentDeleted', refreshEquipmentTable);
+});
