@@ -16,10 +16,10 @@
     <div>Status: {{ old('status', $equipment->status) }}</div>
     <div>Initial Quantity: {{ old('initial_quantity', $equipment->initial_quantity) }}</div>
     <div>Current Quantity: {{ old('current_quantity', $equipment->current_quantity) }}</div>
-    <div>Purchase Date: {{ old('purchase_date', $equipment->purchase_date) }}</div>
-    <div>Warranty Expiration: {{ old('warranty_expiration', $equipment->warranty_expiration) }}</div>
-    <div>Last Maintenance: {{ old('last_maintenance', $equipment->last_maintenance) }}</div>
-    <div>Next Maintenance: {{ old('next_maintenance', $equipment->next_maintenance) }}</div>
+    <div>Purchase Date: {{ old('purchase_date', $equipment->purchase_date?->format('Y-m-d')) }}</div>
+    <div>Warranty Expiration: {{ old('warranty_expiration', $equipment->warranty_expiration?->format('Y-m-d')) }}</div>
+    <div>Last Maintenance: {{ old('last_maintenance', $equipment->last_maintenance?->format('Y-m-d')) }}</div>
+    <div>Next Maintenance: {{ old('next_maintenance', $equipment->next_maintenance?->format('Y-m-d')) }}</div>
 
     <form action="{{ route('equipment.use.update', $equipment->equipment_id) }}" method="POST">
         @csrf

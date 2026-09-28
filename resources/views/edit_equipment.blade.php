@@ -86,7 +86,7 @@
         <br>
         <label for="purchase_date">Purchase Date</label>
         <br>
-        <input type="date" id="purchase_date" name="purchase_date" value="{{ old('purchase_date', $equipment->purchase_date) }}" required>
+        <input type="date" id="purchase_date" name="purchase_date" value="{{ old('purchase_date', $equipment->purchase_date?->format('Y-m-d')) }}" required>
 
         @error('purchase_date')
         <div>{{ $message }}</div>
@@ -95,7 +95,7 @@
         <br>
         <label for="warranty_expiration">Warranty Expiration</label>
         <br>
-        <input type="date" id="warranty_expiration" name="warranty_expiration" value="{{ old('warranty_expiration', $equipment->warranty_expiration) }}" required>
+        <input type="date" id="warranty_expiration" name="warranty_expiration" value="{{ old('warranty_expiration', $equipment->warranty_expiration?->format('Y-m-d')) }}" required>
 
         @error('warranty_expiration')
         <div>{{ $message }}</div>
@@ -104,7 +104,7 @@
         <br>
         <label for="last_maintenance">Last Maintenance</label>
         <br>
-        <input type="date" id="last_maintenance" name="last_maintenance" value="{{ old('last_maintenance', $equipment->last_maintenance) }}" required>
+        <input type="date" id="last_maintenance" name="last_maintenance" value="{{ old('last_maintenance', $equipment->last_maintenance?->format('Y-m-d')) }}" required>
 
         @error('last_maintenance')
         <div>{{ $message }}</div>
@@ -113,7 +113,7 @@
         <br>
         <label for="next_maintenance">Next Maintenance</label>
         <br>
-        <input type="date" id="next_maintenance" name="next_maintenance" value="{{ old('next_maintenance', $equipment->next_maintenance) }}" required>
+        <input type="date" id="next_maintenance" name="next_maintenance" value="{{ old('next_maintenance', $equipment->next_maintenance?->format('Y-m-d')) }}" required>
 
         @error('next_maintenance')
         <div>{{ $message }}</div>
