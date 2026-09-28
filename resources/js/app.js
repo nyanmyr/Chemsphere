@@ -136,8 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.Echo.private('users')
         .listen('.UserCreated', refreshUsersTable)
-        .listen('.UserCreated', refreshUsersTable)
-        .listen('.UserCreated', refreshUsersTable);
+        .listen('.UserUpdated', refreshUsersTable)
+        .listen('.UserDeleted', refreshUsersTable);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -164,8 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.Echo.private('usage_logs')
         .listen('.UsageLogCreated', refreshUsageLogsTable)
-        .listen('.UsageLogCreated', refreshUsageLogsTable)
-        .listen('.UsageLogCreated', refreshUsageLogsTable);
+        .listen('.UsageLogUpdated', refreshUsageLogsTable)
+        .listen('.UsageLogDeleted', refreshUsageLogsTable);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -192,6 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.Echo.private('audit_logs')
         .listen('.AuditLogCreated', refreshAuditLogsTable)
-        .listen('.AuditLogCreated', refreshAuditLogsTable)
-        .listen('.AuditLogCreated', refreshAuditLogsTable);
+        .listen('.AuditLogUpdated', refreshAuditLogsTable)
+        .listen('.AuditLogDeleted', refreshAuditLogsTable);
 });
