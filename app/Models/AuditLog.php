@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class AuditLog extends Model
 {
-    use HasFactory;
+    use HasFactory, BroadcastsEvents;
 
     public const UPDATED_AT = null;
 
@@ -29,5 +31,10 @@ class AuditLog extends Model
         static::deleting(function () {
             throw new \RuntimeException('Error: Audit logs cannot be deleted.');
         });
+    }
+
+    public function broadcastOn(string $event): array
+    {
+        return [new PrivateChannel('audit_logs')];
     }
 }

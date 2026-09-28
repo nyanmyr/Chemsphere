@@ -165,5 +165,33 @@ document.addEventListener('DOMContentLoaded', () => {
     window.Echo.private('usage_logs')
         .listen('.UsageLogCreated', refreshUsageLogsTable)
         .listen('.UsageLogCreated', refreshUsageLogsTable)
-        .listen('.UsageLogCreated', refresrefreshUsageLogsTablehUsersTable);
+        .listen('.UsageLogCreated', refreshUsageLogsTable);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const table = document.getElementById('audit-logs-table');
+
+    if (!table) {
+        return;
+    }
+
+    const refreshAuditLogsTable = async () => {
+        const response = await fetch(window.location.href, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+
+        const html = await response.text();
+        const fresh = new DOMParser()
+            .parseFromString(html, 'text/html')
+            .getElementById('audit-logs-table');
+
+        if (fresh) {
+            document.getElementById('audit-logs-table').replaceWith(fresh);
+        }
+    };
+
+    window.Echo.private('audit_logs')
+        .listen('.AuditLogCreated', refreshAuditLogsTable)
+        .listen('.AuditLogCreated', refreshAuditLogsTable)
+        .listen('.AuditLogCreated', refreshAuditLogsTable);
 });

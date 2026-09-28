@@ -26,3 +26,7 @@ Broadcast::channel('users', function (User $user) {
 Broadcast::channel('usage_logs', function (User $user) {
     return true;
 });
+
+Broadcast::channel('audit_logs', function (User $user) {
+    return true;
+});
