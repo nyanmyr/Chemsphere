@@ -82,7 +82,7 @@
         <br>
         <label for="expiration_date">Expiration Date</label>
         <br>
-        <input type="date" id="expiration_date" name="expiration_date" value="{{ old('expiration_date', $chemical->expiration_date) }}" required>
+        <input type="date" id="expiration_date" name="expiration_date" value="{{ old('expiration_date', $chemical->expiration_date?->format('Y-m-d')) }}" required>
 
         @error('expiration_date')
         <div>{{ $message }}</div>
@@ -91,7 +91,7 @@
         <br>
         <label for="arrival_date">Arrival Date</label>
         <br>
-        <input type="date" id="arrival_date" name="arrival_date" value="{{ old('arrival_date', $chemical->arrival_date) }}" required>
+        <input type="date" id="arrival_date" name="arrival_date" value="{{ old('arrival_date', $chemical->arrival_date?->format('Y-m-d')) }}" required>
 
         @error('arrival_date')
         <div>{{ $message }}</div>
