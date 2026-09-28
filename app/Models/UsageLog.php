@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class UsageLog extends Model
 {
-    use HasFactory;
+    use HasFactory, BroadcastsEvents;
 
     public const UPDATED_AT = null;
 
@@ -32,5 +34,10 @@ class UsageLog extends Model
         static::deleting(function () {
             throw new \RuntimeException('Error: Usage logs cannot be deleted.');
         });
+    }
+
+    public function broadcastOn(string $event): array
+    {
+        return [new PrivateChannel('usage_logs')];
     }
 }

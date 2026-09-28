@@ -22,3 +22,7 @@ Broadcast::channel('alerts', function (User $user) {
 Broadcast::channel('users', function (User $user) {
     return true;
 });
+
+Broadcast::channel('usage_logs', function (User $user) {
+    return true;
+});
