@@ -174,7 +174,7 @@
                             <button type="submit">Use</button>
                         </form>
                     </td>
-                    @if ($user?->user_role?->isAdmin())
+                    @if (Auth::user()['user_role']->isRole(\App\UserRole::ADMIN))
                     <td>
                         <form action="{{ route('inventory.delete', $chemical->chemical_id) }}" method="POST" onsubmit="return confirm('Delete chemical?');">
                             @csrf
@@ -197,7 +197,7 @@
     </div>
 
     <br>
-    @if ($user?->user_role?->isAdmin())
+    @if (Auth::user()['user_role']->isRole(\App\UserRole::ADMIN))
     <a href="{{ route('inventory.create') }}">Create</a>
     @endif
 

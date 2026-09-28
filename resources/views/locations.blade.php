@@ -57,7 +57,7 @@
                     <td>{{ $location->created_by }}</td>
                     <td>{{ $location->location_name }}</td>
                     <td>{{ $location->description }}</td>
-                    @if ($user?->user_role?->isAdmin())
+                    @if (Auth::user()['user_role']->isRole(\App\UserRole::ADMIN))
                     <td>
                         <form action="{{ route('locations.delete', $location->location_id) }}" method="POST" onsubmit="return confirm('Delete location?');">
                             @csrf
@@ -80,7 +80,7 @@
     </div>
 
     <br>
-    @if ($user?->user_role?->isAdmin())
+    @if (Auth::user()['user_role']->isRole(\App\UserRole::ADMIN))
     <a href="{{ route('locations.create') }}">Create</a>
     @endif
 
