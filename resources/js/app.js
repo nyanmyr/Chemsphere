@@ -111,3 +111,31 @@ document.addEventListener('DOMContentLoaded', () => {
         .listen('.AlertUpdated', refreshAlertTable)
         .listen('.AlertDeleted', refreshAlertTable);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const table = document.getElementById('users-table');
+
+    if (!table) {
+        return;
+    }
+
+    const refreshUsersTable = async () => {
+        const response = await fetch(window.location.href, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+
+        const html = await response.text();
+        const fresh = new DOMParser()
+            .parseFromString(html, 'text/html')
+            .getElementById('users-table');
+
+        if (fresh) {
+            document.getElementById('users-table').replaceWith(fresh);
+        }
+    };
+
+    window.Echo.private('users')
+        .listen('.UserCreated', refreshUsersTable)
+        .listen('.UserCreated', refreshUsersTable)
+        .listen('.UserCreated', refreshUsersTable);
+});

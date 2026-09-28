@@ -18,3 +18,7 @@ Broadcast::channel('locations', function (User $user) {
 Broadcast::channel('alerts', function (User $user) {
     return true;
 });
+
+Broadcast::channel('users', function (User $user) {
+    return true;
+});

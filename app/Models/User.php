@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\Alert;
 use App\UserRole;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,7 +13,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, BroadcastsEvents;
 
     protected $primaryKey = 'user_id';
 
@@ -44,5 +46,10 @@ class User extends Authenticatable
     public function scopeReceivesAlerts($query)
     {
         return $query->whereIn('user_role', [UserRole::USER, UserRole::ADMIN]);
+    }
+
+    public function broadcastOn(string $event): array
+    {
+        return [new PrivateChannel('users')];
     }
 }
