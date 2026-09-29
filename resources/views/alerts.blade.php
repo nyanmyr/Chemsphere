@@ -9,6 +9,8 @@
 <body>
     <h1>Alerts</h1>
 
+    <x-flash />
+
     <div id="alerts-table">
         <table>
             <thead>

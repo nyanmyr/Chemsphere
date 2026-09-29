@@ -14,7 +14,7 @@ class RoleAuthorization
         $convertedRole = UserRole::from($role);
 
         if (!$request->user() || !$request->user()->user_role?->isRole($convertedRole)) {
-            return redirect()->back(fallback: route('welcome'))->withErrors(['role' => 'Invalid role to access this page.']);
+            return redirect()->back(fallback: route('welcome'))->with('error', __('messages.http.forbidden'));
         }
 
         return $next($request);

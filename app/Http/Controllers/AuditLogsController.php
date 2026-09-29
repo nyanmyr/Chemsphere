@@ -52,7 +52,7 @@ class AuditLogsController extends Controller
         $data = $query->paginate(10)->withQueryString();
 
         if ($data->isEmpty()) {
-            session()->now('error', 'No usage log records found matching your range criteria.');
+            session()->now('info', __('messages.audit_log.none_found'));
         }
 
         return view('audit_logs', compact('data', 'user'));

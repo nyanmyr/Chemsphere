@@ -8,6 +8,8 @@
 <body>
     <h1>Use Equipment</h1>
 
+    <x-flash />
+
     <div>ID: {{ old('equipment_id', $equipment->equipment_id) }}</div>
     <div>Location ID: {{ old('location_id', $equipment->location_id) }}</div>
     <div>Name : {{ old('equipment_name', $equipment->equipment_name) }}</div>

@@ -8,6 +8,8 @@
 <body>
     <h1>Edit User</h1>
 
+    <x-flash />
+
     <div>ID: {{ old('user_id', $user->user_id) }}</div>
     <div>Email: {{ old('email', $user->email) }}</div>
 

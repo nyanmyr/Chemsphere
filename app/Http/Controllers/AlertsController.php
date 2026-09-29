@@ -18,7 +18,7 @@ class AlertsController extends Controller
         $data = $query->paginate(10)->withQueryString();
 
         if ($data->isEmpty()) {
-            session()->now('error', 'No location records found matching your range criteria.');
+            session()->now('info', __('messages.alert.none_found'));
         }
 
         return view('alerts', compact('data', 'user'));

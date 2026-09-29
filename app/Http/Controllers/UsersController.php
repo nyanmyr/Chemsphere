@@ -46,7 +46,7 @@ class UsersController extends Controller
         $data = $query->paginate(10)->withQueryString();
 
         if ($data->isEmpty()) {
-            session()->now('error', 'No location records found matching your range criteria.');
+            session()->now('info', __('messages.user.none_found'));
         }
 
         return view('users', compact('data', 'user'));
@@ -55,7 +55,7 @@ class UsersController extends Controller
     public function edit($user_id)
     {
         if (Auth::user()['user_id'] == $user_id) {
-            return redirect()->back(fallback: route('welcome'))->withErrors(['id' => 'Cannot edit own role.']);
+            return redirect()->back(fallback: route('welcome'))->with('error', __('messages.user.cannot_edit_self'));
         }
 
         $user = User::where(
@@ -85,6 +85,6 @@ class UsersController extends Controller
             'target' => 'updated user role',
         ]);
 
-        return redirect()->route('users')->with('success', 'Location updated successfully');
+        return redirect()->route('users')->with('success', __('messages.user.role_updated'));
     }
 }

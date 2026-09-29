@@ -144,7 +144,7 @@ class ChemicalsController extends Controller
         $data = $query->paginate(10)->withQueryString();
 
         if ($data->isEmpty()) {
-            session()->now('error', 'No chemical records found matching your range criteria.');
+            session()->now('info', __('messages.chemical.none_found'));
         }
 
         return view('inventory', compact('data', 'user'));
@@ -163,7 +163,7 @@ class ChemicalsController extends Controller
             'target' => 'deleted chemical',
         ]);
 
-        return redirect()->route('inventory')->with('success', 'Location deleted successfully');
+        return redirect()->route('inventory')->with('success', __('messages.chemical.updated'));
     }
 
     public function edit($chemical_id)
@@ -226,7 +226,7 @@ class ChemicalsController extends Controller
             'target' => 'updated chemical',
         ]);
 
-        return redirect()->route('inventory')->with('success', 'Location updated successfully');
+        return redirect()->route('inventory')->with('success', __('messages.chemical.updated'));
     }
 
     public function use_edit($chemical_id)
@@ -237,7 +237,7 @@ class ChemicalsController extends Controller
         )->firstOrFail();
 
         if ($chemical['current_quantity'] <= 0) {
-            return back()->withErrors(['current_quantity' => 'Current quantity is 0']);
+            return back()->with('error', __('messages.chemical.out_of_stock'));
         }
 
         return view('use_chemical', compact('chemical'));
@@ -285,6 +285,6 @@ class ChemicalsController extends Controller
             'notes' => $notes
         ]);
 
-        return redirect()->route('inventory')->with('success', 'Location updated successfully');
+        return redirect()->route('inventory')->with('success', __('messages.chemical.used'));
     }
 }

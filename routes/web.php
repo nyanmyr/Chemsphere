@@ -77,7 +77,7 @@ Route::post('/locations/create', function () {
         'target' => 'create location',
     ]);
 
-    return redirect()->route('locations');
+    return redirect()->route('locations')->with('success', __('messages.location.created'));
 })
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('locations.store');
@@ -137,7 +137,7 @@ Route::post('/inventory/create', function () {
         'target' => 'create chemical',
     ]);
 
-    return redirect()->route('inventory');
+    return redirect()->route('inventory')->with('success', __('messages.chemical.created'));
 })
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('inventory.store');
@@ -199,7 +199,7 @@ Route::post('/equipment/create', function () {
         'target' => 'create equipment',
     ]);
 
-    return redirect()->route('equipment');
+    return redirect()->route('equipment')->with('success', __('messages.equipment.created'));
 })
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value])
 ->name('equipment.store');

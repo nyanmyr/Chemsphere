@@ -130,7 +130,7 @@ class EquipmentController extends Controller
         $data = $query->paginate(10)->withQueryString();
 
         if ($data->isEmpty()) {
-            session()->now('error', 'No equipment records found matching your range criteria.');
+            session()->now('info', __('messages.equipment.none_found'));
         }
 
         return view('equipment', compact('data', 'user'));
@@ -149,7 +149,7 @@ class EquipmentController extends Controller
             'target' => 'deleted equipment',
         ]);
 
-        return redirect()->route('equipment')->with('success', 'Equipment deleted successfully');
+        return redirect()->route('equipment')->with('success', __('messages.equipment.deleted'));
     }
 
     public function edit($equipment_id)
@@ -191,7 +191,7 @@ class EquipmentController extends Controller
             'target' => 'updated equipment',
         ]);
 
-        return redirect()->route('equipment')->with('success', 'Equipment updated successfully');
+        return redirect()->route('equipment')->with('success', __('messages.equipment.updated'));
     }
 
     public function use_edit($equipment_id)
@@ -202,16 +202,16 @@ class EquipmentController extends Controller
         )->firstOrFail();
 
         if ($equipment['current_quantity'] <= 0) {
-            return back()->withErrors(['error' => 'Current quantity is 0']);
+            return back()->with('error', __('messages.equipment.out_of_stock'));
         }
 
-        switch($equipment['status']) {
+        switch ($equipment['status']) {
             case EquipmentStatus::UNAVAILABLE->value:
-                return back()->withErrors(['error' => 'Equipment currently unavailable']);
+                return back()->with('error', __('messages.equipment.unavailable'));
             case EquipmentStatus::BROKEN->value:
-                return back()->withErrors(['error' => 'Equipment currently broken']);
+                return back()->with('error', __('messages.equipment.broken'));
             case EquipmentStatus::UNDER_MAINTENANCE->value:
-                return back()->withErrors(['error' => 'Equipment currently under maintenance']);
+                return back()->with('error', __('messages.equipment.under_maintenance'));
         }
 
         return view('use_equipment', compact('equipment'));
@@ -259,6 +259,6 @@ class EquipmentController extends Controller
             'notes' => $notes
         ]);
 
-        return redirect()->route('equipment')->with('success', 'Equipment updated successfully');
+        return redirect()->route('equipment')->with('success', __('messages.equipment.used'));
     }
 }

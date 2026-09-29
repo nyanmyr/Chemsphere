@@ -8,6 +8,8 @@
 <body>
     <h1>Create Location</h1>
 
+    <x-flash />
+
     <form action="{{ route('locations.store') }}" method="POST">
         @csrf
         <label for="location_name">Name</label>

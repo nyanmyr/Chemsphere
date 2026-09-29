@@ -8,6 +8,8 @@
 <body>
     <h1>Use Chemical</h1>
 
+    <x-flash />
+
     <div>ID: {{ old('chemical_id', $chemical->chemical_id) }}</div>
     <div>Location ID: {{ old('location_id', $chemical->location_id) }}</div>
     <div>Created By: {{ old('created_by', $chemical->created_by) }}</div>

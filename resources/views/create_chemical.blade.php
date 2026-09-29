@@ -8,6 +8,8 @@
 <body>
     <h1>Create Chemical</h1>
 
+    <x-flash />
+
     <form action="{{ route('inventory.store') }}" method="POST">
         @csrf
         <label for="location_id">Location ID</label>

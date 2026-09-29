@@ -8,6 +8,8 @@
 <body>
     <h1>Edit Equipment</h1>
 
+    <x-flash />
+
     <div>ID: {{ old('equipment_id', $equipment->equipment_id) }}</div>
     <div>Created By: {{ old('created_by', $equipment->created_by) }}</div>
     <div>Created: {{ old('created_at', $equipment->created_at) }}</div>

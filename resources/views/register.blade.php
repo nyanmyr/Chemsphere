@@ -8,9 +8,7 @@
 <body>
     <h1>Register</h1>
 
-    @if ($errors->any())
-    <div style="color: red;">{{ $errors->first() }}</div>
-    @endif
+    <x-flash />
 
     <form action="/register" method="POST">
         @csrf

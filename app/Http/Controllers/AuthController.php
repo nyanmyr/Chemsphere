@@ -42,7 +42,7 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt($credentials)) {
-            return back()->withErrors(['email' => 'Invalid credentials']);
+            return back()->with('error', __('messages.auth.invalid_credentials'));
         }
 
         $user = Auth::user();
@@ -52,7 +52,7 @@ class AuthController extends Controller
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return back()->withErrors(['email' => 'Your account is currently pending approval.']);
+            return back()->with('error', __('messages.auth.pending'));
         }
 
         if ($user['google_id'] == null) {
@@ -113,19 +113,18 @@ class AuthController extends Controller
                 $user = User::find($linkingUserId);
 
                 if (!$user) {
-                    return redirect('/login')->withErrors(['email' => 'Account not found.']);
+                    return redirect('/login')->with('error', __('messages.auth.account_not_found'));
                 }
 
                 if ($user['email'] !== $googleUser->getEmail()) {
-                    return redirect('/login')->withErrors([
-                        'email' => "Email mismatch! You tried signing into Google with '{$googleUser->getEmail()}', but your account is registered as '{$user['email']}'."
-                    ]);
+                    return redirect('/login')->with('error', __('messages.auth.google_email_mismatch', [
+                        'google' => $googleUser->getEmail(),
+                        'account' => $user['email'],
+                    ]));
                 }
 
                 if ($user['google_id'] != null && $user['google_id'] !== $googleUser->getId()) {
-                    return redirect('/login')->withErrors([
-                        'email' => 'This account is already linked to a different Google account.'
-                    ]);
+                    return redirect('/login')->with('error', __('messages.auth.google_already_linked'));
                 }
 
                 $user->update([
@@ -145,11 +144,11 @@ class AuthController extends Controller
             $user = User::where('email', $googleUser->getEmail())->first();
 
             if (!$user) {
-                return redirect('/login')->withErrors(['email' => 'No account found with this email. Please register first.']);
+                return redirect('/login')->with('error', __('messages.auth.google_no_account'));
             }
 
             if ($user['user_role'] === 'pending') {
-                return redirect('/login')->withErrors(['email' => 'Your account is currently pending approval.']);
+                return redirect('/login')->with('error', __('messages.auth.pending'));
             }
 
             if ($user['google_id'] == null) {
@@ -168,7 +167,7 @@ class AuthController extends Controller
             return redirect('/');
 
         } catch (\Exception $e) {
-            return redirect('/login')->withErrors(['email' => 'Google authentication failed.']);
+            return redirect('/login')->with('error', __('messages.auth.google_failed'));
         }
     }
 }

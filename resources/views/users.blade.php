@@ -9,11 +9,7 @@
 <body>
     <h1>Users</h1>
 
-    @if (session('message') || session('error') || $errors->any())
-    <div style="color: red;">
-        {{ session('error') ?? session('message') ?? $errors->first() }}
-    </div>
-    @endif
+    <x-flash />
 
     <form action="{{ route('users') }}" method="GET">
         <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search email...">

@@ -8,11 +8,7 @@
 <body>
     <h1>Login</h1>
 
-    @if (session('message') || $errors->any())
-    <div style="color: red;">
-        {{ session('message') ?? $errors->first() }}
-    </div>
-    @endif
+    <x-flash />
 
     <form action="/login" method="POST">
         @csrf

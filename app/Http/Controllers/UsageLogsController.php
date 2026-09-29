@@ -92,7 +92,7 @@ class UsageLogsController extends Controller
         $data = $query->paginate(10)->withQueryString();
 
         if ($data->isEmpty()) {
-            session()->now('error', 'No usage log records found matching your range criteria.');
+            session()->now('info', __('messages.usage_log.none_found'));
         }
 
         return view('usage_logs', compact('data', 'user'));

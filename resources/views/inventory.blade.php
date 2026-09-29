@@ -9,13 +9,7 @@
 <body>
     <h1>Inventory</h1>
 
-    @error('current_quantity')
-    <div style="color: red;">{{ $message }}</div>
-    @enderror
-
-    @if(session('error'))
-    <div style="color: red;">{{ session('error') }}</div>
-    @endif
+    <x-flash />
 
     <form action="{{ route('inventory') }}" method="GET">
         <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search name, batch, or brand...">

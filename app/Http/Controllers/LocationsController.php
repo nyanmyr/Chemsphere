@@ -50,7 +50,7 @@ class LocationsController extends Controller
         $data = $query->paginate(10)->withQueryString();
 
         if ($data->isEmpty()) {
-            session()->now('error', 'No location records found matching your range criteria.');
+            session()->now('info', __('messages.location.none_found'));
         }
 
         return view('locations', compact('data', 'user'));
@@ -69,7 +69,7 @@ class LocationsController extends Controller
             'target' => 'deleted location',
         ]);
 
-        return redirect()->route('locations')->with('success', 'Location deleted successfully');
+        return redirect()->route('locations')->with('success', __('messages.location.deleted'));
     }
 
     public function edit($location_id)
@@ -100,6 +100,7 @@ class LocationsController extends Controller
         ]);
 
         $location->update($validated);
-        return redirect()->route('locations')->with('success', 'Location updated successfully');
+
+        return redirect()->route('locations')->with('success', __('messages.location.updated'));
     }
 }

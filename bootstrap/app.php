@@ -1,10 +1,12 @@
 <?php
 
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -21,6 +23,26 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (AuthenticationException $e, Request $request) {
-            return redirect()->guest(route('login'))->with('message', 'Please log in to access that page.');
+            if ($request->expectsJson()) {
+                return null;
+            }
+
+            return redirect()->guest(route('login'))->with('error', __('messages.http.login_required'));
+        });
+
+        $exceptions->render(function (ModelNotFoundException $e, Request $request) {
+            if ($request->expectsJson()) {
+                return null;
+            }
+
+            return redirect()->back(fallback: route('welcome'))->with('error', __('messages.http.record_missing'));
+        });
+
+        $exceptions->render(function (HttpException $e, Request $request) {
+            if ($e->getStatusCode() !== 403 || $request->expectsJson()) {
+                return null;
+            }
+
+            return redirect()->back(fallback: route('welcome'))->with('error', __('messages.http.forbidden'));
         });
     })->create();

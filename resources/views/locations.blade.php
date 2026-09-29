@@ -9,9 +9,7 @@
 <body>
     <h1>Locations</h1>
 
-    @if(session('error'))
-    <div style="color: red;">{{ session('error') }}</div>
-    @endif
+    <x-flash />
 
     <form action="{{ route('locations') }}" method="GET">
         <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search name or description...">
