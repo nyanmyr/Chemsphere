@@ -52,24 +52,6 @@
         </select>
 
         <br>
-        <label>Search by Initial Quantity:</label>
-        <br>
-        <label for="search_initial_quantity_min">Min</label>
-        <input id="search_initial_quantity_min" type="number" name="search_initial_quantity_min" value="{{ request('search_initial_quantity_min') }}" min="0" step="0.001" size="20" placeholder="min…">
-        <br>
-        <label for="search_initial_quantity_max">Max</label>
-        <input id="search_initial_quantity_max" type="number" name="search_initial_quantity_max" value="{{ request('search_initial_quantity_max') }}" min="0" step="0.001" size="20" placeholder="max…">
-
-        <br>
-        <label>Search by Current Quantity:</label>
-        <br>
-        <label for="search_current_quantity_min">Min</label>
-        <input id="search_current_quantity_min" type="number" name="search_current_quantity_min" value="{{ request('search_current_quantity_min') }}" min="0" step="0.001" size="20" placeholder="min…">
-        <br>
-        <label for="search_current_quantity_max">Max</label>
-        <input id="search_current_quantity_max" type="number" name="search_current_quantity_max" value="{{ request('search_current_quantity_max') }}" min="0" step="0.001" size="20" placeholder="max…">
-
-        <br>
         <label>Search by Purchase Date:</label>
         <br>
         <label for="search_purchase_date_min">Min</label>
@@ -126,8 +108,6 @@
                     <th>Model</th>
                     <th>Serial ID</th>
                     <th>Status</th>
-                    <th>Initial Quantity</th>
-                    <th>Current Quantity</th>
                     <th>Purchase Date</th>
                     <th>Warranty Expiration</th>
                     <th>Last Maintenance</th>
@@ -144,8 +124,6 @@
                     <td>{{ $equipment->model }}</td>
                     <td>{{ $equipment->serial_id }}</td>
                     <td>{{ $equipment->status }}</td>
-                    <td>{{ $equipment->initial_quantity }}</td>
-                    <td>{{ $equipment->current_quantity }}</td>
                     <td>{{ $equipment->purchase_date }}</td>
                     <td>{{ $equipment->warranty_expiration }}</td>
                     <td>{{ $equipment->last_maintenance }}</td>

@@ -20,8 +20,6 @@ class Equipment extends Model
         'model',
         'serial_id',
         'status',
-        'initial_quantity',
-        'current_quantity',
         'purchase_date',
         'warranty_expiration',
         'last_maintenance',

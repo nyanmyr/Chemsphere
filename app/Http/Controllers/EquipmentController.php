@@ -27,10 +27,6 @@ class EquipmentController extends Controller
             'search_created_by_min' => 'nullable|integer|min:1',
             'search_created_by_max' => 'nullable|integer|min:1',
             'search_status' => 'nullable|array',
-            'search_initial_quantity_min' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_initial_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_current_quantity_min' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_current_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_purchase_date_min' => 'nullable|date',
             'search_purchase_date_max' => 'nullable|date',
             'search_warranty_expiration_min' => 'nullable|date',
@@ -77,22 +73,6 @@ class EquipmentController extends Controller
 
         $query->when($request->filled('search_status'), function ($q) use ($request) {
             $q->whereIn('status', (array) $request['search_status']);
-        });
-
-        $query->when($request->filled('search_initial_quantity_min'), function ($q) use ($request) {
-            $q->where('initial_quantity', '>=', $request['search_initial_quantity_min']);
-        });
-
-        $query->when($request->filled('search_initial_quantity_max'), function ($q) use ($request) {
-            $q->where('initial_quantity', '<=', $request['search_initial_quantity_max']);
-        });
-
-        $query->when($request->filled('search_current_quantity_min'), function ($q) use ($request) {
-            $q->where('current_quantity', '>=', $request['search_current_quantity_min']);
-        });
-
-        $query->when($request->filled('search_current_quantity_max'), function ($q) use ($request) {
-            $q->where('current_quantity', '<=', $request['search_current_quantity_max']);
         });
 
         $query->when($request->filled('search_purchase_date_min'), function ($q) use ($request) {
@@ -170,8 +150,6 @@ class EquipmentController extends Controller
             'model' => 'required|string|max:255',
             'serial_id' => 'required|string|max:255',
             'status' => ['required', Rule::enum(EquipmentStatus::class)],
-            'initial_quantity' => 'required|numeric|min:0|max:9999999999.999',
-            'current_quantity' => 'required|numeric|min:0|max:9999999999.999',
             'purchase_date' => 'required|date',
             'warranty_expiration' => 'required|date',
             'last_maintenance' => 'required|date',

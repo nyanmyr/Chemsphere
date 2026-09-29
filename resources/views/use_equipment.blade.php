@@ -16,8 +16,6 @@
     <div>Model: {{ old('model', $equipment->model) }}</div>
     <div>Serial ID: {{ old('serial_id', $equipment->serial_id) }}</div>
     <div>Status: {{ old('status', $equipment->status) }}</div>
-    <div>Initial Quantity: {{ old('initial_quantity', $equipment->initial_quantity) }}</div>
-    <div>Current Quantity: {{ old('current_quantity', $equipment->current_quantity) }}</div>
     <div>Purchase Date: {{ old('purchase_date', $equipment->purchase_date?->format('Y-m-d')) }}</div>
     <div>Warranty Expiration: {{ old('warranty_expiration', $equipment->warranty_expiration?->format('Y-m-d')) }}</div>
     <div>Last Maintenance: {{ old('last_maintenance', $equipment->last_maintenance?->format('Y-m-d')) }}</div>
@@ -26,14 +24,6 @@
     <form action="{{ route('equipment.use.update', $equipment->equipment_id) }}" method="POST">
         @csrf
         @method('PUT')
-        <br>
-        <label for="use_amount">Use Amount</label>
-        <br>
-        <input type="number" id="use_amount" name="use_amount" step="0.001" min="0" max="{{ old('current_quantity', $equipment->current_quantity) }}" value="{{ old('use_amount') }}" required>
-
-        @error('use_amount')
-        <div>{{ $message }}</div>
-        @enderror
 
         <br>
         <label for="notes">Additional Notes</label>
