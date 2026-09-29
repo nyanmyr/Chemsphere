@@ -18,7 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'role' => \App\Http\Middleware\RoleAuthorization::class
+            'role' => \App\Http\Middleware\RoleAuthorization::class,
+            'pending' => \App\Http\Middleware\PendingRedirect::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
