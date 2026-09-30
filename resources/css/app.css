@@ -8,13 +8,13 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
 
-    --color-paper: #f5f8f7;
-    --color-ink: #10231f;
-    --color-muted: #5b6f6a;
-    --color-line: #d9e3e0;
-    --color-reagent-50: #e7f4f1;
-    --color-reagent-600: #0f6b5c;
-    --color-reagent-700: #0b5548;
+    --color-paper: #F8F6F6;
+    --color-ink: #2A0A0F;
+    --color-muted: #765C60;
+    --color-line: #DBC3C6;
+    --color-reagent-50: #F3E9F5;
+    --color-reagent-600: #D2334C;
+    --color-reagent-700: #560C19;
 }
 
 @layer base {
@@ -41,4 +41,6 @@
 
     .th { @apply px-4 py-2.5 text-left text-xs font-medium text-muted; }
     .td { @apply px-4 py-3 align-top; }
+
+    .pagination { @apply bg-paper }
 }

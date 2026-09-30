@@ -42,6 +42,6 @@
             </table>
         </div>
 
-        <div class="mt-4">{{ $data->links('pagination::tailwind') }}</div>
+        <div class="mt-4">{{ $data->links('vendor.pagination.tailwind') }}</div>
     </div>
 </x-app-layout>
