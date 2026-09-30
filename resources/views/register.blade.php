@@ -1,25 +1,16 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Chemsphere | Register</title>
-</head>
-
-<body>
-    <h1>Register</h1>
-
-    <x-flash />
-
-    <form action="/register" method="POST">
+<x-guest-layout title="Create account" heading="Create your account">
+    <form action="/register" method="POST" class="space-y-4">
         @csrf
-        <label>Email:</label><br>
-        <input type="email" name="email" required><br>
-
-        <label>Password:</label><br>
-        <input type="password" name="password" required><br><br>
-
-        <button type="submit">Register</button>
+        <div>
+            <label for="email" class="label">Email</label>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="email" class="field">
+        </div>
+        <div>
+            <label for="password" class="label">Password</label>
+            <input id="password" type="password" name="password" required autocomplete="new-password" class="field">
+        </div>
+        <button type="submit" class="btn btn-primary w-full">Create account</button>
     </form>
-</body>
 
-</html>
+    <p class="mt-6 text-center text-sm text-muted">Already registered? <a href="{{ route('login') }}" class="link">Sign in</a></p>
+</x-guest-layout>

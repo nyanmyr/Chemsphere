@@ -1,197 +1,34 @@
 import './bootstrap';
 
-document.addEventListener('DOMContentLoaded', () => {
-    const table = document.getElementById('inventory-table');
-
-    if (!table) {
-        return;
-    }
-
-    const refreshInventoryTable = async () => {
-        const response = await fetch(window.location.href, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        });
-
-        const html = await response.text();
-        const fresh = new DOMParser()
-            .parseFromString(html, 'text/html')
-            .getElementById('inventory-table');
-
-        if (fresh) {
-            document.getElementById('inventory-table').replaceWith(fresh);
-        }
-    };
-
-    window.Echo.private('inventory')
-        .listen('.ChemicalCreated', refreshInventoryTable)
-        .listen('.ChemicalUpdated', refreshInventoryTable)
-        .listen('.ChemicalDeleted', refreshInventoryTable);
-});
+// Each entry: the table's element id, its private channel, and the event prefix.
+const liveTables = [
+    { table: 'inventory-table', channel: 'inventory', prefix: 'Chemical' },
+    { table: 'equipment-table', channel: 'equipment', prefix: 'Equipment' },
+    { table: 'locations-table', channel: 'locations', prefix: 'Location' },
+    { table: 'alerts-table', channel: 'alerts', prefix: 'Alert' },
+    { table: 'users-table', channel: 'users', prefix: 'User' },
+    { table: 'usage-logs-table', channel: 'usage_logs', prefix: 'UsageLog' },
+    { table: 'audit-logs-table', channel: 'audit_logs', prefix: 'AuditLog' },
+];
 
 document.addEventListener('DOMContentLoaded', () => {
-    const table = document.getElementById('equipment-table');
+    liveTables.forEach(({ table, channel, prefix }) => {
+        if (!document.getElementById(table)) return;
 
-    if (!table) {
-        return;
-    }
+        const refresh = async () => {
+            const response = await fetch(window.location.href, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            });
+            const fresh = new DOMParser()
+                .parseFromString(await response.text(), 'text/html')
+                .getElementById(table);
 
-    const refreshEquipmentTable = async () => {
-        const response = await fetch(window.location.href, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        });
+            if (fresh) document.getElementById(table)?.replaceWith(fresh);
+        };
 
-        const html = await response.text();
-        const fresh = new DOMParser()
-            .parseFromString(html, 'text/html')
-            .getElementById('equipment-table');
-
-        if (fresh) {
-            document.getElementById('equipment-table').replaceWith(fresh);
-        }
-    };
-
-    window.Echo.private('equipment')
-        .listen('.EquipmentCreated', refreshEquipmentTable)
-        .listen('.EquipmentUpdated', refreshEquipmentTable)
-        .listen('.EquipmentDeleted', refreshEquipmentTable);
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const table = document.getElementById('locations-table');
-
-    if (!table) {
-        return;
-    }
-
-    const refreshLocationsTable = async () => {
-        const response = await fetch(window.location.href, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        });
-
-        const html = await response.text();
-        const fresh = new DOMParser()
-            .parseFromString(html, 'text/html')
-            .getElementById('locations-table');
-
-        if (fresh) {
-            document.getElementById('locations-table').replaceWith(fresh);
-        }
-    };
-
-    window.Echo.private('locations')
-        .listen('.LocationCreated', refreshLocationsTable)
-        .listen('.LocationUpdated', refreshLocationsTable)
-        .listen('.LocationDeleted', refreshLocationsTable);
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const table = document.getElementById('alerts-table');
-
-    if (!table) {
-        return;
-    }
-
-    const refreshAlertTable = async () => {
-        const response = await fetch(window.location.href, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        });
-
-        const html = await response.text();
-        const fresh = new DOMParser()
-            .parseFromString(html, 'text/html')
-            .getElementById('alerts-table');
-
-        if (fresh) {
-            document.getElementById('alerts-table').replaceWith(fresh);
-        }
-    };
-
-    window.Echo.private('alerts')
-        .listen('.AlertCreated', refreshAlertTable)
-        .listen('.AlertUpdated', refreshAlertTable)
-        .listen('.AlertDeleted', refreshAlertTable);
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const table = document.getElementById('users-table');
-
-    if (!table) {
-        return;
-    }
-
-    const refreshUsersTable = async () => {
-        const response = await fetch(window.location.href, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        });
-
-        const html = await response.text();
-        const fresh = new DOMParser()
-            .parseFromString(html, 'text/html')
-            .getElementById('users-table');
-
-        if (fresh) {
-            document.getElementById('users-table').replaceWith(fresh);
-        }
-    };
-
-    window.Echo.private('users')
-        .listen('.UserCreated', refreshUsersTable)
-        .listen('.UserUpdated', refreshUsersTable)
-        .listen('.UserDeleted', refreshUsersTable);
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const table = document.getElementById('usage-logs-table');
-
-    if (!table) {
-        return;
-    }
-
-    const refreshUsageLogsTable = async () => {
-        const response = await fetch(window.location.href, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        });
-
-        const html = await response.text();
-        const fresh = new DOMParser()
-            .parseFromString(html, 'text/html')
-            .getElementById('usage-logs-table');
-
-        if (fresh) {
-            document.getElementById('usage-logs-table').replaceWith(fresh);
-        }
-    };
-
-    window.Echo.private('usage_logs')
-        .listen('.UsageLogCreated', refreshUsageLogsTable)
-        .listen('.UsageLogUpdated', refreshUsageLogsTable)
-        .listen('.UsageLogDeleted', refreshUsageLogsTable);
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const table = document.getElementById('audit-logs-table');
-
-    if (!table) {
-        return;
-    }
-
-    const refreshAuditLogsTable = async () => {
-        const response = await fetch(window.location.href, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        });
-
-        const html = await response.text();
-        const fresh = new DOMParser()
-            .parseFromString(html, 'text/html')
-            .getElementById('audit-logs-table');
-
-        if (fresh) {
-            document.getElementById('audit-logs-table').replaceWith(fresh);
-        }
-    };
-
-    window.Echo.private('audit_logs')
-        .listen('.AuditLogCreated', refreshAuditLogsTable)
-        .listen('.AuditLogUpdated', refreshAuditLogsTable)
-        .listen('.AuditLogDeleted', refreshAuditLogsTable);
+        window.Echo.private(channel)
+            .listen(`.${prefix}Created`, refresh)
+            .listen(`.${prefix}Updated`, refresh)
+            .listen(`.${prefix}Deleted`, refresh);
+    });
 });
