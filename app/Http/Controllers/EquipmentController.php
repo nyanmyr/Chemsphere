@@ -179,10 +179,6 @@ class EquipmentController extends Controller
             $equipment_id
         )->firstOrFail();
 
-        if ($equipment['current_quantity'] <= 0) {
-            return back()->with('error', __('messages.equipment.out_of_stock'));
-        }
-
         switch ($equipment['status']) {
             case EquipmentStatus::UNAVAILABLE->value:
                 return back()->with('error', __('messages.equipment.unavailable'));
@@ -202,18 +198,9 @@ class EquipmentController extends Controller
             $equipment_id
         )->firstOrFail();
 
-        $validated = $request->validate([
-            'use_amount' => 'required|numeric|min:0|max:' . $equipment['current_quantity'],
-            'notes' => 'nullable|string',
-        ]);
-
-        $validated['current_quantity'] = $equipment['current_quantity'] - $validated['use_amount'];
+        $validated = $request->validate(['notes' => 'nullable|string']);
 
         $notes = $validated['notes'];
-
-        if (($key = array_search('use_amount', $validated)) !== false) {
-            unset($validated[$key]);
-        }
 
         if (($key = array_search('notes', $validated)) !== false) {
             unset($validated[$key]);
@@ -232,8 +219,6 @@ class EquipmentController extends Controller
             'location_id' => $equipment['location_id'],
             'item_type' => ItemType::EQUIPMENT,
             'item_id' => $equipment['equipment_id'],
-            'quantity_used' => $validated['use_amount'],
-            'quantity_remaining' => $validated['current_quantity'],
             'notes' => $notes
         ]);
 
