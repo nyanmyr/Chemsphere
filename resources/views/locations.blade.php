@@ -1,89 +1,53 @@
-<!DOCTYPE html>
-<html>
+@php
+    $isAdmin = Auth::user()->user_role->isRole(\App\UserRole::ADMIN);
+@endphp
 
-<head>
-    <title>Chemsphere | Locations</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
+<x-app-layout title="Locations">
+    <x-slot:actions>
+        @if ($isAdmin)<a href="{{ route('locations.create') }}" class="btn btn-primary">Add location</a>@endif
+    </x-slot:actions>
 
-<body>
-    <h1>Locations</h1>
-
-    <x-flash />
-
-    <form action="{{ route('locations') }}" method="GET">
-        <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search name or description...">
-
-        <br>
-        <label>Search by ID:</label>
-        <br>
-        <label for="search_location_id_min">Min</label>
-        <input id="search_location_id_min" type="number" name="search_location_id_min" value="{{ request('search_location_id_min') }}" min="1" step="1" size="20" placeholder="min…">
-        <br>
-        <label for="search_location_id_max">Max</label>
-        <input id="search_location_id_max" type="number" name="search_location_id_max" value="{{ request('search_location_id_max') }}" min="1" step="1" size="20" placeholder="max…">
-
-        <br>
-        <label>Search by Created By:</label>
-        <br>
-        <label for="search_created_by_min">Min</label>
-        <input id="search_created_by_min" type="number" name="search_created_by_min" value="{{ request('search_created_by_min') }}" min="1" step="1" size="20" placeholder="min…">
-        <br>
-        <label for="search_created_by_max">Max</label>
-        <input id="search_created_by_max" type="number" name="search_created_by_max" value="{{ request('search_created_by_max') }}" min="1" step="1" size="20" placeholder="max…">
-
-        <br>
-        <button type="reset">Clear</button>
-        <br>
-        <button type="submit">Search</button>
-    </form>
+    <x-filter-bar :action="route('locations')" placeholder="Search name or description"
+        :ranges="['location_id' => ['Location ID', 'number', '1'], 'created_by' => ['Created by (user ID)', 'number', '1']]" />
 
     <div id="locations-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Created By</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data as $location)
-                <tr>
-                    <td>{{ $location->location_id }}</td>
-                    <td>{{ $location->created_by }}</td>
-                    <td>{{ $location->location_name }}</td>
-                    <td>{{ $location->description }}</td>
-                    @if (Auth::user()['user_role']->isRole(\App\UserRole::ADMIN))
-                    <td>
-                        <form action="{{ route('locations.delete', $location->location_id) }}" method="POST" onsubmit="return confirm('Delete location?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="{{ route('locations.edit', $location->location_id) }}" method="GET">
-                            <button type="submit">Edit</button>
-                        </form>
-                    </td>
-                    @endif
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        {{ $data->links('pagination::bootstrap-5') }}
+        <div class="card overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="border-b border-line">
+                    <tr>
+                        <th class="th">ID</th>
+                        <th class="th">Name</th>
+                        <th class="th">Description</th>
+                        <th class="th">Created by</th>
+                        <th class="th"><span class="sr-only">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-line">
+                    @forelse ($data as $location)
+                    <tr>
+                        <td class="td tabular-nums text-muted">{{ $location->location_id }}</td>
+                        <td class="td font-medium">{{ $location->location_name }}</td>
+                        <td class="td max-w-md text-muted">{{ $location->description }}</td>
+                        <td class="td tabular-nums text-muted">{{ $location->created_by }}</td>
+                        <td class="td">
+                            @if ($isAdmin)
+                            <div class="flex justify-end gap-1.5">
+                                <a href="{{ route('locations.edit', $location->location_id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                <form action="{{ route('locations.delete', $location->location_id) }}" method="POST" onsubmit="return confirm(@js('Delete ' . $location->location_name . '?'))">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                            @endif
+                        </td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="5" class="td py-10 text-center text-muted">No locations found.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4">{{ $data->links('pagination::tailwind') }}</div>
     </div>
-
-    <br>
-    @if (Auth::user()['user_role']->isRole(\App\UserRole::ADMIN))
-    <a href="{{ route('locations.create') }}">Create</a>
-    @endif
-
-    <br>
-    <a href="{{ route('welcome') }}">Return</a>
-</body>
-
-</html>
+</x-app-layout>

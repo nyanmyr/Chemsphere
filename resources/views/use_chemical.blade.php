@@ -1,56 +1,40 @@
-<!DOCTYPE html>
-<html>
+@php
+    $n = fn ($v) => rtrim(rtrim(number_format((float) $v, 3), '0'), '.');
+    $list = fn ($v) => collect(explode(',', (string) $v))->map(fn ($s) => trim($s))->filter();
+    $initial = (float) $chemical->initial_quantity;
+    $current = (float) $chemical->current_quantity;
+    $pct = $initial > 0 ? max(0, min(100, $current / $initial * 100)) : 0;
+@endphp
 
-<head>
-    <title>Chemsphere | Inventory</title>
-</head>
+<x-app-layout title="Use {{ $chemical->chemical_name }}">
+    <div class="card mb-6 max-w-2xl p-5">
+        <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
+            <div><dt class="text-muted">Batch</dt><dd class="font-medium">{{ $chemical->batch_number }}</dd></div>
+            <div><dt class="text-muted">Brand</dt><dd class="font-medium">{{ $chemical->brand_name }}</dd></div>
+            <div><dt class="text-muted">Location ID</dt><dd class="font-medium tabular-nums">{{ $chemical->location_id }}</dd></div>
+            <div><dt class="text-muted">Expires</dt><dd class="font-medium">{{ $chemical->expiration_date?->format('M j, Y') }}</dd></div>
+            <div><dt class="text-muted">Arrived</dt><dd class="font-medium">{{ $chemical->arrival_date?->format('M j, Y') }}</dd></div>
+            <div><dt class="text-muted">Volume per unit</dt><dd class="font-medium tabular-nums">{{ $n($chemical->volume_per_unit) }}</dd></div>
+        </dl>
 
-<body>
-    <h1>Use Chemical</h1>
+        <div class="mt-5">
+            <div class="h-1.5 overflow-hidden rounded-full bg-line" role="img" aria-label="{{ round($pct) }}% remaining">
+                <div class="h-full rounded-full bg-reagent-600" style="width: {{ $pct }}%"></div>
+            </div>
+            <p class="mt-1 text-sm tabular-nums">{{ $n($current) }} <span class="text-muted">of {{ $n($initial) }} {{ $chemical->unit }} remaining</span></p>
+        </div>
 
-    <x-flash />
+        <div class="mt-4 flex flex-wrap gap-1">
+            @foreach ($list($chemical->safety_classes) as $class)<span class="badge badge-warning">{{ $class }}</span>@endforeach
+            @foreach ($list($chemical->ghs_symbols) as $ghs)<span class="badge badge-neutral">{{ $ghs }}</span>@endforeach
+        </div>
+    </div>
 
-    <div>ID: {{ old('chemical_id', $chemical->chemical_id) }}</div>
-    <div>Location ID: {{ old('location_id', $chemical->location_id) }}</div>
-    <div>Created By: {{ old('created_by', $chemical->created_by) }}</div>
-    <div>Name : {{ old('chemical_name', $chemical->chemical_name) }}</div>
-    <div>Batch Number: {{ old('batch_number', $chemical->batch_number) }}</div>
-    <div>Volume Per Unit: {{ old('volume_per_unit', $chemical->volume_per_unit) }}</div>
-    <div>Initial Quantity: {{ old('initial_quantity', $chemical->initial_quantity) }}</div>
-    <div>Current Quantity: {{ old('current_quantity', $chemical->current_quantity) }}</div>
-    <div>Expiration Date: {{ old('expiration_date', $chemical->expiration_date?->format('Y-m-d')) }}</div>
-    <div>Arrival Date: {{ old('arrival_date', $chemical->arrival_date?->format('Y-m-d')) }}</div>
-    <div>Safety Classes: {{ old('safety_classes', $chemical->safety_classes) }}</div>
-    <div>GHS Symbols: {{ old('ghs_symbols', $chemical->ghs_symbols) }}</div>
-    <div>Unit: {{ old('unit', $chemical->unit) }}</div>
-
-    <form action="{{ route('inventory.use.update', $chemical->chemical_id) }}" method="POST">
+    <form action="{{ route('inventory.use.update', $chemical->chemical_id) }}" method="POST" class="card max-w-2xl space-y-4 p-6">
         @csrf
         @method('PUT')
-        <br>
-        <label for="use_amount">Use Amount</label>
-        <br>
-        <input type="number" id="use_amount" name="use_amount" step="0.001" min="0" max="{{ old('current_quantity', $chemical->current_quantity) }}" value="{{ old('use_amount') }}" required>
-
-        @error('use_amount')
-        <div>{{ $message }}</div>
-        @enderror
-
-        <br>
-        <label for="notes">Additional Notes</label>
-        <br>
-        <textarea id="notes" name="notes" rows="5" cols="40" placeholder="Enter text here.">{{ old('notes') }}</textarea>
-
-        @error('notes')
-        <div>{{ $message }}</div>
-        @enderror
-
-        <br>
-        <button type="submit">Update</button>
+        <x-input name="use_amount" :label="'Amount used (' . $chemical->unit . ')'" type="number" step="0.001" min="0" :max="$chemical->current_quantity" />
+        <x-textarea name="notes" label="Notes (optional)" placeholder="What was it used for?" />
+        <x-form-actions submit="Log usage" :cancel="route('inventory')" />
     </form>
-
-    <br>
-    <a href="{{ route('inventory') }}">Cancel</a>
-</body>
-
-</html>
+</x-app-layout>

@@ -36,11 +36,10 @@
 
     .badge { @apply inline-flex items-center rounded px-1.5 py-0.5 text-xs font-medium; }
     .badge-neutral { @apply bg-paper text-muted ring-1 ring-inset ring-line; }
+    .badge-ok { @apply bg-reagent-50 text-reagent-700 ring-1 ring-inset ring-reagent-600/30; }
     .badge-warning { @apply bg-amber-50 text-amber-800 ring-1 ring-inset ring-amber-200; }
     .badge-danger { @apply bg-red-50 text-red-800 ring-1 ring-inset ring-red-200; }
 
     .th { @apply px-4 py-2.5 text-left text-xs font-medium text-muted; }
     .td { @apply px-4 py-3 align-top; }
-
-    .pagination { @apply bg-paper }
 }

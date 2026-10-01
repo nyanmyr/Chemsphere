@@ -1,84 +1,39 @@
-<!DOCTYPE html>
-<html>
+@php $tone = ['CREATE' => 'badge-ok', 'UPDATE' => 'badge-neutral', 'DELETE' => 'badge-danger']; @endphp
 
-<head>
-    <title>Chemsphere | Audit Logs</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-
-<body>
-    <h1>Audit Logs</h1>
-
-    <x-flash />
-
-    <form action="{{ route('audit_logs') }}" method="GET">
-        <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search target...">
-
-        <br>
-        <label>Search by ID:</label>
-        <br>
-        <label for="search_audit_log_id_min">Min</label>
-        <input id="search_audit_log_id_min" type="number" name="search_audit_log_id_min" value="{{ request('search_audit_log_id_min') }}" min="1" step="1" size="20" placeholder="min…">
-        <br>
-        <label for="search_audit_log_id_max">Max</label>
-        <input id="search_audit_log_id_max" type="number" name="search_audit_log_id_max" value="{{ request('search_audit_log_id_max') }}" min="1" step="1" size="20" placeholder="max…">
-
-        <br>
-        <label>Search by Created By:</label>
-        <br>
-        <label for="search_created_by_min">Min</label>
-        <input id="search_created_by_min" type="number" name="search_created_by_min" value="{{ request('search_created_by_min') }}" min="1" step="1" size="20" placeholder="min…">
-        <br>
-        <label for="search_created_by_max">Max</label>
-        <input id="search_created_by_max" type="number" name="search_created_by_max" value="{{ request('search_created_by_max') }}" min="1" step="1" size="20" placeholder="max…">
-
-        <br>
-        <label for="search_audit_action">Search by Safety Class:</label>
-        <select id="search_audit_action" name="search_audit_action[]" size="1" multiple>
-            @foreach (\App\AuditAction::cases() as $class)
-            <option value="{{ $class->value }}" @selected(in_array($class->value, (array) request('search_audit_action', old('search_audit_action', $user->search_audit_action->value ?? $user->search_audit_action ?? []))))>
-                {{ $class->value }}
-            </option>
-            @endforeach
-        </select>
-
-        <br>
-        <button type="reset">Clear</button>
-        <br>
-        <button type="submit">Search</button>
-
-        @if(request('search'))
-        <a href="{{ route('audit_logs') }}">Clear</a>
-        @endif
-    </form>
+<x-app-layout title="Audit logs">
+    <x-filter-bar :action="route('audit_logs')" placeholder="Search target"
+        :ranges="['audit_log_id' => ['Log ID', 'number', '1'], 'created_by' => ['Made by (user ID)', 'number', '1']]"
+        :choices="['search_audit_action' => ['Action', \App\AuditAction::cases()]]" />
 
     <div id="audit-logs-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Created By</th>
-                    <th>Audit Action</th>
-                    <th>Target</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data as $audit_log)
-                <tr>
-                    <td>{{ $audit_log->audit_log_id }}</td>
-                    <td>{{ $audit_log->created_by }}</td>
-                    <td>{{ $audit_log->audit_action }}</td>
-                    <td>{{ $audit_log->target }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        {{ $data->links('pagination::bootstrap-5') }}
+        <div class="card overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="border-b border-line">
+                    <tr>
+                        <th class="th">When</th>
+                        <th class="th">Action</th>
+                        <th class="th">Target</th>
+                        <th class="th">By</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-line">
+                    @forelse ($data as $log)
+                    @php $action = (string) ($log->audit_action->value ?? $log->audit_action); @endphp
+                    <tr>
+                        <td class="td whitespace-nowrap">
+                            {{ $log->created_at->format('M j, Y g:i A') }}
+                            <p class="text-xs text-muted">Log #{{ $log->audit_log_id }}</p>
+                        </td>
+                        <td class="td"><span class="badge {{ $tone[$action] ?? 'badge-neutral' }}">{{ $action }}</span></td>
+                        <td class="td">{{ $log->target }}</td>
+                        <td class="td tabular-nums">{{ $log->created_by }}</td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="4" class="td py-10 text-center text-muted">Nothing recorded yet.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4">{{ $data->links('pagination::tailwind') }}</div>
     </div>
-
-    <br>
-    <a href="{{ route('welcome') }}">Return</a>
-</body>
-
-</html>
+</x-app-layout>

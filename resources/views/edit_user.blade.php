@@ -1,40 +1,13 @@
-<!DOCTYPE html>
-<html>
+<x-app-layout title="Edit user">
+    <dl class="mb-6 grid grid-cols-2 gap-x-6 text-sm sm:max-w-md">
+        <div><dt class="text-muted">ID</dt><dd class="font-medium tabular-nums">{{ $user->user_id }}</dd></div>
+        <div class="min-w-0"><dt class="text-muted">Email</dt><dd class="truncate font-medium">{{ $user->email }}</dd></div>
+    </dl>
 
-<head>
-    <title>Chemsphere | Users</title>
-</head>
-
-<body>
-    <h1>Edit User</h1>
-
-    <x-flash />
-
-    <div>ID: {{ old('user_id', $user->user_id) }}</div>
-    <div>Email: {{ old('email', $user->email) }}</div>
-
-    <form action="{{ route('users.update', $user->user_id) }}" method="POST">
+    <form action="{{ route('users.update', $user->user_id) }}" method="POST" class="card max-w-md space-y-4 p-6">
         @csrf
         @method('PUT')
-
-        <br>
-        <label for="user_role">User Role</label>
-        <br>
-        <select id="user_role" name="user_role">
-            @foreach (\App\UserRole::cases() as $class)
-            <option value="{{ $class->value }}" @selected(old('user_role', $user->user_role->value ?? $user->user_role) == $class->value)>{{ $class->value }}</option>
-            @endforeach
-        </select>
-
-        @error('user_role')
-        <div>{{ $message }}</div>
-        @enderror
-
-        <button type="submit">Update</button>
+        <x-select name="user_role" label="Role" :options="\App\UserRole::cases()" :value="$user->user_role->value" />
+        <x-form-actions submit="Save role" :cancel="route('users')" />
     </form>
-
-    <br>
-    <a href="{{ route('users') }}">Cancel</a>
-</body>
-
-</html>
+</x-app-layout>

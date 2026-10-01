@@ -1,45 +1,21 @@
-<!DOCTYPE html>
-<html>
+@php $date = fn ($d) => $d ? $d->format('M j, Y') : ''; @endphp
 
-<head>
-    <title>Chemsphere | Equipment</title>
-</head>
+<x-app-layout title="Use {{ $equipment->equipment_name }}">
+    <div class="card mb-6 max-w-2xl p-5">
+        <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
+            <div><dt class="text-muted">Model</dt><dd class="font-medium">{{ $equipment->model }}</dd></div>
+            <div><dt class="text-muted">Serial ID</dt><dd class="font-medium">{{ $equipment->serial_id }}</dd></div>
+            <div><dt class="text-muted">Location ID</dt><dd class="font-medium tabular-nums">{{ $equipment->location_id }}</dd></div>
+            <div><dt class="text-muted">Status</dt><dd class="font-medium">{{ ucfirst((string) ($equipment->status->value ?? $equipment->status)) }}</dd></div>
+            <div><dt class="text-muted">Last maintenance</dt><dd class="font-medium">{{ $date($equipment->last_maintenance) }}</dd></div>
+            <div><dt class="text-muted">Next maintenance</dt><dd class="font-medium">{{ $date($equipment->next_maintenance) }}</dd></div>
+        </dl>
+    </div>
 
-<body>
-    <h1>Use Equipment</h1>
-
-    <x-flash />
-
-    <div>ID: {{ old('equipment_id', $equipment->equipment_id) }}</div>
-    <div>Location ID: {{ old('location_id', $equipment->location_id) }}</div>
-    <div>Name : {{ old('equipment_name', $equipment->equipment_name) }}</div>
-    <div>Model: {{ old('model', $equipment->model) }}</div>
-    <div>Serial ID: {{ old('serial_id', $equipment->serial_id) }}</div>
-    <div>Status: {{ old('status', $equipment->status) }}</div>
-    <div>Purchase Date: {{ old('purchase_date', $equipment->purchase_date?->format('Y-m-d')) }}</div>
-    <div>Warranty Expiration: {{ old('warranty_expiration', $equipment->warranty_expiration?->format('Y-m-d')) }}</div>
-    <div>Last Maintenance: {{ old('last_maintenance', $equipment->last_maintenance?->format('Y-m-d')) }}</div>
-    <div>Next Maintenance: {{ old('next_maintenance', $equipment->next_maintenance?->format('Y-m-d')) }}</div>
-
-    <form action="{{ route('equipment.use.update', $equipment->equipment_id) }}" method="POST">
+    <form action="{{ route('equipment.use.update', $equipment->equipment_id) }}" method="POST" class="card max-w-2xl space-y-4 p-6">
         @csrf
         @method('PUT')
-
-        <br>
-        <label for="notes">Additional Notes</label>
-        <br>
-        <textarea id="notes" name="notes" rows="5" cols="40" placeholder="Enter text here.">{{ old('notes') }}</textarea>
-
-        @error('notes')
-        <div>{{ $message }}</div>
-        @enderror
-
-        <br>
-        <button type="submit">Update</button>
+        <x-textarea name="notes" label="Notes (optional)" placeholder="What was it used for?" />
+        <x-form-actions submit="Log usage" :cancel="route('equipment')" />
     </form>
-
-    <br>
-    <a href="{{ route('equipment') }}">Cancel</a>
-</body>
-
-</html>
+</x-app-layout>

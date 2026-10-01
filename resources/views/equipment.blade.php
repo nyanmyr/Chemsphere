@@ -1,167 +1,79 @@
-<!DOCTYPE html>
-<html>
+@php
+    $isAdmin = Auth::user()->user_role->isRole(\App\UserRole::ADMIN);
+    $tone = ['available' => 'badge-ok', 'unavailable' => 'badge-warning', 'under maintenance' => 'badge-warning', 'broken' => 'badge-danger'];
+    $date = fn ($d) => $d ? $d->format('M j, Y') : '';
+@endphp
 
-<head>
-    <title>Chemsphere | Equipment</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
+<x-app-layout title="Equipment">
+    <x-slot:actions>
+        @if ($isAdmin)<a href="{{ route('equipment.create') }}" class="btn btn-primary">Add equipment</a>@endif
+    </x-slot:actions>
 
-<body>
-    <h1>Equipment</h1>
-
-    <x-flash />
-
-    <form action="{{ route('equipment') }}" method="GET">
-        <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search name, model, or serial...">
-
-        <br>
-        <label>Search by ID:</label>
-        <br>
-        <label for="search_equipment_id_min">Min</label>
-        <input id="search_equipment_id_min" type="number" name="search_equipment_id_min" value="{{ request('search_equipment_id_min') }}" min="1" step="1" size="20" placeholder="min…">
-        <br>
-        <label for="search_equipment_id_max">Max</label>
-        <input id="search_equipment_id_max" type="number" name="search_equipment_id_max" value="{{ request('search_equipment_id_max') }}" min="1" step="1" size="20" placeholder="max…">
-
-        <br>
-        <label>Search by Location ID:</label>
-        <br>
-        <label for="search_location_id_min">Min</label>
-        <input id="search_location_id_min" type="number" name="search_location_id_min" value="{{ request('search_location_id_min') }}" min="1" step="1" size="20" placeholder="min…">
-        <br>
-        <label for="search_location_id_max">Max</label>
-        <input id="search_location_id_max" type="number" name="search_location_id_max" value="{{ request('search_location_id_max') }}" min="1" step="1" size="20" placeholder="max…">
-
-        <br>
-        <label>Search by Created By:</label>
-        <br>
-        <label for="search_created_by_min">Min</label>
-        <input id="search_created_by_min" type="number" name="search_created_by_min" value="{{ request('search_created_by_min') }}" min="1" step="1" size="20" placeholder="min…">
-        <br>
-        <label for="search_created_by_max">Max</label>
-        <input id="search_created_by_max" type="number" name="search_created_by_max" value="{{ request('search_created_by_max') }}" min="1" step="1" size="20" placeholder="max…">
-
-        <br>
-        <label for="search_status">Search by Status:</label>
-        <select id="search_status" name="search_status[]" size="1" multiple>
-            @foreach (\App\EquipmentStatus::cases() as $class)
-            <option value="{{ $class->value }}" @selected(in_array($class->value, (array) request('search_status', old('search_status', $user->search_status->value ?? $user->search_status ?? []))))>
-                {{ $class->value }}
-            </option>
-            @endforeach
-        </select>
-
-        <br>
-        <label>Search by Purchase Date:</label>
-        <br>
-        <label for="search_purchase_date_min">Min</label>
-        <input id="search_purchase_date_min" type="date" name="search_purchase_date_min" value="{{ request('search_purchase_date_min') }}" size="20" placeholder="min…">
-        <br>
-        <label for="search_purchase_date_max">Max</label>
-        <input id="search_purchase_date_max" type="date" name="search_purchase_date_max" value="{{ request('search_purchase_date_max') }}" size="20" placeholder="max…">
-
-        <br>
-        <label>Search by Warranty Expiration:</label>
-        <br>
-        <label for="search_warranty_expiration_min">Min</label>
-        <input id="search_warranty_expiration_min" type="date" name="search_warranty_expiration_min" value="{{ request('search_warranty_expiration_min') }}" size="20" placeholder="min…">
-        <br>
-        <label for="search_warranty_expiration_max">Max</label>
-        <input id="search_warranty_expiration_max" type="date" name="search_warranty_expiration_max" value="{{ request('search_warranty_expiration_max') }}" size="20" placeholder="max…">
-
-        <br>
-        <label>Search by Last Maintenance:</label>
-        <br>
-        <label for="search_last_maintenance_min">Min</label>
-        <input id="search_last_maintenance_min" type="date" name="search_last_maintenance_min" value="{{ request('search_last_maintenance_min') }}" size="20" placeholder="min…">
-        <br>
-        <label for="search_last_maintenance_max">Max</label>
-        <input id="search_last_maintenance_max" type="date" name="search_last_maintenance_max" value="{{ request('search_last_maintenance_max') }}" size="20" placeholder="max…">
-
-        <br>
-        <label>Search by Next Maintenance:</label>
-        <br>
-        <label for="search_next_maintenance_min">Min</label>
-        <input id="search_next_maintenance_min" type="date" name="search_next_maintenance_min" value="{{ request('search_next_maintenance_min') }}" size="20" placeholder="min…">
-        <br>
-        <label for="search_next_maintenance_max">Max</label>
-        <input id="search_next_maintenance_max" type="date" name="search_next_maintenance_max" value="{{ request('search_next_maintenance_max') }}" size="20" placeholder="max…">
-
-        <br>
-        <button type="reset">Clear</button>
-        <br>
-        <button type="submit">Search</button>
-
-        @if(request('search'))
-        <a href="{{ route('equipment') }}">Clear</a>
-        @endif
-    </form>
+    <x-filter-bar :action="route('equipment')" placeholder="Search name, model, or serial"
+        :ranges="[
+            'equipment_id' => ['Equipment ID', 'number', '1'],
+            'location_id' => ['Location ID', 'number', '1'],
+            'created_by' => ['Created by (user ID)', 'number', '1'],
+            'purchase_date' => ['Purchase date', 'date', null],
+            'warranty_expiration' => ['Warranty expiration', 'date', null],
+            'last_maintenance' => ['Last maintenance', 'date', null],
+            'next_maintenance' => ['Next maintenance', 'date', null],
+        ]"
+        :choices="['search_status' => ['Status', \App\EquipmentStatus::cases()]]" />
 
     <div id="equipment-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>Equipment ID</th>
-                    <th>Location ID</th>
-                    <th>Created By</th>
-                    <th>Name</th>
-                    <th>Model</th>
-                    <th>Serial ID</th>
-                    <th>Status</th>
-                    <th>Purchase Date</th>
-                    <th>Warranty Expiration</th>
-                    <th>Last Maintenance</th>
-                    <th>Next Maintenance</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data as $equipment)
-                <tr>
-                    <td>{{ $equipment->equipment_id }}</td>
-                    <td>{{ $equipment->location_id }}</td>
-                    <td>{{ $equipment->created_by }}</td>
-                    <td>{{ $equipment->equipment_name }}</td>
-                    <td>{{ $equipment->model }}</td>
-                    <td>{{ $equipment->serial_id }}</td>
-                    <td>{{ $equipment->status }}</td>
-                    <td>{{ $equipment->purchase_date }}</td>
-                    <td>{{ $equipment->warranty_expiration }}</td>
-                    <td>{{ $equipment->last_maintenance }}</td>
-                    <td>{{ $equipment->next_maintenance }}</td>
-                    <td>
-                        <form action="{{ route('equipment.use.edit', $equipment->equipment_id) }}" method="GET">
-                            <button type="submit">Use</button>
-                        </form>
-                    </td>
-                    @if (Auth::user()['user_role']->isRole(\App\UserRole::ADMIN))
-                    <td>
-                        <form action="{{ route('equipment.delete', $equipment->equipment_id) }}" method="POST" onsubmit="return confirm('Delete equipment?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="{{ route('equipment.edit', $equipment->equipment_id) }}" method="GET">
-                            <button type="submit">Edit</button>
-                        </form>
-                    </td>
-                    @endif
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        {{ $data->links('pagination::bootstrap-5') }}
+        <div class="card overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="border-b border-line">
+                    <tr>
+                        <th class="th">Equipment</th>
+                        <th class="th">Location</th>
+                        <th class="th">Status</th>
+                        <th class="th">Warranty</th>
+                        <th class="th">Maintenance</th>
+                        <th class="th"><span class="sr-only">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-line">
+                    @forelse ($data as $e)
+                    @php $status = (string) ($e->status->value ?? $e->status); @endphp
+                    <tr>
+                        <td class="td">
+                            <p class="font-medium">{{ $e->equipment_name }}</p>
+                            <p class="text-xs text-muted">#{{ $e->equipment_id }}, {{ $e->model }}, serial {{ $e->serial_id }}</p>
+                        </td>
+                        <td class="td">{{ $e->location_id }}</td>
+                        <td class="td"><span class="badge {{ $tone[$status] ?? 'badge-neutral' }}">{{ ucfirst($status) }}</span></td>
+                        <td class="td whitespace-nowrap">
+                            <span class="tabular-nums">{{ $date($e->warranty_expiration) }}</span>
+                            @if ($e->warranty_expiration?->isPast())<span class="badge badge-neutral ml-1">Expired</span>@endif
+                        </td>
+                        <td class="td whitespace-nowrap">
+                            <p class="text-xs text-muted">Last {{ $date($e->last_maintenance) }}</p>
+                            <p class="tabular-nums">Next {{ $date($e->next_maintenance) }}
+                                @if ($e->next_maintenance?->isPast())<span class="badge badge-danger ml-1">Overdue</span>@endif
+                            </p>
+                        </td>
+                        <td class="td">
+                            <div class="flex justify-end gap-1.5">
+                                <a href="{{ route('equipment.use.edit', $e->equipment_id) }}" class="btn btn-secondary btn-sm">Use</a>
+                                @if ($isAdmin)
+                                <a href="{{ route('equipment.edit', $e->equipment_id) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                <form action="{{ route('equipment.delete', $e->equipment_id) }}" method="POST" onsubmit="return confirm(@js('Delete ' . $e->equipment_name . '?'))">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="6" class="td py-10 text-center text-muted">No equipment found.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4">{{ $data->links('pagination::tailwind') }}</div>
     </div>
-
-    <br>
-    @if (Auth::user()['user_role']->isRole(\App\UserRole::ADMIN))
-    <a href="{{ route('equipment.create') }}">Create</a>
-    @endif
-
-    <br>
-    <a href="{{ route('welcome') }}">Return</a>
-</body>
-
-</html>
+</x-app-layout>

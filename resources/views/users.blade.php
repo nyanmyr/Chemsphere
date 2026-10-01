@@ -1,80 +1,44 @@
-<!DOCTYPE html>
-<html>
+@php
+    $tone = ['pending' => 'badge-warning', 'admin' => 'badge-ok', 'user' => 'badge-neutral'];
+@endphp
 
-<head>
-    <title>Chemsphere | Users</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-
-<body>
-    <h1>Users</h1>
-
-    <x-flash />
-
-    <form action="{{ route('users') }}" method="GET">
-        <input type="text" name="search" value="{{ request('search') }}" size="100" placeholder="Search email...">
-
-        <br>
-        <label>Search by ID:</label>
-        <br>
-        <label for="search_user_id_min">Min</label>
-        <input id="search_user_id_min" type="number" name="search_user_id_min" value="{{ request('search_user_id_min') }}" min="1" step="1" size="20" placeholder="min…">
-        <br>
-        <label for="search_user_id_max">Max</label>
-        <input id="search_user_id_max" type="number" name="search_user_id_max" value="{{ request('search_user_id_max') }}" min="1" step="1" size="20" placeholder="max…">
-
-        <br>
-        <label for="search_user_role">Search by Role:</label>
-        <select id="search_user_role" name="search_user_role[]" size="1" multiple>
-            @foreach (\App\UserRole::cases() as $class)
-            <option value="{{ $class->value }}" @selected(in_array($class->value, (array) request('search_user_role', old('search_user_role', $user->search_user_role->value ?? $user->search_user_role ?? []))))>
-                {{ $class->value }}
-            </option>
-            @endforeach
-        </select>
-
-        <br>
-        <button type="reset">Clear</button>
-        <br>
-        <button type="submit">Search</button>
-
-        @if(request('search'))
-        <a href="{{ route('users') }}">Clear</a>
-        @endif
-    </form>
+<x-app-layout title="Users">
+    <x-filter-bar :action="route('users')" placeholder="Search email"
+        :ranges="['user_id' => ['User ID', 'number', '1']]"
+        :choices="['search_user_role' => ['Role', \App\UserRole::cases()]]" />
 
     <div id="users-table">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Email</th>
-                    <th>User Role</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($data as $user)
-                <tr>
-                    <td>{{ $user->user_id }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->user_role }}</td>
-                    @if (Auth::user()['user_id'] != $user->user_id)
-                    <td>
-                        <form action="{{ route('users.edit', $user->user_id) }}" method="GET">
-                            <button type="submit">Edit</button>
-                        </form>
-                    </td>
-                    @endif
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        {{ $data->links('pagination::bootstrap-5') }}
+        <div class="card overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="border-b border-line">
+                    <tr>
+                        <th class="th">ID</th>
+                        <th class="th">Email</th>
+                        <th class="th">Role</th>
+                        <th class="th"><span class="sr-only">Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-line">
+                    @forelse ($data as $row)
+                    @php $role = $row->user_role->value; @endphp
+                    <tr>
+                        <td class="td tabular-nums text-muted">{{ $row->user_id }}</td>
+                        <td class="td font-medium">{{ $row->email }}
+                            @if (Auth::id() === $row->user_id)<span class="ml-1 text-xs font-normal text-muted">(you)</span>@endif
+                        </td>
+                        <td class="td"><span class="badge {{ $tone[$role] ?? 'badge-neutral' }}">{{ ucfirst($role) }}</span></td>
+                        <td class="td text-right">
+                            @if (Auth::id() !== $row->user_id)
+                            <a href="{{ route('users.edit', $row->user_id) }}" class="btn btn-secondary btn-sm">{{ $role === 'pending' ? 'Review' : 'Edit role' }}</a>
+                            @endif
+                        </td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="4" class="td py-10 text-center text-muted">No users found.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4">{{ $data->links('pagination::tailwind') }}</div>
     </div>
-
-    <br>
-    <a href="{{ route('welcome') }}">Return</a>
-</body>
-
-</html>
+</x-app-layout>

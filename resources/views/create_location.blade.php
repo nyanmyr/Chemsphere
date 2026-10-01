@@ -1,40 +1,7 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Chemsphere | Locations</title>
-</head>
-
-<body>
-    <h1>Create Location</h1>
-
-    <x-flash />
-
-    <form action="{{ route('locations.store') }}" method="POST">
+<x-app-layout title="Add location">
+    <form action="{{ route('locations.store') }}" method="POST" class="card max-w-2xl space-y-4 p-6">
         @csrf
-        <label for="location_name">Name</label>
-        <br>
-        <input type="text" id="location_name" name="location_name" value="{{ old('location_name') }}" required>
-
-        @error('location_name')
-        <div>{{ $message }}</div>
-        @enderror
-
-        <br>
-        <label for="description">Description</label>
-        <br>
-        <textarea id="description" name="description" rows="5" cols="40" placeholder="Enter text here.">{{ old('description') }}</textarea>
-        <br>
-
-        @error('description')
-        <div>{{ $message }}</div>
-        @enderror
-
-        <button>Create</button>
+        @include('partials.location-fields')
+        <x-form-actions submit="Create" :cancel="route('locations')" />
     </form>
-
-    <br>
-    <a href="{{ route('locations') }}">Cancel</a>
-</body>
-
-</html>
+</x-app-layout>

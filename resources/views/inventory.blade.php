@@ -126,7 +126,7 @@
                                 <a href="{{ route('inventory.use.edit', $c->chemical_id) }}" class="btn btn-secondary btn-sm">Use</a>
                                 @if ($isAdmin)
                                 <a href="{{ route('inventory.edit', $c->chemical_id) }}" class="btn btn-secondary btn-sm">Edit</a>
-                                <form action="{{ route('inventory.delete', $c->chemical_id) }}" method="POST" onsubmit="return confirm('Delete {{ e($c->chemical_name) }}? This can\'t be undone.');">
+                                <form action="{{ route('inventory.delete', $c->chemical_id) }}" method="POST" onsubmit="return confirm(@js('Delete ' . $c->chemical_name . '? This can\'t be undone.'))">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -147,6 +147,6 @@
             </table>
         </div>
 
-        <div class="mt-4">{{ $data->links('vendor.pagination.tailwind') }}</div>
+        <div class="mt-4">{{ $data->links('pagination::tailwind') }}</div>
     </div>
 </x-app-layout>
