@@ -4,6 +4,6 @@
         @csrf
         @method('PUT')
         @include('partials.equipment-fields')
-        <x-form-actions submit="Save changes" :cancel="route('equipment')" />
+        <x-form-actions submit="Save changes" :cancel="url()->previous(route('equipment'))" />
     </form>
 </x-app-layout>

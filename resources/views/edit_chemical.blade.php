@@ -4,6 +4,6 @@
         @csrf
         @method('PUT')
         @include('partials.chemical-fields')
-        <x-form-actions submit="Save changes" :cancel="route('inventory')" />
+        <x-form-actions submit="Save changes" :cancel="url()->previous(route('inventory'))" />
     </form>
 </x-app-layout>

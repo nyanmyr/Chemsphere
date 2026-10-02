@@ -16,6 +16,6 @@
         @csrf
         @method('PUT')
         <x-textarea name="notes" label="Notes (optional)" placeholder="What was it used for?" />
-        <x-form-actions submit="Log usage" :cancel="route('equipment')" />
+        <x-form-actions submit="Log usage" :cancel="url()->previous(route('equipment'))" />
     </form>
 </x-app-layout>

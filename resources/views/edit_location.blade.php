@@ -4,6 +4,6 @@
         @csrf
         @method('PUT')
         @include('partials.location-fields')
-        <x-form-actions submit="Save changes" :cancel="route('locations')" />
+        <x-form-actions submit="Save changes" :cancel="url()->previous(route('locations'))" />
     </form>
 </x-app-layout>
