@@ -25,7 +25,9 @@ use Illuminate\Validation\Rule;
 // user routes
 Route::get('/', function () {
     return view('welcome');
-})->name('welcome');
+})
+->middleware('suspended')
+->name('welcome');
 
 Route::get('/login', function () {
     return view('login');
@@ -39,6 +41,10 @@ Route::get('/pending', function () {
     return view('pending');
 })->name('pending');
 
+Route::get('/suspended', function () {
+    return view('suspended');
+})->name('suspended');
+
 // Standard Auth Actions
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -50,13 +56,13 @@ Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallbac
 
 // locations routes
 Route::get('/locations', [LocationsController::class, 'locations'])
-->middleware(['auth', 'pending'])
+->middleware(['auth', 'pending', 'suspended'])
 ->name('locations');
 
 Route::get('/locations/create', function () {
     return view('create_location');
 })
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('locations.create');
 
 Route::post('/locations/create', function () {
@@ -79,30 +85,30 @@ Route::post('/locations/create', function () {
 
     return redirect()->route('locations')->with('success', __('messages.location.created'));
 })
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('locations.store');
 
 Route::delete('/locations/{id}', [LocationsController::class, 'delete'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('locations.delete');
 
 Route::get('/locations/{id}/edit', [LocationsController::class, 'edit'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('locations.edit');
 
 Route::put('/locations/{id}', [LocationsController::class, 'update'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('locations.update');
 
 // inventory routes
 Route::get('/inventory', [ChemicalsController::class, 'chemicals'])
-->middleware(['auth', 'pending'])
+->middleware(['auth', 'pending', 'suspended'])
 ->name('inventory');
 
 Route::get('/inventory/create', function () {
     return view('create_chemical');
 })
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('inventory.create');
 
 Route::post('/inventory/create', function () {
@@ -139,38 +145,38 @@ Route::post('/inventory/create', function () {
 
     return redirect()->route('inventory')->with('success', __('messages.chemical.created'));
 })
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('inventory.store');
 
 Route::delete('/inventory/{id}', [ChemicalsController::class, 'delete'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('inventory.delete');
 
 Route::get('/inventory/{id}/edit', [ChemicalsController::class, 'edit'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('inventory.edit');
 
 Route::put('/inventory/{id}', [ChemicalsController::class, 'update'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('inventory.update');
 
 Route::get('/inventory/use/{id}/edit', [ChemicalsController::class, 'use_edit'])
-->middleware(['auth', 'pending'])
+->middleware(['auth', 'pending', 'suspended'])
 ->name('inventory.use.edit');
 
 Route::put('/inventory/use/{id}', [ChemicalsController::class, 'use_update'])
-->middleware(['auth', 'pending'])
+->middleware(['auth', 'pending', 'suspended'])
 ->name('inventory.use.update');
 
 // equipment routes
 Route::get('/equipment', [EquipmentController::class, 'equipment'])
-->middleware(['auth', 'pending'])
+->middleware(['auth', 'pending', 'suspended'])
 ->name('equipment');
 
 Route::get('/equipment/create', function () {
     return view('create_equipment');
 })
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('equipment.create');
 
 Route::post('/equipment/create', function () {
@@ -200,57 +206,57 @@ Route::post('/equipment/create', function () {
 
     return redirect()->route('equipment')->with('success', __('messages.equipment.created'));
 })
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('equipment.store');
 
 Route::delete('/equipment/{id}', [EquipmentController::class, 'delete'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('equipment.delete');
 
 Route::get('/equipment/{id}/edit', [EquipmentController::class, 'edit'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('equipment.edit');
 
 Route::put('/equipment/{id}', [EquipmentController::class, 'update'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('equipment.update');
 
 Route::get('/equipment/use/{id}/edit', [EquipmentController::class, 'use_edit'])
-->middleware(['auth', 'pending'])
+->middleware(['auth', 'pending', 'suspended'])
 ->name('equipment.use.edit');
 
 Route::put('/equipment/use/{id}', [EquipmentController::class, 'use_update'])
-->middleware(['auth', 'pending'])
+->middleware(['auth', 'pending', 'suspended'])
 ->name('equipment.use.update');
 
 // manage users routes
 Route::get('/users', [UsersController::class, 'users'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('users');
 
 Route::get('/users/{id}/edit', [UsersController::class, 'edit'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('users.edit');
 
 Route::put('/users/{id}', [UsersController::class, 'update'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('users.update');
 
 // usage log routes
 Route::get('/usagelogs', [UsageLogsController::class, 'usageLogs'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('usage_logs');
 
 // usage log routes
 Route::get('/auditlogs', [AuditLogsController::class, 'auditLogs'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('audit_logs');
 
 // alert routes
 Route::get('/alerts', [AlertsController::class, 'alerts'])
-->middleware(['auth', 'pending'])
+->middleware(['auth', 'pending', 'suspended'])
 ->name('alerts');
 
 Route::patch('/alerts/{alert}/read', [AlertsController::class, 'markAsRead'])
-->middleware(['auth', 'pending'])
+->middleware(['auth', 'pending', 'suspended'])
 ->name('alerts.read');
