@@ -234,7 +234,9 @@ class ChemicalsController extends Controller
         $chemical = Chemical::where(
             'chemical_id',
             $chemical_id
-        )->firstOrFail();
+        )
+        ->where('chemical_id', $chemical_id)
+        ->firstOrFail();
 
         if ($chemical['current_quantity'] <= 0) {
             return back()->with('error', __('messages.chemical.out_of_stock'));

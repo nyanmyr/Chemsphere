@@ -11,7 +11,8 @@
         <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
             <div><dt class="text-muted">Batch</dt><dd class="font-medium">{{ $chemical->batch_number }}</dd></div>
             <div><dt class="text-muted">Brand</dt><dd class="font-medium">{{ $chemical->brand_name }}</dd></div>
-            <div><dt class="text-muted">Location ID</dt><dd class="font-medium tabular-nums">{{ $chemical->location_id }}</dd></div>
+            <div><dt class="text-muted">Location ID</dt><dd class="font-medium tabular-nums">{{ $chemical->location?->location_id }}</dd></div>
+            <div><dt class="text-muted">Location Name</dt><dd class="font-medium tabular-nums">{{ $chemical->location?->location_name }}</dd></div>
             <div><dt class="text-muted">Expires</dt><dd class="font-medium">{{ $chemical->expiration_date?->format('M j, Y') }}</dd></div>
             <div><dt class="text-muted">Arrived</dt><dd class="font-medium">{{ $chemical->arrival_date?->format('M j, Y') }}</dd></div>
             <div><dt class="text-muted">Volume per unit</dt><dd class="font-medium tabular-nums">{{ $n($chemical->volume_per_unit) }}</dd></div>
