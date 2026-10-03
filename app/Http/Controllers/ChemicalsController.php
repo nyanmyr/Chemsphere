@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\AuditAction;
-use App\ItemType;
 use App\GHSSymbol;
+use App\ItemType;
 use App\Models\AuditLog;
 use App\Models\Chemical;
+use App\Models\UsageLog;
 use App\SafetyClass;
 use App\Unit;
-use App\Models\UsageLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -43,7 +43,7 @@ class ChemicalsController extends Controller
             'search_unit' => 'nullable|array',
         ]);
 
-        $query = Chemical::query();
+        $query = Chemical::with('location');
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($sub) use ($request) {

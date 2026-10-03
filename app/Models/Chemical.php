@@ -6,6 +6,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Chemical extends Model
@@ -46,5 +47,10 @@ class Chemical extends Model
     public function broadcastOn(string $event): array
     {
         return [new PrivateChannel('inventory')];
+    }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class, 'location_id', 'location_id');
     }
 }

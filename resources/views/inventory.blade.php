@@ -101,7 +101,10 @@
                             <p class="font-medium">{{ $c->chemical_name }}</p>
                             <p class="text-xs text-muted">#{{ $c->chemical_id }}, batch {{ $c->batch_number }}, {{ $c->brand_name }}</p>
                         </td>
-                        <td class="td">{{ $c->location_id }}</td>
+                        <td class="td">
+                            <p class="font-medium">{{ $c->location?->location_name }}</p>
+                            <p class="text-xs text-muted">#{{ $c->location?->location_id }}</p>
+                        </td>
                         <td class="td">
                             <div class="h-1.5 w-24 overflow-hidden rounded-full bg-line" role="img" aria-label="{{ round($pct) }}% remaining">
                                 <div class="h-full rounded-full {{ $bar }}" style="width: {{ $pct }}%"></div>
