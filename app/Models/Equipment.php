@@ -6,6 +6,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Equipment extends Model
 {
@@ -39,5 +40,10 @@ class Equipment extends Model
     public function broadcastOn(string $event): array
     {
         return [new PrivateChannel('equipment')];
+    }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class, 'location_id', 'location_id');
     }
 }

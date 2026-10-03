@@ -42,7 +42,10 @@
                             <p class="font-medium">{{ $e->equipment_name }}</p>
                             <p class="text-xs text-muted">#{{ $e->equipment_id }}, {{ $e->model }}, serial {{ $e->serial_id }}</p>
                         </td>
-                        <td class="td">{{ $e->location_id }}</td>
+                        <td class="td">
+                            <p class="font-medium">{{ $e->location?->location_name }}</p>
+                            <p class="text-xs text-muted">#{{ $e->location?->location_id }}</p>
+                        </td>
                         <td class="td"><span class="badge {{ $tone[$status] ?? 'badge-neutral' }}">{{ ucfirst($status) }}</span></td>
                         <td class="td whitespace-nowrap">
                             <span class="tabular-nums">{{ $date($e->warranty_expiration) }}</span>
