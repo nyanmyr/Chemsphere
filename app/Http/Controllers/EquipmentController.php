@@ -177,7 +177,9 @@ class EquipmentController extends Controller
         $equipment = Equipment::where(
             'equipment_id',
             $equipment_id
-        )->firstOrFail();
+        )
+        ->where('equipment_id', $equipment_id)
+        ->firstOrFail();
 
         switch ($equipment['status']) {
             case EquipmentStatus::UNAVAILABLE->value:

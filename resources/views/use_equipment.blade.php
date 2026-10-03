@@ -5,7 +5,8 @@
         <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
             <div><dt class="text-muted">Model</dt><dd class="font-medium">{{ $equipment->model }}</dd></div>
             <div><dt class="text-muted">Serial ID</dt><dd class="font-medium">{{ $equipment->serial_id }}</dd></div>
-            <div><dt class="text-muted">Location ID</dt><dd class="font-medium tabular-nums">{{ $equipment->location_id }}</dd></div>
+            <div><dt class="text-muted">Location ID</dt><dd class="font-medium tabular-nums">{{ $equipment->location?->location_id }}</dd></div>
+            <div><dt class="text-muted">Location Name</dt><dd class="font-medium tabular-nums">{{ $equipment->location?->location_name }}</dd></div>
             <div><dt class="text-muted">Status</dt><dd class="font-medium">{{ ucfirst((string) ($equipment->status->value ?? $equipment->status)) }}</dd></div>
             <div><dt class="text-muted">Last maintenance</dt><dd class="font-medium">{{ $date($equipment->last_maintenance) }}</dd></div>
             <div><dt class="text-muted">Next maintenance</dt><dd class="font-medium">{{ $date($equipment->next_maintenance) }}</dd></div>
