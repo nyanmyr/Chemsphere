@@ -171,7 +171,9 @@ class ChemicalsController extends Controller
         $chemical = Chemical::where(
             'chemical_id',
             $chemical_id
-        )->firstOrFail();
+        )
+        ->where('created_by', $chemical_id)
+        ->firstOrFail();
 
         return view('edit_chemical', compact('chemical'));
     }

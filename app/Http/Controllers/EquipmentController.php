@@ -137,7 +137,9 @@ class EquipmentController extends Controller
         $equipment = Equipment::where(
             'equipment_id',
             $equipment_id
-        )->firstOrFail();
+        )
+        ->where('created_by', $equipment_id)
+        ->firstOrFail();
 
         return view('edit_equipment', compact('equipment'));
     }
