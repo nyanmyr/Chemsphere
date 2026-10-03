@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('alerts', function (Blueprint $table) {
             $table->id('alert_id');
-            $table->foreignId('chemical_id')->constrained('chemicals')->references('chemical_id');
+            $table->foreignId('chemical_id');
             $table->text('message')->nullable();
             $table->string('alert_type')->nullable();
             $table->morphs('notifiable');
