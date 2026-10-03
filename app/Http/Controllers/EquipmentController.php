@@ -137,9 +137,7 @@ class EquipmentController extends Controller
         $equipment = Equipment::where(
             'equipment_id',
             $equipment_id
-        )
-        ->where('created_by', $equipment_id)
-        ->firstOrFail();
+        )->firstOrFail();
 
         return view('edit_equipment', compact('equipment'));
     }
@@ -179,9 +177,7 @@ class EquipmentController extends Controller
         $equipment = Equipment::where(
             'equipment_id',
             $equipment_id
-        )
-        ->where('equipment_id', $equipment_id)
-        ->firstOrFail();
+        )->firstOrFail();
 
         switch ($equipment['status']) {
             case EquipmentStatus::UNAVAILABLE->value:

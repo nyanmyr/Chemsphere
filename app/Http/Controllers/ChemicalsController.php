@@ -172,7 +172,6 @@ class ChemicalsController extends Controller
             'chemical_id',
             $chemical_id
         )
-        ->where('created_by', $chemical_id)
         ->firstOrFail();
 
         return view('edit_chemical', compact('chemical'));
@@ -237,7 +236,6 @@ class ChemicalsController extends Controller
             'chemical_id',
             $chemical_id
         )
-        ->where('chemical_id', $chemical_id)
         ->firstOrFail();
 
         if ($chemical['current_quantity'] <= 0) {

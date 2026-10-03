@@ -78,7 +78,6 @@ class LocationsController extends Controller
             'location_id',
             $location_id
         )
-        ->where('created_by', $location_id)
         ->firstOrFail();
 
         return view('edit_location', compact('location'));
