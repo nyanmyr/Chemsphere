@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\AlertType;
+use App\Enums\AlertType;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

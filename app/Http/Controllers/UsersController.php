@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\AuditAction;
+use App\Enums\AuditAction;
 use App\Models\AuditLog;
 use App\Models\User;
-use App\UserRole;
+use App\Enums\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;

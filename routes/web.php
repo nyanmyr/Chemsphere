@@ -1,8 +1,8 @@
 <?php
 
-use App\AuditAction;
-use App\EquipmentStatus;
-use App\GHSSymbol;
+use App\Enums\AuditAction;
+use App\Enums\EquipmentStatus;
+use App\Enums\GHSSymbol;
 use App\Http\Controllers\AlertsController;
 use App\Http\Controllers\AuditLogsController;
 use App\Http\Controllers\AuthController;
@@ -15,9 +15,9 @@ use App\Models\AuditLog;
 use App\Models\Chemical;
 use App\Models\Equipment;
 use App\Models\Location;
-use App\SafetyClass;
-use App\Unit;
-use App\UserRole;
+use App\Enums\SafetyClass;
+use App\Enums\Unit;
+use App\Enums\UserRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;

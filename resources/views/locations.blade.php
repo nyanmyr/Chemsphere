@@ -1,5 +1,5 @@
 @php
-    $isAdmin = Auth::user()->user_role->isRole(\App\UserRole::ADMIN);
+    $isAdmin = Auth::user()->user_role->isRole(\App\Enums\UserRole::ADMIN);
 @endphp
 
 <x-app-layout title="Locations">

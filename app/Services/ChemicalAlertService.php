@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\AlertType;
+use App\Enums\AlertType;
 use App\Models\Chemical;
 use App\Models\User;
 use Illuminate\Support\Collection;

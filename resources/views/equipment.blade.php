@@ -1,5 +1,5 @@
 @php
-    $isAdmin = Auth::user()->user_role->isRole(\App\UserRole::ADMIN);
+    $isAdmin = Auth::user()->user_role->isRole(\App\Enums\UserRole::ADMIN);
     $tone = ['available' => 'badge-ok', 'unavailable' => 'badge-warning', 'under maintenance' => 'badge-warning', 'broken' => 'badge-danger'];
     $date = fn ($d) => $d ? $d->format('M j, Y') : '';
 @endphp
@@ -19,7 +19,7 @@
             'last_maintenance' => ['Last maintenance', 'date', null],
             'next_maintenance' => ['Next maintenance', 'date', null],
         ]"
-        :choices="['search_status' => ['Status', \App\EquipmentStatus::cases()]]" />
+        :choices="['search_status' => ['Status', \App\Enums\EquipmentStatus::cases()]]" />
 
     <div id="equipment-table">
         <div class="card overflow-x-auto">

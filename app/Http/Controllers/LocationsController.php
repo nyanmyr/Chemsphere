@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\AuditAction;
+use App\Enums\AuditAction;
 use App\Models\AuditLog;
 use App\Models\Location;
 use Illuminate\Http\Request;

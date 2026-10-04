@@ -3,9 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\SafetyClass;
-use App\GHSSymbol;
-use App\Unit;
+use App\Enums\SafetyClass;
+use App\Enums\GHSSymbol;
+use App\Enums\Unit;
 
 return new class extends Migration
 {

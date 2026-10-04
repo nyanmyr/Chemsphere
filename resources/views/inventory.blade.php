@@ -1,5 +1,5 @@
 @php
-    $isAdmin = Auth::user()->user_role->isRole(\App\UserRole::ADMIN);
+    $isAdmin = Auth::user()->user_role->isRole(\App\Enums\UserRole::ADMIN);
 
     // name => [label, input type, step]; request names are search_{name}_min / _max
     $ranges = [
@@ -13,9 +13,9 @@
         'arrival_date' => ['Arrival date', 'date', null],
     ];
     $choices = [
-        'search_safety_classes' => ['Safety class', \App\SafetyClass::cases()],
-        'search_ghs_symbols' => ['GHS symbol', \App\GHSSymbol::cases()],
-        'search_unit' => ['Unit', \App\Unit::cases()],
+        'search_safety_classes' => ['Safety class', \App\Enums\SafetyClass::cases()],
+        'search_ghs_symbols' => ['GHS symbol', \App\Enums\GHSSymbol::cases()],
+        'search_unit' => ['Unit', \App\Enums\Unit::cases()],
     ];
 
     $list = fn ($v) => collect(is_array($v) ? $v : explode(',', (string) $v))->map(fn ($s) => trim($s))->filter();

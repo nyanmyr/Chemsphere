@@ -10,7 +10,7 @@
             'quantity_used' => ['Quantity used', 'number', '0.001'],
             'quantity_remaining' => ['Quantity remaining', 'number', '0.001'],
         ]"
-        :choices="['search_item_type' => ['Item type', \App\ItemType::cases()]]" />
+        :choices="['search_item_type' => ['Item type', \App\Enums\ItemType::cases()]]" />
 
     <div id="usage-logs-table">
         <div class="card overflow-x-auto">

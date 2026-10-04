@@ -1,6 +1,6 @@
 @auth
 @php
-    $isAdmin = Auth::user()->user_role->isRole(\App\UserRole::ADMIN);
+    $isAdmin = Auth::user()->user_role->isRole(\App\Enums\UserRole::ADMIN);
     $tiles = [
         ['inventory', 'Inventory', 'Search stock, log usage, and check expiry dates.'],
         ['locations', 'Locations', 'See where chemicals and equipment are kept.'],

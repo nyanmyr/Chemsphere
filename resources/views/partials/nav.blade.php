@@ -1,7 +1,7 @@
 @php
     $main = [['inventory', 'Inventory'], ['locations', 'Locations'], ['equipment', 'Equipment'], ['alerts', 'Alerts']];
     $admin = [['users', 'Users'], ['usage_logs', 'Usage logs'], ['audit_logs', 'Audit logs']];
-    $isAdmin = Auth::user()?->user_role?->isRole(\App\UserRole::ADMIN);
+    $isAdmin = Auth::user()?->user_role?->isRole(\App\Enums\UserRole::ADMIN);
 @endphp
 
 <a href="{{ route('welcome') }}" class="hidden items-center gap-2 px-5 py-5 font-semibold lg:flex">

@@ -13,7 +13,7 @@ within the same method:
 
     // Point.php
     <?php
-    namespace App;
+    namespace App\Enums;
 
     class Point {
         public function setPoint($x, $y) {
@@ -23,7 +23,7 @@ within the same method:
 
     // Rectangle.php
     <?php
-    namespace App;
+    namespace App\Enums;
     use App\Point;
 
     class Rectangle {

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AuditLog;
-use App\AuditAction;
+use App\Enums\AuditAction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

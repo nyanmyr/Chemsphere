@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\AuditAction;
-use App\GHSSymbol;
-use App\ItemType;
+use App\Enums\AuditAction;
+use App\Enums\GHSSymbol;
+use App\Enums\ItemType;
 use App\Models\AuditLog;
 use App\Models\Chemical;
 use App\Models\UsageLog;
-use App\SafetyClass;
-use App\Unit;
+use App\Enums\SafetyClass;
+use App\Enums\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;

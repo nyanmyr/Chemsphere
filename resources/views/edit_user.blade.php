@@ -7,7 +7,7 @@
     <form action="{{ route('users.update', $user->user_id) }}" method="POST" class="card max-w-md space-y-4 p-6">
         @csrf
         @method('PUT')
-        <x-select name="user_role" label="Role" :options="\App\UserRole::cases()" :value="$user->user_role->value" />
+        <x-select name="user_role" label="Role" :options="\App\Enums\UserRole::cases()" :value="$user->user_role->value" />
         <x-form-actions submit="Save changes" :cancel="url()->previous(route('users'))" />
     </form>
 </x-app-layout>

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\AuditAction;
-use App\EquipmentStatus;
-use App\ItemType;
+use App\Enums\AuditAction;
+use App\Enums\EquipmentStatus;
+use App\Enums\ItemType;
 use App\Models\AuditLog;
 use App\Models\Equipment;
 use App\Models\UsageLog;

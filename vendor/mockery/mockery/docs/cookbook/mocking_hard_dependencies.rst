@@ -11,7 +11,7 @@ Let's take the following code for an example:
 .. code-block:: php
 
     <?php
-    namespace App;
+    namespace App\Enums;
     class Service
     {
         function callExternalService($param)

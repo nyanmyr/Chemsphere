@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Alert;
-use App\UserRole;
+use App\Enums\UserRole;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

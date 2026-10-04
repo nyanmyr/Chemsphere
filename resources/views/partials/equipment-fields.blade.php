@@ -4,7 +4,7 @@
     <x-input name="model" label="Model" :value="$e?->model" />
     <x-input name="serial_id" label="Serial ID" :value="$e?->serial_id" />
     <x-input name="location_id" label="Location ID" type="number" min="1" step="1" :value="$e?->location_id" />
-    <x-select name="status" label="Status" :options="\App\EquipmentStatus::cases()" :value="$e?->status" />
+    <x-select name="status" label="Status" :options="\App\Enums\EquipmentStatus::cases()" :value="$e?->status" />
     <x-input name="purchase_date" label="Purchase date" type="date" :value="$e?->purchase_date?->format('Y-m-d')" />
     <x-input name="warranty_expiration" label="Warranty expiration" type="date" :value="$e?->warranty_expiration?->format('Y-m-d')" />
     <x-input name="last_maintenance" label="Last maintenance" type="date" :value="$e?->last_maintenance?->format('Y-m-d')" />
