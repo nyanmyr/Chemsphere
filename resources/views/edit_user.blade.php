@@ -8,6 +8,9 @@
         @csrf
         @method('PUT')
         <x-select name="user_role" label="Role" :options="\App\Enums\UserRole::cases()" :value="$user->user_role->value" />
-        <x-form-actions submit="Save changes" :cancel="url()->previous(route('users'))" />
+        <x-form-actions
+        submit="Save changes"
+        :cancel="url()->previous() === url()->current() ? route('users') : url()->previous(route('users'))"
+        />
     </form>
 </x-app-layout>

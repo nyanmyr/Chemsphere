@@ -36,6 +36,9 @@
         @method('PUT')
         <x-input name="use_amount" :label="'Amount used (' . $chemical->unit . ')'" type="number" step="0.001" min="0" :max="$chemical->current_quantity" />
         <x-textarea name="notes" label="Notes (optional)" placeholder="What was it used for?" />
-        <x-form-actions submit="Log usage" :cancel="url()->previous(route('inventory'))" />
+        <x-form-actions
+        submit="Log usage"
+        :cancel="url()->previous() === url()->current() ? route('inventory') : url()->previous(route('inventory'))"
+        />
     </form>
 </x-app-layout>
