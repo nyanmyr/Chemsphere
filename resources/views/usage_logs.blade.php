@@ -36,8 +36,14 @@
                         <td class="td whitespace-nowrap"><span class="badge badge-neutral">{{ ucfirst((string) ($log->item_type->value ?? $log->item_type)) }}</span> <span class="tabular-nums text-muted">#{{ $log->item_id }}</span></td>
                         <td class="td tabular-nums">{{ $n($log->quantity_used) }}</td>
                         <td class="td tabular-nums">{{ $n($log->quantity_remaining) }}</td>
-                        <td class="td tabular-nums">{{ $log->created_by }}</td>
-                        <td class="td tabular-nums">{{ $log->location_id }}</td>
+                        <td class="td">
+                            <p class="font-medium">{{ $log->user?->email }}</p>
+                            <p class="text-xs text-muted">#{{ $log->user?->user_id }}</p>
+                        </td>
+                        <td class="td">
+                            <p class="font-medium">{{ $log->location?->location_name }}</p>
+                            <p class="text-xs text-muted">#{{ $log->location?->location_id }}</p>
+                        </td>
                         <td class="td max-w-xs text-muted">{{ $log->notes }}</td>
                     </tr>
                     @empty
