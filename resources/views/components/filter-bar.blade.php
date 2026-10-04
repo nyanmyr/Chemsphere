@@ -1,16 +1,23 @@
 {{-- ranges: key => [label, input type, step]  (request names: search_{key}_min / _max)
      choices: request name => [label, cases] --}}
-@props(['action', 'placeholder' => 'Search', 'ranges' => [], 'choices' => []])
+@props(['action', 'placeholder' => 'Search', 'ranges' => [], 'choices' => [], 'sortable'])
 @php
-    $filters = collect(request()->except('page'))->filter(fn ($v) => $v !== null && $v !== '' && $v !== []);
+    $filters = collect(request()->except('page', 'sort'))->filter(fn ($v) => $v !== null && $v !== '' && $v !== []);
+    $clearUrl = request()->filled('sort') ? $action . '?' . http_build_query(request()->only('sort')) : $action;
 @endphp
 
 <form action="{{ $action }}" method="GET" class="card mb-6">
     <div class="flex flex-wrap gap-2 p-3">
         <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ $placeholder }}" aria-label="Search" class="field min-w-56 flex-1">
+        @if ($sortable)
+        <select name="sort" aria-label="Sort order" onchange="this.form.submit()" class="field w-auto">
+            <option value="recent" @selected(request('sort', 'recent') === 'recent')>Most recent</option>
+            <option value="oldest" @selected(request('sort') === 'oldest')>Oldest first</option>
+        </select>
+        @endif
         <button type="submit" class="btn btn-primary">Search</button>
         @if ($filters->isNotEmpty())
-        <a href="{{ $action }}" class="btn btn-secondary">Clear filters</a>
+        <a href="{{ $clearUrl }}" class="btn btn-secondary">Clear filters</a>
         @endif
     </div>
 

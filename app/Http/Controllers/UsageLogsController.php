@@ -27,6 +27,7 @@ class UsageLogsController extends Controller
             'search_quantity_used_max' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_quantity_remaining_min' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_quantity_remaining_max' => 'nullable|numeric|min:0|max:9999999999.999',
+            'sort' => 'nullable|in:recent,oldest',
         ]);
 
         $query = UsageLog::query();
@@ -88,6 +89,9 @@ class UsageLogsController extends Controller
         $query->when($request->filled('search_quantity_remaining_max'), function ($q) use ($request) {
             $q->where('quantity_remaining', '<=', $request['search_quantity_remaining_max']);
         });
+
+        $direction = $request->input('sort', 'recent') === 'oldest' ? 'asc' : 'desc';
+        $query->orderBy('created_at', $direction)->orderBy('usage_log_id', $direction);
 
         $data = $query->paginate(10)->withQueryString();
 
