@@ -5,7 +5,7 @@
 <x-app-layout title="Users">
     <x-filter-bar :action="route('users')" placeholder="Search email"
         :ranges="['user_id' => ['User ID', 'number', '1']]"
-        :choices="['search_user_role' => ['Role', \App\Enums\UserRole::cases()]]" />
+        :choices="['search_user_role' => ['Role', \App\Enums\UserRole::cases()]]" sortable />
 
     <div id="users-table">
         <div class="card overflow-x-auto">

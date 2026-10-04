@@ -21,6 +21,7 @@ class UsersController extends Controller
             'search_user_id_min' => 'nullable|integer|min:1',
             'search_user_id_max' => 'nullable|integer|min:1',
             'search_user_role' => 'nullable|array',
+            'sort' => 'nullable|in:recent,oldest',
         ]);
 
         $query = User::query();
@@ -42,6 +43,9 @@ class UsersController extends Controller
         $query->when($request->filled('search_user_role'), function ($q) use ($request) {
             $q->whereIn('user_role', (array) $request['search_user_role']);
         });
+
+        $direction = $request->input('sort', 'recent') === 'oldest' ? 'asc' : 'desc';
+        $query->orderBy('created_at', $direction)->orderBy('user_id', $direction);
 
         $data = $query->paginate(10)->withQueryString();
 
