@@ -20,6 +20,7 @@ class LocationsController extends Controller
             'search_location_id_max' => 'nullable|integer|min:1',
             'search_created_by_min' => 'nullable|integer|min:1',
             'search_created_by_max' => 'nullable|integer|min:1',
+            'sort' => 'nullable|in:recent,oldest',
         ]);
 
         $query = Location::query();
@@ -46,6 +47,9 @@ class LocationsController extends Controller
         $query->when($request->filled('search_created_by_max'), function ($q) use ($request) {
             $q->where('created_by', '<=', $request['search_created_by_max']);
         });
+
+        $direction = $request->input('sort', 'recent') === 'oldest' ? 'asc' : 'desc';
+        $query->orderBy('created_at', $direction)->orderBy('location_id', $direction);
 
         $data = $query->paginate(10)->withQueryString();
 

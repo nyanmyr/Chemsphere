@@ -8,7 +8,7 @@
     </x-slot:actions>
 
     <x-filter-bar :action="route('locations')" placeholder="Search name or description"
-        :ranges="['location_id' => ['Location ID', 'number', '1'], 'created_by' => ['Created by (user ID)', 'number', '1']]" />
+        :ranges="['location_id' => ['Location ID', 'number', '1'], 'created_by' => ['Created by (user ID)', 'number', '1']]" sortable/>
 
     <div id="locations-table">
         <div class="card overflow-x-auto">
