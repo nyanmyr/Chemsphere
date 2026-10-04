@@ -37,7 +37,7 @@ class EquipmentController extends Controller
             'search_next_maintenance_max' => 'nullable|date',
         ]);
 
-        $query = Equipment::with('location');
+        $query = Equipment::query();
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($sub) use ($request) {

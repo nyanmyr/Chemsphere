@@ -43,7 +43,7 @@ class ChemicalsController extends Controller
             'search_unit' => 'nullable|array',
         ]);
 
-        $query = Chemical::with('location');
+        $query = Chemical::query();
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($sub) use ($request) {
