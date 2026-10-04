@@ -274,7 +274,7 @@ class ChemicalsController extends Controller
         AuditLog::create([
             'created_by' => Auth::user()['user_id'],
             'audit_action' => AuditAction::UPDATE,
-            'target' => 'updated chemical',
+            'target' => 'used chemical',
         ]);
 
         UsageLog::create([

@@ -28,7 +28,7 @@ class AuthController extends Controller
         AuditLog::create([
             'created_by' => $user['user_id'],
             'audit_action' => AuditAction::REGISTER,
-            'target' => 'placeholder',
+            'target' => 'user registered',
         ]);
 
         return redirect('/pending');
@@ -72,7 +72,7 @@ class AuthController extends Controller
         AuditLog::create([
             'created_by' => $user['user_id'],
             'audit_action' => AuditAction::LOGIN,
-            'target' => 'placeholder',
+            'target' => 'user logged in',
         ]);
 
         return redirect('/');
@@ -85,7 +85,7 @@ class AuthController extends Controller
         AuditLog::create([
             'created_by' => $user['user_id'],
             'audit_action' => AuditAction::LOGOUT,
-            'target' => 'placeholder',
+            'target' => 'user logged out',
         ]);
 
         Auth::logout();
@@ -134,7 +134,7 @@ class AuthController extends Controller
                 AuditLog::create([
                     'created_by' => $user['user_id'],
                     'audit_action' => AuditAction::LOGIN,
-                    'target' => 'placeholder',
+                    'target' => 'user logged in',
                 ]);
 
                 Auth::login($user);
@@ -160,7 +160,7 @@ class AuthController extends Controller
             AuditLog::create([
                 'created_by' => $user['user_id'],
                 'audit_action' => AuditAction::LOGIN,
-                'target' => 'placeholder',
+                'target' => 'user logged in',
             ]);
 
             Auth::login($user);
