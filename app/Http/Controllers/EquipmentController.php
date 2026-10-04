@@ -206,6 +206,8 @@ class EquipmentController extends Controller
             unset($validated[$key]);
         }
 
+        $equipment['status'] = EquipmentStatus::UNAVAILABLE;
+
         $equipment->update($validated);
 
         AuditLog::create([
@@ -219,6 +221,8 @@ class EquipmentController extends Controller
             'location_id' => $equipment['location_id'],
             'item_type' => ItemType::EQUIPMENT,
             'item_id' => $equipment['equipment_id'],
+            'quantity_used' => 0,
+            'quantity_remaining' => 0,
             'notes' => $notes
         ]);
 
