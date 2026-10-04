@@ -44,7 +44,27 @@
                             <p class="font-medium">{{ $log->location?->location_name }}</p>
                             <p class="text-xs text-muted">#{{ $log->location?->location_id }}</p>
                         </td>
-                        <td class="td max-w-xs text-muted">{{ $log->notes }}</td>
+                        <td class="td">
+                            @if (filled($log->notes))
+                            <button type="button" class="btn btn-secondary btn-sm" aria-haspopup="dialog"
+                                onclick="document.getElementById('note-{{ $log->usage_log_id }}').showModal()">View notes</button>
+
+                            <dialog id="note-{{ $log->usage_log_id }}" aria-labelledby="note-title-{{ $log->usage_log_id }}"
+                                onclick="if (event.target === this) this.close()"
+                                class="m-auto w-full max-w-md rounded-lg border border-line p-0 text-ink backdrop:bg-ink/40">
+                                <div class="p-5">
+                                    <h2 id="note-title-{{ $log->usage_log_id }}" class="font-semibold">Notes</h2>
+                                    <p class="mt-0.5 text-xs text-muted">Log #{{ $log->usage_log_id }}, {{ $log->created_at->format('M j, Y g:i A') }}</p>
+                                    <p class="mt-4 whitespace-pre-wrap break-words text-sm">{{ $log->notes }}</p>
+                                    <form method="dialog" class="mt-5 text-right">
+                                        <button class="btn btn-secondary">Close</button>
+                                    </form>
+                                </div>
+                            </dialog>
+                            @else
+                            <span class="text-muted">None</span>
+                            @endif
+                        </td>
                     </tr>
                     @empty
                     <tr><td colspan="7" class="td py-10 text-center text-muted">No usage logged yet.</td></tr>
