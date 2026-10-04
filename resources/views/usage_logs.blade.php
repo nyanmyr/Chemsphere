@@ -21,7 +21,7 @@
                         <th class="th">Item</th>
                         <th class="th">Used</th>
                         <th class="th">Remaining</th>
-                        <th class="th">By</th>
+                        <th class="th">Created By</th>
                         <th class="th">Location</th>
                         <th class="th">Notes</th>
                     </tr>

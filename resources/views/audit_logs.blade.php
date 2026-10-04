@@ -13,7 +13,7 @@
                         <th class="th">When</th>
                         <th class="th">Action</th>
                         <th class="th">Target</th>
-                        <th class="th">By</th>
+                        <th class="th">Created By</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-line">
