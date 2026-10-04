@@ -26,7 +26,10 @@
                         </td>
                         <td class="td"><span class="badge {{ $tone[$action] ?? 'badge-neutral' }}">{{ $action }}</span></td>
                         <td class="td">{{ $log->target }}</td>
-                        <td class="td tabular-nums">{{ $log->created_by }}</td>
+                        <td class="td">
+                            <p class="font-medium">{{ $log->user?->email }}</p>
+                            <p class="text-xs text-muted">#{{ $log->user?->user_id }}</p>
+                        </td>
                     </tr>
                     @empty
                     <tr><td colspan="4" class="td py-10 text-center text-muted">Nothing recorded yet.</td></tr>

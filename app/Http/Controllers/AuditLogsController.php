@@ -21,7 +21,7 @@ class AuditLogsController extends Controller
             'search_audit_action' => 'nullable|array',
         ]);
 
-        $query = AuditLog::query();
+        $query = AuditLog::with('user');
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($q) use ($request) {
