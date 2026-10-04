@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\RoleAuthorization::class,
             'pending' => \App\Http\Middleware\PendingRedirect::class,
             'suspended' => \App\Http\Middleware\EnforceSuspension::class,
+            'verify' => \App\Http\Middleware\VerifyUserRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

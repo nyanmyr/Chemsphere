@@ -39,11 +39,15 @@ Route::get('/register', function () {
 
 Route::get('/pending', function () {
     return view('pending');
-})->name('pending');
+})
+->middleware(['verify', 'suspended'])
+->name('pending');
 
 Route::get('/suspended', function () {
     return view('suspended');
-})->name('suspended');
+})
+->middleware(['verify', 'pending'])
+->name('suspended');
 
 // Standard Auth Actions
 Route::post('/register', [AuthController::class, 'register']);
