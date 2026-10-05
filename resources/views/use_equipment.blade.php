@@ -8,6 +8,8 @@
             <div><dt class="text-muted">Location ID</dt><dd class="font-medium tabular-nums">{{ $equipment->location?->location_id }}</dd></div>
             <div><dt class="text-muted">Location Name</dt><dd class="font-medium tabular-nums">{{ $equipment->location?->location_name }}</dd></div>
             <div><dt class="text-muted">Status</dt><dd class="font-medium">{{ ucfirst((string) ($equipment->status->value ?? $equipment->status)) }}</dd></div>
+            <div><dt class="text-muted">Purchase Date</dt><dd class="font-medium">{{ $date($equipment->purchase_date) }}</dd></div>
+            <div><dt class="text-muted">Warranty Expiration</dt><dd class="font-medium">{{ $date($equipment->warranty_expiration) }}</dd></div>
             <div><dt class="text-muted">Last maintenance</dt><dd class="font-medium">{{ $date($equipment->last_maintenance) }}</dd></div>
             <div><dt class="text-muted">Next maintenance</dt><dd class="font-medium">{{ $date($equipment->next_maintenance) }}</dd></div>
         </dl>
