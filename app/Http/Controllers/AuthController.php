@@ -12,6 +12,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Enums\UserRole;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,15 @@ class AuthController extends Controller
     {
         $credentials = $request->validate([
             'email' => 'required|email|unique:users,email|ends_with:@uic.edu.ph',
-            'password' => 'required|min:6',
+            'password' => [
+                'required',
+                Password::min(8)
+                    ->letters()       // Requires at least one letter
+                    ->mixedCase()     // Requires at least one uppercase and one lowercase letter
+                    ->numbers()       // Requires at least one number
+                    ->symbols()       // Requires at least one symbol
+                    ->uncompromised() // Ensures the password hasn't appeared in public data breaches
+            ],
         ]);
 
         $user = User::create([
