@@ -3,7 +3,7 @@
 <x-app-layout title="Audit logs">
     <x-filter-bar :action="route('audit_logs')" placeholder="Search target"
         :ranges="['audit_log_id' => ['Log ID', 'number', '1'], 'created_by' => ['Made by (user ID)', 'number', '1']]"
-        :choices="['search_audit_action' => ['Action', \App\Enums\AuditAction::cases()]]" />
+        :choices="['search_audit_action' => ['Action', \App\Enums\AuditAction::cases()]]" sortable/>
 
     <div id="audit-logs-table">
         <div class="card overflow-x-auto">

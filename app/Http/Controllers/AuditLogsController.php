@@ -19,6 +19,7 @@ class AuditLogsController extends Controller
             'search_created_by_min' => 'nullable|integer|min:1',
             'search_created_by_max' => 'nullable|integer|min:1',
             'search_audit_action' => 'nullable|array',
+            'sort' => 'nullable|in:recent,oldest',
         ]);
 
         $query = AuditLog::query();
@@ -48,6 +49,9 @@ class AuditLogsController extends Controller
         $query->when($request->filled('search_audit_action'), function ($q) use ($request) {
             $q->whereIn('audit_action', (array) $request['search_audit_action']);
         });
+
+        $direction = $request->input('sort', 'recent') === 'oldest' ? 'asc' : 'desc';
+        $query->orderBy('created_at', $direction)->orderBy('audit_log_id', $direction);
 
         $data = $query->paginate(10)->withQueryString();
 
