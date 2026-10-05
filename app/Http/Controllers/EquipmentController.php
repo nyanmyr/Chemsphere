@@ -35,6 +35,7 @@ class EquipmentController extends Controller
             'search_last_maintenance_max' => 'nullable|date',
             'search_next_maintenance_min' => 'nullable|date',
             'search_next_maintenance_max' => 'nullable|date',
+            'sort' => 'nullable|in:recent,oldest',
         ]);
 
         $query = Equipment::query();
@@ -106,6 +107,9 @@ class EquipmentController extends Controller
         $query->when($request->filled('search_next_maintenance_max'), function ($q) use ($request) {
             $q->whereDate('next_maintenance', '<=', $request['search_next_maintenance_max']);
         });
+
+        $direction = $request->input('sort', 'recent') === 'oldest' ? 'asc' : 'desc';
+        $query->orderBy('created_at', $direction)->orderBy('equipment_id', $direction);
 
         $data = $query->paginate(10)->withQueryString();
 

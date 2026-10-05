@@ -19,7 +19,7 @@
             'last_maintenance' => ['Last maintenance', 'date', null],
             'next_maintenance' => ['Next maintenance', 'date', null],
         ]"
-        :choices="['search_status' => ['Status', \App\Enums\EquipmentStatus::cases()]]" />
+        :choices="['search_status' => ['Status', \App\Enums\EquipmentStatus::cases()]]" sortable />
 
     <div id="equipment-table">
         <div class="card overflow-x-auto">
