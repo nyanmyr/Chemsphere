@@ -1,4 +1,7 @@
-@php $e = $equipment ?? null; @endphp
+@php
+    $e = $equipment ?? null;
+@endphp
+
 <div class="grid gap-4 sm:grid-cols-2">
     <x-input name="equipment_name" label="Name" :value="$e?->equipment_name" class="sm:col-span-2" />
     <x-input name="model" label="Model" :value="$e?->model" />

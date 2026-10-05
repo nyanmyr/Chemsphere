@@ -12,8 +12,17 @@
         <button type="submit" class="btn btn-primary w-full">Sign in</button>
     </form>
 
-    <div class="my-4 text-center text-xs text-muted">or</div>
-    <a href="{{ route('google.login') }}" class="btn btn-secondary w-full">Continue with Google</a>
+    <div class="my-4 text-center text-xs text-muted">
+        or
+    </div>
+    <a href="{{ route('google.login') }}" class="btn btn-secondary w-full">
+        Continue with Google
+    </a>
 
-    <p class="mt-6 text-center text-sm text-muted">No account yet? <a href="{{ route('register') }}" class="link">Create one</a></p>
+    <p class="mt-6 text-center text-sm text-muted">
+        No account yet?
+        <a href="{{ route('register') }}" class="link">
+            Create one
+        </a>
+    </p>
 </x-guest-layout>

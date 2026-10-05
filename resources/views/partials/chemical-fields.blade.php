@@ -2,6 +2,7 @@
     $c = $chemical ?? null;
     $split = fn ($v) => collect(is_array($v) ? $v : explode(',', (string) $v))->map(fn ($s) => trim($s))->filter()->values()->all();
 @endphp
+
 <div class="grid gap-4 sm:grid-cols-2">
     <x-input name="chemical_name" label="Name" :value="$c?->chemical_name" class="sm:col-span-2" />
     <x-input name="batch_number" label="Batch number" :value="$c?->batch_number" />

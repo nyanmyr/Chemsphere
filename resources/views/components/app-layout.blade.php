@@ -30,10 +30,10 @@
     <main class="min-w-0 flex-1 px-4 py-6 sm:px-8 lg:py-10">
         <div class="mx-auto max-w-6xl">
             @if ($title)
-            <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
-                <h1 class="text-2xl font-semibold tracking-tight">{{ $title }}</h1>
-                {{ $actions ?? '' }}
-            </div>
+                <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+                    <h1 class="text-2xl font-semibold tracking-tight">{{ $title }}</h1>
+                    {{ $actions ?? '' }}
+                </div>
             @endif
 
             <x-flash />

@@ -12,5 +12,10 @@
         <button type="submit" class="btn btn-primary w-full">Create account</button>
     </form>
 
-    <p class="mt-6 text-center text-sm text-muted">Already registered? <a href="{{ route('login') }}" class="link">Sign in</a></p>
+    <p class="mt-6 text-center text-sm text-muted">
+        Already registered?
+        <a href="{{ route('login') }}" class="link">
+            Sign in
+        </a>
+    </p>
 </x-guest-layout>
