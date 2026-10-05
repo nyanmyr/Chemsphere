@@ -41,6 +41,7 @@ class ChemicalsController extends Controller
             'search_safety_classes' => 'nullable|array',
             'search_ghs_symbols' => 'nullable|array',
             'search_unit' => 'nullable|array',
+            'sort' => 'nullable|in:recent,oldest',
         ]);
 
         $query = Chemical::query();
@@ -140,6 +141,9 @@ class ChemicalsController extends Controller
         $query->when($request->filled('search_unit'), function ($q) use ($request) {
             $q->whereIn('unit', (array) $request['search_unit']);
         });
+
+        $direction = $request->input('sort', 'recent') === 'oldest' ? 'asc' : 'desc';
+        $query->orderBy('created_at', $direction)->orderBy('chemical_id', $direction);
 
         $data = $query->paginate(10)->withQueryString();
 

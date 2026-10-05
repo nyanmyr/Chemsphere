@@ -29,48 +29,9 @@
         @endif
     </x-slot:actions>
 
-    <form action="{{ route('inventory') }}" method="GET" class="card mb-6">
-        <div class="flex flex-wrap gap-2 p-3">
-            <input type="search" name="search" value="{{ request('search') }}" placeholder="Search name, batch, or brand" aria-label="Search" class="field min-w-56 flex-1">
-            <button type="submit" class="btn btn-primary">Search</button>
-            @if ($filters->isNotEmpty())
-            <a href="{{ route('inventory') }}" class="btn btn-secondary">Clear filters</a>
-            @endif
-        </div>
-
-        <details class="border-t border-line" @if ($filters->except('search')->isNotEmpty()) open @endif>
-            <summary class="cursor-pointer px-4 py-2.5 text-sm font-medium text-muted hover:text-ink">More filters</summary>
-
-            <div class="grid gap-x-6 gap-y-4 px-4 pb-4 pt-2 sm:grid-cols-2 lg:grid-cols-3">
-                @foreach ($ranges as $key => [$label, $type, $step])
-                <fieldset>
-                    <legend class="label">{{ $label }}</legend>
-                    <div class="flex gap-2">
-                        @foreach (['min', 'max'] as $bound)
-                        <input type="{{ $type }}" name="search_{{ $key }}_{{ $bound }}" value="{{ request("search_{$key}_{$bound}") }}"
-                            @if ($step) step="{{ $step }}" min="{{ $type === 'number' && $step === '1' ? 1 : 0 }}" @endif
-                            aria-label="{{ $label }} {{ $bound }}" placeholder="{{ ucfirst($bound) }}" class="field">
-                        @endforeach
-                    </div>
-                </fieldset>
-                @endforeach
-
-                @foreach ($choices as $name => [$label, $cases])
-                <fieldset class="sm:col-span-2 lg:col-span-3">
-                    <legend class="label">{{ $label }}</legend>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach ($cases as $case)
-                        <label class="cursor-pointer">
-                            <input type="checkbox" name="{{ $name }}[]" value="{{ $case->value }}" @checked(in_array($case->value, (array) request($name, []))) class="peer sr-only">
-                            <span class="badge badge-neutral px-2.5 py-1 peer-checked:bg-reagent-600 peer-checked:text-white peer-checked:ring-reagent-600 peer-focus-visible:outline-2 peer-focus-visible:outline-reagent-600">{{ $case->value }}</span>
-                        </label>
-                        @endforeach
-                    </div>
-                </fieldset>
-                @endforeach
-            </div>
-        </details>
-    </form>
+    <x-filter-bar :action="route('inventory')" placeholder="Search name, batch, or brand"
+        :ranges="$ranges"
+        :choices="$choices" sortable />
 
     <div id="inventory-table">
         <div class="card overflow-x-auto">
