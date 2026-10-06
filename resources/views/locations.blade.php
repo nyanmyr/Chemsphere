@@ -17,7 +17,6 @@
                         <th class="th">ID</th>
                         <th class="th">Name</th>
                         <th class="th">Description</th>
-                        <th class="th">Created by</th>
                         <th class="th"><span class="sr-only">Actions</span></th>
                     </tr>
                 </thead>
@@ -32,9 +31,6 @@
                             </td>
                             <td class="td max-w-md text-muted">
                                 {{ $location->description }}
-                            </td>
-                            <td class="td tabular-nums text-muted">
-                                {{ $location->created_by }}
                             </td>
                             <td class="td">
                                 @if ($isAdmin)
