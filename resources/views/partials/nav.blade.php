@@ -36,7 +36,7 @@
 </nav>
 
 <div class="border-t border-line p-4">
-    <p class="truncate text-sm" title="{{ Auth::user()?->email }}">
+    <p class="break-all text-xs" title="{{ Auth::user()?->email }}">
         {{ Auth::user()?->email }}
     </p>
     <form action="{{ route('logout') }}" method="POST" class="mt-2">
