@@ -9,6 +9,6 @@ enum Unit : string
     case MILLIGRAM = 'milligram';
     case MICROGRAM = 'microgram';
     case LITTER = 'liter';
-    case MILLILITER = 'millileter';
+    case MILLILITER = 'milliliter';
     case MICROLITER = 'microliter';
 }
