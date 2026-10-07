@@ -251,7 +251,7 @@ Route::get('/usagelogs', [UsageLogsController::class, 'usageLogs'])
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('usage_logs');
 
-// usage log routes
+// audit log routes
 Route::get('/auditlogs', [AuditLogsController::class, 'auditLogs'])
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('audit_logs');
@@ -264,3 +264,7 @@ Route::get('/alerts', [AlertsController::class, 'alerts'])
 Route::patch('/alerts/{alert}/read', [AlertsController::class, 'markAsRead'])
 ->middleware(['auth', 'pending', 'suspended'])
 ->name('alerts.read');
+
+Route::get('/alerts/unread-count', [AlertsController::class, 'unreadCount'])
+
+->name('alerts.unread_count');

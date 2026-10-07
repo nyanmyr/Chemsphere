@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return [new PrivateChannel('users')];
     }
+
+    public function unreadAlertsCount(): int
+    {
+        return once(fn () => $this->alerts()->unread()->count());
+    }
 }

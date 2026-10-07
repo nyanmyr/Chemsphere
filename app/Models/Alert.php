@@ -57,6 +57,6 @@ class Alert extends Model
 
     public function broadcastOn(string $event): array
     {
-        return [new PrivateChannel('alerts')];
+        return [new PrivateChannel('alerts.' . $this['notifiable_id'])];
     }
 }

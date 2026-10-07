@@ -36,4 +36,9 @@ class AlertsController extends Controller
 
         return back();
     }
+
+    public function unreadCount()
+    {
+        return response()->json(['count' => Auth::user()->unreadAlertsCount()]);
+    }
 }

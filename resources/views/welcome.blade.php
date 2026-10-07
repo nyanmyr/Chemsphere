@@ -20,7 +20,12 @@
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             @foreach ($tiles as [$route, $label, $text])
                 <a href="{{ route($route) }}" class="card p-5 hover:border-reagent-600">
-                    <h2 class="font-semibold">{{ $label }}</h2>
+                    <h2 class="flex items-center gap-2 font-semibold">
+                        {{ $label }}
+                        @if ($route === 'alerts')
+                            <x-alert-dot :count="Auth::user()->unreadAlertsCount()" />
+                        @endif
+                    </h2>
                     <p class="mt-1 text-sm text-muted">{{ $text }}</p>
                 </a>
             @endforeach

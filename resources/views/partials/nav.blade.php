@@ -28,6 +28,9 @@
                     @endif
                         class="block rounded-md px-2.5 py-1.5 text-sm {{ request()->routeIs($route . '*') ? 'bg-reagent-50 font-medium text-reagent-700' : 'text-muted hover:bg-paper hover:text-ink' }}">
                         {{ $label }}
+                        @if ($route === 'alerts')
+                            <x-alert-dot :count="Auth::user()?->unreadAlertsCount() ?? 0" />
+                        @endif
                     </a>
                 @endforeach
             </div>

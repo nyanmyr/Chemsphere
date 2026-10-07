@@ -15,8 +15,8 @@ Broadcast::channel('locations', function (User $user) {
     return true;
 });
 
-Broadcast::channel('alerts', function (User $user) {
-    return true;
+Broadcast::channel('alerts.{userId}', function (User $user, int $userId) {
+    return (int) $user->getKey() === $userId;
 });
 
 Broadcast::channel('users', function (User $user) {
