@@ -11,6 +11,7 @@ const liveTables = [
     { table: 'users-table', channel: 'users', prefix: 'User' },
     { table: 'usage-logs-table', channel: 'usage_logs', prefix: 'UsageLog' },
     { table: 'audit-logs-table', channel: 'audit_logs', prefix: 'AuditLog' },
+    { table: 'used-today', channel: 'usage_logs', prefix: 'UsageLog' },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {

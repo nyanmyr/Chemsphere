@@ -3,10 +3,14 @@
 use App\Enums\AuditAction;
 use App\Enums\EquipmentStatus;
 use App\Enums\GHSSymbol;
+use App\Enums\SafetyClass;
+use App\Enums\Unit;
+use App\Enums\UserRole;
 use App\Http\Controllers\AlertsController;
 use App\Http\Controllers\AuditLogsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChemicalsController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\UsageLogsController;
@@ -15,17 +19,12 @@ use App\Models\AuditLog;
 use App\Models\Chemical;
 use App\Models\Equipment;
 use App\Models\Location;
-use App\Enums\SafetyClass;
-use App\Enums\Unit;
-use App\Enums\UserRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
 // user routes
-Route::get('/', function () {
-    return view('welcome');
-})
+Route::get('/', [DashboardController::class, 'welcome'])
 ->middleware('suspended')
 ->name('welcome');
 
