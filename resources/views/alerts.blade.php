@@ -8,8 +8,8 @@
             <table class="w-full text-sm">
                 <thead class="border-b border-line">
                     <tr>
-                        <th class="th">Alert</th>
-                        <th class="th">Chemical</th>
+                        <th class="th">Message</th>
+                        <th class="th">Item</th>
                         <th class="th">Received</th>
                         <th class="th"><span class="sr-only">Actions</span></th>
                     </tr>
@@ -18,25 +18,43 @@
                     @forelse ($data as $alert)
                         <tr class="{{ $alert->read_at ? 'text-muted' : '' }}">
                             <td class="td">
-                                <span
-                                    class="badge {{ $tone($alert->type) }}">
-                                    {{ ucfirst($alert->type?->value ?? 'alert') }}
+                                @if ($alert->alert_type == App\Enums\AlertType::EXPIRED ||
+                                $alert->alert_type == App\Enums\AlertType::OUT_OF_STOCK)
+                                    <span class="badge badge-danger">
+                                @else
+                                    <span class="badge badge-warning ml-1">
+                                @endif
+                                    {{ ucfirst((string) ($alert->alert_type->value ?? $alert->alert_type)) }}
                                 </span>
                                 <p class="mt-1 {{ $alert->read_at ? '' : 'font-medium' }}">
                                     {{ $alert->message }}
                                 </p>
                             </td>
                             <td class="td">
-                                {{ $alert->chemical?->chemical_name }}
+                                <p class="font-medium">
+                                    {{ $alert->chemical?->chemical_name }}
+                                </p>
+                                <p class="text-xs text-muted">
+                                    #{{ $alert->chemical?->chemical_id }}, batch {{ $alert->chemical?->batch_number }},
+                                    {{ $alert->chemical?->brand_name }}
+                                </p>
                             </td>
-                            <td class="td whitespace-nowrap">
-                                {{ $alert->created_at->diffForHumans() }}
+                            <td class="td">
+                                <p class="font-medium whitespace-nowrap">
+                                    {{ $alert->created_at->diffForHumans() }}
+                                </p>
+                                <p class="text-xs text-muted whitespace-nowrap">
+                                    {{ $alert->created_at }}
+                                </p>
                             </td>
                             <td class="td text-right">
                                 @if ($alert->read_at)
-                                    <span class="text-xs">
-                                        Read {{ $alert->read_at->diffForHumans() }}
-                                    </span>
+                                    <p class="font-medium whitespace-nowrap">
+                                        {{ $alert->read_at->diffForHumans() }}
+                                    </p>
+                                    <p class="text-xs text-muted whitespace-nowrap">
+                                        {{ $alert->read_at }}
+                                    </p>
                                 @else
                                     <form action="{{ route('alerts.read', $alert->alert_id) }}" method="POST">
                                         @csrf
