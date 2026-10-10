@@ -12,6 +12,7 @@ const liveTables = [
     { table: 'usage-logs-table', channel: 'usage_logs', prefix: 'UsageLog' },
     { table: 'audit-logs-table', channel: 'audit_logs', prefix: 'AuditLog' },
     { table: 'used-today', channel: 'usage_logs', prefix: 'UsageLog' },
+    { table: 'attention-table', channel: 'inventory', prefix: 'Chemical' },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -33,25 +34,24 @@ document.addEventListener('DOMContentLoaded', () => {
             .listen(`.${prefix}Created`, refresh)
             .listen(`.${prefix}Updated`, refresh)
             .listen(`.${prefix}Deleted`, refresh);
-
-        const dots = document.querySelectorAll('[data-unread-dot]');
-        if (!userId || dots.length === 0) return;
-
-        let timer;
-        const refreshDots = () => {
-            clearTimeout(timer);
-            timer = setTimeout(async () => {
-                const { data } = await window.axios.get('/alerts/unread-count');
-                dots.forEach((dot) => dot.classList.toggle('invisible', data.count < 1));
-            }, 250);
-        };
-
-        window.Echo.private(`alerts.${userId}`)
-            .listen('.AlertCreated', refreshDots)
-            .listen('.AlertUpdated', refreshDots)
-            .listen('.AlertDeleted', refreshDots);
-
-        // Catch up if the socket dropped and reconnected
-        window.Echo.connector.pusher.connection.bind('connected', refreshDots);
     });
+
+    const dots = document.querySelectorAll('[data-unread-dot]');
+    if (!userId || dots.length === 0) return;
+
+    let timer;
+    const refreshDots = () => {
+        clearTimeout(timer);
+        timer = setTimeout(async () => {
+            const { data } = await window.axios.get('/alerts/unread-count');
+            dots.forEach((dot) => dot.classList.toggle('invisible', data.count < 1));
+        }, 250);
+    };
+
+    window.Echo.private(`alerts.${userId}`)
+        .listen('.AlertCreated', refreshDots)
+        .listen('.AlertUpdated', refreshDots)
+        .listen('.AlertDeleted', refreshDots);
+
+    window.Echo.connector.pusher.connection.bind('connected', refreshDots);
 });

@@ -96,4 +96,9 @@ class ChemicalAlertService
     {
         return User::receivesAlerts()->get();
     }
+
+    public function lowStockThreshold(): float
+    {
+        return $this->lowStockThreshold;
+    }
 }
