@@ -84,9 +84,7 @@
                                                 Log #{{ $log->usage_log_id }},
                                                 {{ $log->created_at->format('M j, Y g:i A') }}
                                             </p>
-                                            <p class="mt-4 whitespace-pre-wrap break-words text-sm">
-                                                {{ $log->notes }}
-                                            </p>
+                                            <p class="mt-4 whitespace-pre-wrap break-words text-sm">{{ $log->notes }}</p>
                                             <form method="dialog" class="mt-5 text-right">
                                                 <button class="btn btn-secondary">
                                                     Close
