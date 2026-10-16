@@ -74,18 +74,18 @@ class ChemicalAlertService
     {
         foreach ($this->recipientsFor($chemical) as $recipient) {
             $existing = $recipient->alerts()
-                ->where('chemical_id', $chemical->chemical_id)
+                ->where('item_id', $chemical->chemical_id)
                 ->where('alert_type', $type->value)
                 ->unread()
                 ->first();
 
             if ($existing) {
-                $existing->update(['message' => $message]); // refresh e.g. new quantity
+                $existing->update(['message' => $message]);
                 continue;
             }
 
             $recipient->alerts()->create([
-                'chemical_id' => $chemical->chemical_id,
+                'item_id' => $chemical->chemical_id,
                 'alert_type' => $type,
                 'message' => $message,
             ]);
@@ -95,5 +95,10 @@ class ChemicalAlertService
     protected function recipientsFor(Chemical $chemical): Collection
     {
         return User::receivesAlerts()->get();
+    }
+
+    public function lowStockThreshold(): float
+    {
+        return $this->lowStockThreshold;
     }
 }

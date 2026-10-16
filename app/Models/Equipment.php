@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Equipment extends Model
 {
@@ -35,6 +36,11 @@ class Equipment extends Model
             'last_maintenance'    => 'date',
             'next_maintenance'    => 'date'
         ];
+    }
+
+    public function alerts(): HasMany
+    {
+        return $this->hasMany(Alert::class, 'equipment_id', 'equipment_id');
     }
 
     public function broadcastOn(string $event): array
