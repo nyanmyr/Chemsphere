@@ -190,6 +190,8 @@ class EquipmentController extends Controller
                 return back()->with('error', __('messages.equipment.due_for_calibration'));
             case EquipmentStatus::FOR_DISPOSAL->value:
                 return back()->with('error', __('messages.equipment.for_disposal'));
+            case EquipmentStatus::IN_USE->value:
+                return back()->with('error', __('messages.equipment.in_use'));
         }
 
         return view('use_equipment', compact('equipment'));

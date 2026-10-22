@@ -28,12 +28,12 @@ class ChemicalsController extends Controller
             'search_location_id_max' => 'nullable|integer|min:1',
             'search_created_by_min' => 'nullable|integer|min:1',
             'search_created_by_max' => 'nullable|integer|min:1',
-            'search_volume_per_unit_min' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_volume_per_unit_max' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_quantity_received_min' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_quantity_received_max' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_current_quantity_min' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_current_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_volume_per_unit_min' => 'nullable|numeric|min:0|max:99999999.99',
+            'search_volume_per_unit_max' => 'nullable|numeric|min:0|max:99999999.99',
+            'search_quantity_received_min' => 'nullable|numeric|min:0|max:99999999',
+            'search_quantity_received_max' => 'nullable|numeric|min:0|max:99999999',
+            'search_current_quantity_min' => 'nullable|numeric|min:0|max:99999999',
+            'search_current_quantity_max' => 'nullable|numeric|min:0|max:99999999',
             'search_expiration_date_min' => 'nullable|date',
             'search_expiration_date_max' => 'nullable|date',
             'search_date_received_min' => 'nullable|date',
@@ -79,11 +79,11 @@ class ChemicalsController extends Controller
         });
 
         $query->when($request->filled('search_volume_per_unit_min'), function ($q) use ($request) {
-            $q->where('volume_per_unit', '>=', $request['search_volume_per_unit_min']);
+            $q->where('quantity_per_unity', '>=', $request['search_volume_per_unit_min']);
         });
 
         $query->when($request->filled('search_volume_per_unit_max'), function ($q) use ($request) {
-            $q->where('volume_per_unit', '<=', $request['search_volume_per_unit_max']);
+            $q->where('quantity_per_unity', '<=', $request['search_volume_per_unit_max']);
         });
 
         $query->when($request->filled('search_quantity_received_min'), function ($q) use ($request) {
@@ -188,9 +188,9 @@ class ChemicalsController extends Controller
             'chemical_name' => 'required|string|max:255',
             'batch_number' => 'required|string|max:255',
             'brand_name' => 'required|string|max:255',
-            'volume_per_unit' => 'required|numeric|min:0|max:9999999999.999',
-            'quantity_received' => 'required|numeric|min:0|max:9999999999.999',
-            'current_quantity' => 'required|numeric|min:0|max:9999999999.999',
+            'quantity_per_unity' => 'required|numeric|min:0|max:99999999.99',
+            'quantity_received' => 'required|numeric|min:0|max:99999999',
+            'current_quantity' => 'required|numeric|min:0|max:99999999',
             'expiration_date' => 'required|date',
             'date_received' => 'required|date',
             'safety_classes' => 'nullable|array',

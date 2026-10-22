@@ -38,6 +38,7 @@ return [
         'out_of_order' => 'This equipment is currently out of order.',
         'due_for_calibration' => 'This equipment is currently due for calibration.',
         'for_disposal' => 'This equipment is currently for disposal.',
+        'in_use' => 'This equipment is currently in use.',
         'none_found' => 'No equipment found matching your search.',
     ],
 

@@ -23,8 +23,8 @@ class UsageLogsController extends Controller
             'search_item_type' => 'nullable|array',
             'search_item_id_min' => 'nullable|integer|min:1',
             'search_item_id_max' => 'nullable|integer|min:1',
-            'search_quantity_remaining_min' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_quantity_remaining_max' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_quantity_remaining_min' => 'nullable|numeric|min:0|max:99999999',
+            'search_quantity_remaining_max' => 'nullable|numeric|min:0|max:99999999',
             'sort' => 'nullable|in:recent,oldest',
         ]);
 
