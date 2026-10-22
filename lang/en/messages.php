@@ -35,9 +35,9 @@ return [
         'deleted' => 'Equipment deleted.',
         'used' => 'Equipment usage recorded.',
         'out_of_stock' => 'No units of this equipment are available.',
-        'unavailable' => 'This equipment is currently unavailable.',
-        'broken' => 'This equipment is currently broken.',
-        'under_maintenance' => 'This equipment is currently under maintenance.',
+        'out_of_order' => 'This equipment is currently out of order.',
+        'due_for_calibration' => 'This equipment is currently due for calibration.',
+        'for_disposal' => 'This equipment is currently for disposal.',
         'none_found' => 'No equipment found matching your search.',
     ],
 

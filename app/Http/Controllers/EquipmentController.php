@@ -184,12 +184,12 @@ class EquipmentController extends Controller
         )->firstOrFail();
 
         switch ($equipment['status']) {
-            case EquipmentStatus::UNAVAILABLE->value:
-                return back()->with('error', __('messages.equipment.unavailable'));
-            case EquipmentStatus::BROKEN->value:
-                return back()->with('error', __('messages.equipment.broken'));
-            case EquipmentStatus::UNDER_MAINTENANCE->value:
-                return back()->with('error', __('messages.equipment.under_maintenance'));
+            case EquipmentStatus::OUT_OF_ORDER->value:
+                return back()->with('error', __('messages.equipment.out_of_order'));
+            case EquipmentStatus::DUE_FOR_CALIBRATION->value:
+                return back()->with('error', __('messages.equipment.due_for_calibration'));
+            case EquipmentStatus::FOR_DISPOSAL->value:
+                return back()->with('error', __('messages.equipment.for_disposal'));
         }
 
         return view('use_equipment', compact('equipment'));
