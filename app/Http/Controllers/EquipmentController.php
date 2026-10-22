@@ -210,7 +210,7 @@ class EquipmentController extends Controller
             unset($validated[$key]);
         }
 
-        $equipment['status'] = EquipmentStatus::UNAVAILABLE;
+        $equipment['status'] = EquipmentStatus::IN_USE;
 
         $equipment->update($validated);
 
@@ -225,7 +225,6 @@ class EquipmentController extends Controller
             'location_id' => $equipment['location_id'],
             'item_type' => ItemType::EQUIPMENT,
             'item_id' => $equipment['equipment_id'],
-            'quantity_used' => 0,
             'quantity_remaining' => 0,
             'notes' => $notes
         ]);

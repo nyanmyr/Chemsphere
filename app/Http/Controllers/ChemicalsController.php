@@ -30,8 +30,8 @@ class ChemicalsController extends Controller
             'search_created_by_max' => 'nullable|integer|min:1',
             'search_volume_per_unit_min' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_volume_per_unit_max' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_initial_quantity_min' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_initial_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_quantity_received_min' => 'nullable|numeric|min:0|max:9999999999.999',
+            'search_quantity_received_max' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_current_quantity_min' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_current_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_expiration_date_min' => 'nullable|date',
@@ -86,12 +86,12 @@ class ChemicalsController extends Controller
             $q->where('volume_per_unit', '<=', $request['search_volume_per_unit_max']);
         });
 
-        $query->when($request->filled('search_initial_quantity_min'), function ($q) use ($request) {
-            $q->where('initial_quantity', '>=', $request['search_initial_quantity_min']);
+        $query->when($request->filled('search_quantity_received_min'), function ($q) use ($request) {
+            $q->where('quantity_received', '>=', $request['search_quantity_received_min']);
         });
 
-        $query->when($request->filled('search_initial_quantity_max'), function ($q) use ($request) {
-            $q->where('initial_quantity', '<=', $request['search_initial_quantity_max']);
+        $query->when($request->filled('search_quantity_received_max'), function ($q) use ($request) {
+            $q->where('quantity_received', '<=', $request['search_quantity_received_max']);
         });
 
         $query->when($request->filled('search_current_quantity_min'), function ($q) use ($request) {
@@ -189,7 +189,7 @@ class ChemicalsController extends Controller
             'batch_number' => 'required|string|max:255',
             'brand_name' => 'required|string|max:255',
             'volume_per_unit' => 'required|numeric|min:0|max:9999999999.999',
-            'initial_quantity' => 'required|numeric|min:0|max:9999999999.999',
+            'quantity_received' => 'required|numeric|min:0|max:9999999999.999',
             'current_quantity' => 'required|numeric|min:0|max:9999999999.999',
             'expiration_date' => 'required|date',
             'date_received' => 'required|date',
@@ -286,7 +286,6 @@ class ChemicalsController extends Controller
             'location_id' => $chemical['location_id'],
             'item_type' => ItemType::CHEMICAL,
             'item_id' => $chemical['chemical_id'],
-            'quantity_used' => $validated['use_amount'],
             'quantity_remaining' => $validated['current_quantity'],
             'notes' => $notes
         ]);

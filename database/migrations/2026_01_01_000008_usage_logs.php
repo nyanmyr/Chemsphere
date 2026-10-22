@@ -14,9 +14,8 @@ return new class extends Migration
             $table->foreignId('created_by');
             $table->foreignId('location_id');
             $table->string('item_type');
-            $table->unsignedBigInteger('item_id');
-            $table->decimal('quantity_used', $precision = 10, $scale = 3);
-            $table->decimal('quantity_remaining', $precision = 10, $scale = 3);
+            $table->foreignId('item_id');
+            $table->integer('quantity_remaining');
             $table->text('notes')->nullable();
             $table->timestamp('created_at')->useCurrent();
         });

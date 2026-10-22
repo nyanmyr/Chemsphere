@@ -11,7 +11,7 @@ class ChemicalAlertService
 {
     public function __construct(
         protected int $expiringSoonDays = 30,
-        protected float $lowStockThreshold = 0.2, // 20% of initial_quantity
+        protected float $lowStockThreshold = 0.2, // 20% of quantity_received
     ) {}
 
     public function checkChemical(Chemical $chemical): void
@@ -59,7 +59,7 @@ class ChemicalAlertService
             return;
         }
 
-        $threshold = $chemical->initial_quantity * $this->lowStockThreshold;
+        $threshold = $chemical->quantity_received * $this->lowStockThreshold;
 
         if ($chemical->current_quantity <= $threshold) {
             $this->notify(

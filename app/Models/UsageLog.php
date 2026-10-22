@@ -21,7 +21,6 @@ class UsageLog extends Model
         'location_id',
         'item_type',
         'item_id',
-        'quantity_used',
         'quantity_remaining',
         'notes'
     ];

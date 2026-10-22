@@ -61,11 +61,8 @@
                                         @endif
                                     </td>
                                     <td class="td whitespace-nowrap tabular-nums">
-                                        {{ $n($row['total_used']) }}
+                                        {{ $row['times_used'] }}
                                         <span class="text-muted">{{ $c?->unit }}</span>
-                                        <p class="text-xs text-muted">
-                                            {{ $row['times_used'] }} {{ $row['times_used'] === 1 ? 'use' : 'uses' }}
-                                        </p>
                                     </td>
                                     <td class="td whitespace-nowrap tabular-nums">
                                         @if ($c)
@@ -124,7 +121,7 @@
                                     @php
                                         $c = $row['chemical'];
                                         $has = fn($type) => in_array($type, $row['statuses'], true);
-                                        $initial = (float) $c->initial_quantity;
+                                        $initial = (float) $c->quantity_received;
                                         $current = (float) $c->current_quantity;
                                         $pct = $initial > 0 ? max(0, min(100, $current / $initial * 100)) : 0;
                                         $bar = $has(\App\Enums\AlertType::OUT_OF_STOCK)
@@ -155,7 +152,7 @@
                                             </div>
                                             <p class="mt-1 whitespace-nowrap tabular-nums">
                                                 {{ $n($current) }}
-                                                <span class="text-muted">of {{ $n($initial) }} {{ $c->unit }}</span>
+                                                <span class="text-muted">of {{ $n($initial) }}</span>
                                             </p>
                                         </td>
                                         <td class="td whitespace-nowrap">

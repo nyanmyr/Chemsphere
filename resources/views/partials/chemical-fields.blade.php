@@ -9,8 +9,8 @@
     <x-input name="brand_name" label="Brand" :value="$c?->brand_name" />
     <x-input name="location_id" label="Location ID" type="number" min="1" step="1" :value="$c?->location_id" />
     <x-select name="unit" label="Unit" :options="\App\Enums\Unit::cases()" :value="$c?->unit" />
-    <x-input name="volume_per_unit" label="Volume per unit" type="number" step="0.001" min="0" max="9999999999" :value="$c?->volume_per_unit" />
-    <x-input name="initial_quantity" label="Initial quantity" type="number" step="0.001" min="0" max="9999999999" :value="$c?->initial_quantity" />
+    <x-input name="quantity_per_unit" label="Volume per unit" type="number" step="0.001" min="0" max="9999999999" :value="$c?->quantity_per_unit" />
+    <x-input name="quantity_received" label="Quantity received" type="number" step="0.001" min="0" max="9999999999" :value="$c?->quantity_received" />
     <x-input name="current_quantity" label="Current quantity" type="number" step="0.001" min="0" max="9999999999" :value="$c?->current_quantity" />
     <x-input name="date_received" label="Date received" type="date" :value="$c?->date_received?->format('Y-m-d')" />
     <x-input name="expiration_date" label="Expiration date" type="date" :value="$c?->expiration_date?->format('Y-m-d')" />

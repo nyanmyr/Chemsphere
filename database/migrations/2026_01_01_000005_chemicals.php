@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('chemical_name');
             $table->string('batch_number');
             $table->string('brand_name');
-            $table->decimal('volume_per_unit', $precision = 10, $scale = 3);
-            $table->decimal('initial_quantity', $precision = 10, $scale = 3);
-            $table->decimal('current_quantity', $precision = 10, $scale = 3);
+            $table->decimal('quantity_per_unit', $precision = 8, $scale = 2);
+            $table->integer('quantity_received');
+            $table->integer('current_quantity');
             $table->date('expiration_date');
             $table->date('date_received');
             $table->set('safety_classes', array_column(SafetyClass::cases(), 'value'));

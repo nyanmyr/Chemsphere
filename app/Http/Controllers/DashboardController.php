@@ -50,10 +50,9 @@ class DashboardController extends Controller
 
         $usage = UsageLog::query()
             ->where('item_type', ItemType::CHEMICAL->value)
-            ->where('quantity_used', '>', 0)
             ->where('created_at', '>=', $from)
             ->where('created_at', '<', $to)
-            ->selectRaw('item_id, SUM(quantity_used) as total_used, COUNT(*) as times_used, MAX(created_at) as last_used_at')
+            ->selectRaw('item_id, COUNT(*) as times_used, MAX(created_at) as last_used_at')
             ->groupBy('item_id')
             ->orderByDesc('last_used_at')
             ->get();
@@ -117,7 +116,7 @@ class DashboardController extends Controller
             AlertType::OUT_OF_STOCK => $query->where('current_quantity', '<=', 0),
             AlertType::LOW_STOCK => $query
                 ->where('current_quantity', '>', 0)
-                ->whereRaw('current_quantity <= initial_quantity * ?', [$lowStockThreshold]),
+                ->whereRaw('current_quantity <= quantity_received * ?', [$lowStockThreshold]),
         };
     }
 
@@ -132,7 +131,7 @@ class DashboardController extends Controller
 
         if ($current <= 0) {
             $statuses[] = AlertType::OUT_OF_STOCK;
-        } elseif ($current <= (float) $chemical->initial_quantity * $lowStockThreshold) {
+        } elseif ($current <= (float) $chemical->quantity_received * $lowStockThreshold) {
             $statuses[] = AlertType::LOW_STOCK;
         }
 

@@ -23,8 +23,6 @@ class UsageLogsController extends Controller
             'search_item_type' => 'nullable|array',
             'search_item_id_min' => 'nullable|integer|min:1',
             'search_item_id_max' => 'nullable|integer|min:1',
-            'search_quantity_used_min' => 'nullable|numeric|min:0|max:9999999999.999',
-            'search_quantity_used_max' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_quantity_remaining_min' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_quantity_remaining_max' => 'nullable|numeric|min:0|max:9999999999.999',
             'sort' => 'nullable|in:recent,oldest',
@@ -72,14 +70,6 @@ class UsageLogsController extends Controller
 
         $query->when($request->filled('search_item_id_max'), function ($q) use ($request) {
             $q->where('item_id', '<=', $request['search_item_id_max']);
-        });
-
-        $query->when($request->filled('search_quantity_used_min'), function ($q) use ($request) {
-            $q->where('quantity_used', '>=', $request['search_quantity_used_min']);
-        });
-
-        $query->when($request->filled('search_quantity_used_max'), function ($q) use ($request) {
-            $q->where('quantity_used', '<=', $request['search_quantity_used_max']);
         });
 
         $query->when($request->filled('search_quantity_remaining_min'), function ($q) use ($request) {

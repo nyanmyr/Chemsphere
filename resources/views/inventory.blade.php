@@ -6,8 +6,8 @@
         'chemical_id' => ['Chemical ID', 'number', '1'],
         'location_id' => ['Location ID', 'number', '1'],
         'created_by' => ['Created by (user ID)', 'number', '1'],
-        'volume_per_unit' => ['Volume per unit', 'number', '0.001'],
-        'initial_quantity' => ['Initial quantity', 'number', '0.001'],
+        'quantity_per_unit' => ['Volume per unit', 'number', '0.001'],
+        'quantity_received' => ['Quantity received', 'number', '0.001'],
         'current_quantity' => ['Current quantity', 'number', '0.001'],
         'expiration_date' => ['Expiration date', 'date', null],
         'date_received' => ['Date received', 'date', null],
@@ -48,7 +48,7 @@
                 <tbody class="divide-y divide-line">
                     @forelse ($data as $c)
                         @php
-                            $initial = (float) $c->initial_quantity;
+                            $initial = (float) $c->quantity_received;
                             $current = (float) $c->current_quantity;
                             $pct = $initial > 0 ? max(0, min(100, $current / $initial * 100)) : 0;
                             $bar = $current <= 0 ? 'bg-red-600' : ($pct < 20 ? 'bg-amber-500' : 'bg-reagent-600');
@@ -83,7 +83,6 @@
                                     {{ rtrim(rtrim(number_format($current, 3), '0'), '.') }}
                                     <span class="text-muted">
                                         of {{ rtrim(rtrim(number_format($initial, 3), '0'), '.') }}
-                                        {{ $c->unit }}
                                     </span>
                                 </p>
                             </td>

@@ -8,7 +8,6 @@
         'created_by' => ['Used by (user ID)', 'number', '1'],
         'location_id' => ['Location ID', 'number', '1'],
         'item_id' => ['Item ID', 'number', '1'],
-        'quantity_used' => ['Quantity used', 'number', '0.001'],
         'quantity_remaining' => ['Quantity remaining', 'number', '0.001'],
     ]" :choices="['search_item_type' => ['Item type', \App\Enums\ItemType::cases()]]" sortable />
 
@@ -19,7 +18,6 @@
                     <tr>
                         <th class="th">When</th>
                         <th class="th">Item</th>
-                        <th class="th">Used</th>
                         <th class="th">Remaining</th>
                         <th class="th">Created By</th>
                         <th class="th">Location</th>
@@ -42,9 +40,6 @@
                                 <span class="tabular-nums text-muted">
                                     #{{ $log->item_id }}
                                 </span>
-                            </td>
-                            <td class="td tabular-nums">
-                                {{ $n($log->quantity_used) }}
                             </td>
                             <td class="td tabular-nums">
                                 {{ $n($log->quantity_remaining) }}

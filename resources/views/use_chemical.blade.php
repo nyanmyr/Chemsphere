@@ -1,7 +1,7 @@
 @php
     $n = fn($v) => rtrim(rtrim(number_format((float) $v, 3), '0'), '.');
     $list = fn($v) => collect(explode(',', (string) $v))->map(fn($s) => trim($s))->filter();
-    $initial = (float) $chemical->initial_quantity;
+    $initial = (float) $chemical->quantity_received;
     $current = (float) $chemical->current_quantity;
     $pct = $initial > 0 ? max(0, min(100, $current / $initial * 100)) : 0;
 @endphp
@@ -31,7 +31,7 @@
             </div>
             <div>
                 <dt class="text-muted">Volume per unit</dt>
-                <dd class="font-medium tabular-nums">{{ $n($chemical->volume_per_unit) }}</dd>
+                <dd class="font-medium tabular-nums">{{ $n($chemical->quantity_per_unit) }}</dd>
             </div>
         </dl>
 
