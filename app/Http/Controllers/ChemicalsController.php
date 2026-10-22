@@ -12,6 +12,7 @@ use App\Enums\SafetyClass;
 use App\Enums\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class ChemicalsController extends Controller
@@ -79,11 +80,11 @@ class ChemicalsController extends Controller
         });
 
         $query->when($request->filled('search_volume_per_unit_min'), function ($q) use ($request) {
-            $q->where('quantity_per_unity', '>=', $request['search_volume_per_unit_min']);
+            $q->where('quantity_per_unit', '>=', $request['search_volume_per_unit_min']);
         });
 
         $query->when($request->filled('search_volume_per_unit_max'), function ($q) use ($request) {
-            $q->where('quantity_per_unity', '<=', $request['search_volume_per_unit_max']);
+            $q->where('quantity_per_unit', '<=', $request['search_volume_per_unit_max']);
         });
 
         $query->when($request->filled('search_quantity_received_min'), function ($q) use ($request) {
@@ -188,7 +189,7 @@ class ChemicalsController extends Controller
             'chemical_name' => 'required|string|max:255',
             'batch_number' => 'required|string|max:255',
             'brand_name' => 'required|string|max:255',
-            'quantity_per_unity' => 'required|numeric|min:0|max:99999999.99',
+            'quantity_per_unit' => 'required|numeric|min:0|max:99999999.99',
             'quantity_received' => 'required|numeric|min:0|max:99999999',
             'current_quantity' => 'required|numeric|min:0|max:99999999',
             'expiration_date' => 'required|date',
@@ -251,45 +252,52 @@ class ChemicalsController extends Controller
 
     public function use_update(Request $request, $chemical_id)
     {
-        $chemical = Chemical::where(
-            'chemical_id',
-            $chemical_id
-        )->firstOrFail();
-
         $validated = $request->validate([
-            'use_amount' => 'required|numeric|min:0|max:' . $chemical['current_quantity'],
             'notes' => 'nullable|string',
         ]);
 
-        $validated['current_quantity'] = $chemical['current_quantity'] - $validated['use_amount'];
+        // Every click on a container logs exactly one use. The row is locked so
+        // two people clicking at the same moment can't both take the last one.
+        $remaining = DB::transaction(function () use ($chemical_id, $validated) {
+            $chemical = Chemical::where('chemical_id', $chemical_id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        $notes = $validated['notes'];
+            if ($chemical->current_quantity < 1) {
+                return null;
+            }
 
-        if (($key = array_search('use_amount', $validated)) !== false) {
-            unset($validated[$key]);
+            $chemical->current_quantity -= 1;
+            $chemical->save();
+
+            AuditLog::create([
+                'created_by' => Auth::user()['user_id'],
+                'audit_action' => AuditAction::UPDATE,
+                'target' => 'used chemical',
+            ]);
+
+            UsageLog::create([
+                'created_by' => Auth::user()['user_id'],
+                'location_id' => $chemical['location_id'],
+                'item_type' => ItemType::CHEMICAL,
+                'item_id' => $chemical['chemical_id'],
+                'quantity_remaining' => $chemical['current_quantity'],
+                'notes' => $validated['notes'] ?? null,
+            ]);
+
+            return $chemical->current_quantity;
+        });
+
+        if ($remaining === null) {
+            return redirect()->route('inventory')->with('error', __('messages.chemical.out_of_stock'));
         }
 
-        if (($key = array_search('notes', $validated)) !== false) {
-            unset($validated[$key]);
-        }
+        // Stay on the page so several containers can be logged in a row;
+        // head back to the inventory once the last one is gone.
+        $destination = $remaining > 0
+            ? redirect()->route('inventory.use.edit', $chemical_id)
+            : redirect()->route('inventory');
 
-        $chemical->update($validated);
-
-        AuditLog::create([
-            'created_by' => Auth::user()['user_id'],
-            'audit_action' => AuditAction::UPDATE,
-            'target' => 'used chemical',
-        ]);
-
-        UsageLog::create([
-            'created_by' => Auth::user()['user_id'],
-            'location_id' => $chemical['location_id'],
-            'item_type' => ItemType::CHEMICAL,
-            'item_id' => $chemical['chemical_id'],
-            'quantity_remaining' => $validated['current_quantity'],
-            'notes' => $notes
-        ]);
-
-        return redirect()->route('inventory')->with('success', __('messages.chemical.used'));
+        return $destination->with('success', __('messages.chemical.used'));
     }
 }

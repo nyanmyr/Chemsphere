@@ -65,7 +65,7 @@ class ChemicalAlertService
             $this->notify(
                 $chemical,
                 AlertType::LOW_STOCK,
-                "{$chemical->chemical_name} (batch {$chemical->batch_number}) is low: {$chemical->current_quantity} {$chemical->unit} remaining."
+                "{$chemical->chemical_name} (batch {$chemical->batch_number}) is low: {$chemical->current_quantity} containers remaining."
             );
         }
     }
