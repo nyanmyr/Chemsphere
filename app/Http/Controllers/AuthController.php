@@ -23,11 +23,11 @@ class AuthController extends Controller
             'password' => [
                 'required',
                 Password::min(8)
-                    ->letters()       // Requires at least one letter
-                    ->mixedCase()     // Requires at least one uppercase and one lowercase letter
-                    ->numbers()       // Requires at least one number
-                    ->symbols()       // Requires at least one symbol
-                    ->uncompromised() // Ensures the password hasn't appeared in public data breaches
+                    //->letters()       // Requires at least one letter
+                    //->mixedCase()     // Requires at least one uppercase and one lowercase letter
+                    //->numbers()       // Requires at least one number
+                    //->symbols()       // Requires at least one symbol
+                    //->uncompromised() // Ensures the password hasn't appeared in public data breaches
             ],
         ]);
 

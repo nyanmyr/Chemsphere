@@ -1,5 +1,5 @@
 @php
-    $main = [['inventory', 'Inventory'], ['locations', 'Locations'], ['equipment', 'Equipment'], ['alerts', 'Alerts']];
+    $main = [['welcome', 'Dashboard'], ['inventory', 'Inventory'], ['locations', 'Locations'], ['equipment', 'Equipment'], ['alerts', 'Alerts']];
     $admin = [['users', 'Users'], ['usage_logs', 'Usage logs'], ['audit_logs', 'Audit logs']];
     $isAdmin = Auth::user()?->user_role?->isRole(\App\Enums\UserRole::ADMIN);
 @endphp
