@@ -115,7 +115,7 @@
                                     <th class="th">Chemical</th>
                                     <th class="th">Status</th>
                                     <th class="th">Stock</th>
-                                    <th class="th">Expires</th>
+                                    <th class="th">Expiration Date</th>
                                     <th class="th">Location</th>
                                 </tr>
                             </thead>
