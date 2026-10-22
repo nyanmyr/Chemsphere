@@ -27,8 +27,8 @@ class EquipmentController extends Controller
             'search_created_by_min' => 'nullable|integer|min:1',
             'search_created_by_max' => 'nullable|integer|min:1',
             'search_status' => 'nullable|array',
-            'search_purchase_date_min' => 'nullable|date',
-            'search_purchase_date_max' => 'nullable|date',
+            'search_date_received_min' => 'nullable|date',
+            'search_date_received_max' => 'nullable|date',
             'search_warranty_expiration_min' => 'nullable|date',
             'search_warranty_expiration_max' => 'nullable|date',
             'search_last_maintenance_min' => 'nullable|date',
@@ -76,12 +76,12 @@ class EquipmentController extends Controller
             $q->whereIn('status', (array) $request['search_status']);
         });
 
-        $query->when($request->filled('search_purchase_date_min'), function ($q) use ($request) {
-            $q->whereDate('purchase_date', '>=', $request['search_purchase_date_min']);
+        $query->when($request->filled('search_date_received_min'), function ($q) use ($request) {
+            $q->whereDate('date_received', '>=', $request['search_date_received_min']);
         });
 
-        $query->when($request->filled('search_purchase_date_max'), function ($q) use ($request) {
-            $q->whereDate('purchase_date', '<=', $request['search_purchase_date_max']);
+        $query->when($request->filled('search_date_received_max'), function ($q) use ($request) {
+            $q->whereDate('date_received', '<=', $request['search_date_received_max']);
         });
 
         $query->when($request->filled('search_warranty_expiration_min'), function ($q) use ($request) {
@@ -154,7 +154,7 @@ class EquipmentController extends Controller
             'model' => 'required|string|max:255',
             'serial_id' => 'required|string|max:255',
             'status' => ['required', Rule::enum(EquipmentStatus::class)],
-            'purchase_date' => 'required|date',
+            'date_received' => 'required|date',
             'warranty_expiration' => 'required|date',
             'last_maintenance' => 'required|date',
             'next_maintenance' => 'required|date'

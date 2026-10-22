@@ -22,7 +22,7 @@ class Equipment extends Model
         'model',
         'serial_id',
         'status',
-        'purchase_date',
+        'date_received',
         'warranty_expiration',
         'last_maintenance',
         'next_maintenance'
@@ -31,7 +31,7 @@ class Equipment extends Model
     protected function casts(): array
     {
         return [
-            'purchase_date' => 'date',
+            'date_received' => 'date',
             'warranty_expiration'    => 'date',
             'last_maintenance'    => 'date',
             'next_maintenance'    => 'date'

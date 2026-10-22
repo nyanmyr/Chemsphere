@@ -191,7 +191,7 @@ Route::post('/equipment/create', function () {
         'model'   => 'required|string|max:255',
         'serial_id'   => 'required|string|max:255',
         'status' => ['required', Rule::enum(EquipmentStatus::class)],
-        'purchase_date'   => 'required|date',
+        'date_received'   => 'required|date',
         'warranty_expiration'   => 'required|date',
         'last_maintenance'   => 'required|date',
         'next_maintenance'   => 'required|date'

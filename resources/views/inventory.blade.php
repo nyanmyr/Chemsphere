@@ -40,7 +40,7 @@
                         <th class="th">Chemical</th>
                         <th class="th">Location</th>
                         <th class="th">Stock</th>
-                        <th class="th">Expires</th>
+                        <th class="th">Expiration Date</th>
                         <th class="th">Hazards</th>
                         <th class="th"><span class="sr-only">Actions</span></th>
                     </tr>

@@ -13,7 +13,7 @@
         'equipment_id' => ['Equipment ID', 'number', '1'],
         'location_id' => ['Location ID', 'number', '1'],
         'created_by' => ['Created by (user ID)', 'number', '1'],
-        'purchase_date' => ['Purchase date', 'date', null],
+        'date_received' => ['Date Received', 'date', null],
         'warranty_expiration' => ['Warranty expiration', 'date', null],
         'last_maintenance' => ['Last maintenance', 'date', null],
         'next_maintenance' => ['Next maintenance', 'date', null],

@@ -26,8 +26,8 @@
                 <dd class="font-medium">{{ ucfirst((string) ($equipment->status->value ?? $equipment->status)) }}</dd>
             </div>
             <div>
-                <dt class="text-muted">Purchase Date</dt>
-                <dd class="font-medium">{{ $date($equipment->purchase_date) }}</dd>
+                <dt class="text-muted">Date Received</dt>
+                <dd class="font-medium">{{ $date($equipment->date_received) }}</dd>
             </div>
             <div>
                 <dt class="text-muted">Warranty Expiration</dt>
