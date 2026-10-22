@@ -89,7 +89,7 @@
                                 <div class="flex justify-end gap-1.5">
                                     <a href="{{ route('equipment.use.edit', $e->equipment_id) }}"
                                         class="btn btn-secondary btn-sm">
-                                        Use
+                                        View
                                     </a>
                                     @if ($isAdmin)
                                         <a href="{{ route('equipment.edit', $e->equipment_id) }}"

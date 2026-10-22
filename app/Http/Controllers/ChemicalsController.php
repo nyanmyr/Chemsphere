@@ -36,8 +36,8 @@ class ChemicalsController extends Controller
             'search_current_quantity_max' => 'nullable|numeric|min:0|max:9999999999.999',
             'search_expiration_date_min' => 'nullable|date',
             'search_expiration_date_max' => 'nullable|date',
-            'search_arrival_date_min' => 'nullable|date',
-            'search_arrival_date_max' => 'nullable|date',
+            'search_date_received_min' => 'nullable|date',
+            'search_date_received_max' => 'nullable|date',
             'search_safety_classes' => 'nullable|array',
             'search_ghs_symbols' => 'nullable|array',
             'search_unit' => 'nullable|array',
@@ -110,12 +110,12 @@ class ChemicalsController extends Controller
             $q->whereDate('expiration_date', '<=', $request['search_expiration_date_max']);
         });
 
-        $query->when($request->filled('search_arrival_date_min'), function ($q) use ($request) {
-            $q->whereDate('arrival_date', '>=', $request['search_arrival_date_min']);
+        $query->when($request->filled('search_date_received_min'), function ($q) use ($request) {
+            $q->whereDate('date_received', '>=', $request['search_date_received_min']);
         });
 
-        $query->when($request->filled('search_arrival_date_max'), function ($q) use ($request) {
-            $q->whereDate('arrival_date', '<=', $request['search_arrival_date_max']);
+        $query->when($request->filled('search_date_received_max'), function ($q) use ($request) {
+            $q->whereDate('date_received', '<=', $request['search_date_received_max']);
         });
 
         $query->when($request->filled('search_safety_classes'), function ($q) use ($request) {
@@ -192,7 +192,7 @@ class ChemicalsController extends Controller
             'initial_quantity' => 'required|numeric|min:0|max:9999999999.999',
             'current_quantity' => 'required|numeric|min:0|max:9999999999.999',
             'expiration_date' => 'required|date',
-            'arrival_date' => 'required|date',
+            'date_received' => 'required|date',
             'safety_classes' => 'nullable|array',
             'safety_classes.*' => ['required', Rule::enum(SafetyClass::class)],
             'ghs_symbols' => 'nullable|array',

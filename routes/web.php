@@ -126,7 +126,7 @@ Route::post('/inventory/create', function () {
         'initial_quantity'   => 'required|numeric|min:0|max:9999999999.999',
         'current_quantity'   => 'required|numeric|min:0|max:9999999999.999',
         'expiration_date'   => 'required|date',
-        'arrival_date'   => 'required|date',
+        'date_received'   => 'required|date',
         'safety_classes'   => 'nullable|array',
         'safety_classes.*' => ['required', Rule::enum(SafetyClass::class)],
         'ghs_symbols'   => 'nullable|array',

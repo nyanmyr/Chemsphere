@@ -10,7 +10,7 @@
         'initial_quantity' => ['Initial quantity', 'number', '0.001'],
         'current_quantity' => ['Current quantity', 'number', '0.001'],
         'expiration_date' => ['Expiration date', 'date', null],
-        'arrival_date' => ['Arrival date', 'date', null],
+        'date_received' => ['Date received', 'date', null],
     ];
     $choices = [
         'search_safety_classes' => ['Safety class', \App\Enums\SafetyClass::cases()],
@@ -120,7 +120,7 @@
                                 <div class="flex justify-end gap-1.5">
                                     <a href="{{ route('inventory.use.edit', $c->chemical_id) }}"
                                         class="btn btn-secondary btn-sm">
-                                        Use
+                                        View
                                     </a>
                                     @if ($isAdmin)
                                         <a href="{{ route('inventory.edit', $c->chemical_id) }}"

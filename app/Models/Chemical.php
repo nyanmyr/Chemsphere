@@ -25,7 +25,7 @@ class Chemical extends Model
         'initial_quantity',
         'current_quantity',
         'expiration_date',
-        'arrival_date',
+        'date_received',
         'safety_classes',
         'ghs_symbols',
         'unit'
@@ -35,7 +35,7 @@ class Chemical extends Model
     {
         return [
             'expiration_date' => 'date',
-            'arrival_date'    => 'date',
+            'date_received'    => 'date',
         ];
     }
 

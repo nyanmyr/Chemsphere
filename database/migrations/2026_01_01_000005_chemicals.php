@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('initial_quantity', $precision = 10, $scale = 3);
             $table->decimal('current_quantity', $precision = 10, $scale = 3);
             $table->date('expiration_date');
-            $table->date('arrival_date');
+            $table->date('date_received');
             $table->set('safety_classes', array_column(SafetyClass::cases(), 'value'));
             $table->set('ghs_symbols', array_column(GHSSymbol::cases(), 'value'));
             $table->string('unit')->default(Unit::KILOGRAM->value);
