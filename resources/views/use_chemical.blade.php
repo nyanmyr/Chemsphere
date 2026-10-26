@@ -46,7 +46,7 @@
                 <dd class="font-medium">{{ $chemical->expiration_date?->format('M j, Y') }}</dd>
             </div>
             <div>
-                <dt class="text-muted">Arrived</dt>
+                <dt class="text-muted">Date Received</dt>
                 <dd class="font-medium">{{ $chemical->date_received?->format('M j, Y') }}</dd>
             </div>
             <div>
