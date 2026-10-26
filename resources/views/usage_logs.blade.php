@@ -8,7 +8,7 @@
         'created_by' => ['Used by (user ID)', 'number', '1'],
         'location_id' => ['Location ID', 'number', '1'],
         'item_id' => ['Item ID', 'number', '1'],
-        'quantity_remaining' => ['Quantity remaining', 'number', '0.001'],
+        'quantity_remaining' => ['Quantity remaining', 'number', '0.01'],
     ]" :choices="['search_item_type' => ['Item type', \App\Enums\ItemType::cases()]]" sortable />
 
     <div id="usage-logs-table">
