@@ -16,11 +16,10 @@
             <table class="w-full text-sm">
                 <thead class="border-b border-line">
                     <tr>
-                        <th class="th">When</th>
                         <th class="th">Item</th>
                         <th class="th">Remaining</th>
+                        <th class="th">Date Out</th>
                         <th class="th">Created By</th>
-                        <th class="th">Location</th>
                         <th class="th">Notes</th>
                     </tr>
                 </thead>
@@ -30,12 +29,6 @@
                             $isChemical = $log->item_type->value ?? $log->item_type === \App\Enums\ItemType::CHEMICAL->value
                         @endphp
                         <tr>
-                            <td class="td whitespace-nowrap">
-                                {{ $log->created_at->format('M j, Y g:i A') }}
-                                <p class="text-xs text-muted">
-                                    Log #{{ $log->usage_log_id }}
-                                </p>
-                            </td>
                             <td class="td whitespace-nowrap">
                                 @if ($isChemical)
                                     {{ $log->chemical?->chemical_name }}
@@ -59,20 +52,10 @@
                                     <span class="text-muted">N/A</span>
                                 @endif
                             </td>
-                            <td class="td">
-                                <p class="font-medium">
-                                    {{ $log->user?->email }}
-                                </p>
+                            <td class="td whitespace-nowrap">
+                                {{ $log->created_at->format('M j, Y g:i A') }}
                                 <p class="text-xs text-muted">
-                                    #{{ $log->user?->user_id }}
-                                </p>
-                            </td>
-                            <td class="td">
-                                <p class="font-medium">
-                                    {{ $log->location?->location_name }}
-                                </p>
-                                <p class="text-xs text-muted">
-                                    #{{ $log->location?->location_id }}
+                                    Log #{{ $log->usage_log_id }}
                                 </p>
                             </td>
                             <td class="td">
@@ -105,6 +88,14 @@
                                 @else
                                     <span class="text-muted">None</span>
                                 @endif
+                            </td>
+                            <td class="td">
+                                <p class="font-medium">
+                                    {{ $log->user?->email }}
+                                </p>
+                                <p class="text-xs text-muted">
+                                    #{{ $log->user?->user_id }}
+                                </p>
                             </td>
                         </tr>
                     @empty
