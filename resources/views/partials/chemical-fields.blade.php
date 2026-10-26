@@ -14,8 +14,8 @@
     <x-select name="location_id" label="Location" :options="$locations" :value="$c?->location_id" keyed placeholder="Select a location" />
     <x-select name="unit" label="Unit" :options="\App\Enums\Unit::cases()" :value="$c?->unit" />
     <x-input name="quantity_per_unit" :label="$quantityType . ' Per Container'" type="number" step="0.01" min="0" max="99999999" :value="$c?->quantity_per_unit" />
-    <x-input name="quantity_received" label="Quantity received" type="number" step="0.01" min="0" max="99999999" :value="$c?->quantity_received" />
-    <x-input name="current_quantity" label="Current Quantity" type="number" step="0.01" min="0" max="99999999" :value="$c?->current_quantity" />
+    <x-input name="quantity_received" label="Quantity Received" type="number" min="0" max="99999999" :value="$c?->quantity_received" />
+    <x-input name="current_quantity" label="Current Quantity" type="number" min="0" max="99999999" :value="$c?->current_quantity" />
     <x-input name="date_received" label="Date Received" type="date" :value="$c?->date_received?->format('Y-m-d')" />
     <x-input name="expiration_date" label="Expiration Date" type="date" :value="$c?->expiration_date?->format('Y-m-d')" />
     <x-chips name="safety_classes" label="Safety Classes" :cases="\App\Enums\SafetyClass::cases()" :selected="old('safety_classes', $split($c?->safety_classes))" class="sm:col-span-2" />
