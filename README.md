@@ -41,7 +41,7 @@ Powered by WebSockets, every table updates instantly without needing a page refr
 
 ### Inventory and equipment
 
-- **Chemical inventory** - with batch number, brand, volume per unit, initial and current quantity, received and expiration dates, storage location, and unit of measure (kg, g, mg, µg, L, mL, µL).
+- **Chemical inventory** - with batch number, brand, quantity per unit, initial and current quantity, received and expiration dates, storage location, and unit of measure (kg, g, mg, µg, L, mL, µL).
 - **Safety metadata** - on every chemical: safety classes (flammable, corrosive, reactive, toxic) and GHS pictograms (GHS01 to GHS09).
 - **Advanced search and filtering** - on the inventory: free-text search plus min/max ranges for ID, location, creator, volume, quantities, and dates, and filters for safety classes, GHS symbols, and unit.
 - **Equipment tracking** - with model, serial ID, location, purchase and warranty dates, last/next maintenance dates, and a status of *available*, *unavailable*, *broken*, or *under maintenance*.

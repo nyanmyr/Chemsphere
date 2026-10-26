@@ -6,7 +6,7 @@
         'chemical_id' => ['Chemical ID', 'number', '1'],
         'location_id' => ['Location ID', 'number', '1'],
         'created_by' => ['Created by (user ID)', 'number', '1'],
-        'quantity_per_unit' => ['Volume per unit', 'number', '0.001'],
+        'quantity_per_unit' => ['Quantity per unit', 'number', '0.001'],
         'quantity_received' => ['Quantity received', 'number', '0.001'],
         'current_quantity' => ['Current quantity', 'number', '0.001'],
         'expiration_date' => ['Expiration date', 'date', null],
