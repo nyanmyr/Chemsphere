@@ -6,7 +6,7 @@
 
 <x-app-layout title="Equipment">
     <x-slot:actions>
-        @if ($isAdmin)<a href="{{ route('equipment.create') }}" class="btn btn-primary">Add equipment</a>@endif
+        @if ($isAdmin)<a href="{{ route('equipment.create') }}" class="btn btn-primary">Create Equipment</a>@endif
     </x-slot:actions>
 
     <x-filter-bar :action="route('equipment')" placeholder="Search name, model, or serial" :ranges="[

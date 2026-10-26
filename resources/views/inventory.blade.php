@@ -25,7 +25,7 @@
 <x-app-layout title="Inventory">
     <x-slot:actions>
         @if ($isAdmin)
-            <a href="{{ route('inventory.create') }}" class="btn btn-primary">Add chemical</a>
+            <a href="{{ route('inventory.create') }}" class="btn btn-primary">Create Chemical</a>
         @endif
     </x-slot:actions>
 
