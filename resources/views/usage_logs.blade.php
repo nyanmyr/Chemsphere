@@ -26,6 +26,9 @@
                 </thead>
                 <tbody class="divide-y divide-line">
                     @forelse ($data as $log)
+                        @php
+                            $isChemical = $log->item_type->value ?? $log->item_type === \App\Enums\ItemType::CHEMICAL->value
+                        @endphp
                         <tr>
                             <td class="td whitespace-nowrap">
                                 {{ $log->created_at->format('M j, Y g:i A') }}
@@ -34,15 +37,27 @@
                                 </p>
                             </td>
                             <td class="td whitespace-nowrap">
-                                <span class="badge badge-neutral">
-                                    {{ ucfirst((string) ($log->item_type->value ?? $log->item_type)) }}
-                                </span>
-                                <span class="tabular-nums text-muted">
-                                    #{{ $log->item_id }}
-                                </span>
+                                @if ($isChemical)
+                                    {{ $log->chemical?->chemical_name }}
+                                @else
+                                    {{ $log->equipment?->equipment_name }}
+                                @endif
+                                <p class="text-xs text-muted">
+                                    <span class="badge badge-neutral">
+                                        {{ ucfirst((string) ($log->item_type->value ?? $log->item_type)) }}
+                                    </span>
+                                    <span class="tabular-nums text-muted">
+                                        #{{ $log->item_id }}
+                                    </span>
+                                </p>
                             </td>
                             <td class="td tabular-nums">
-                                {{ $n($log->quantity_remaining) }}
+                                @if ($isChemical)
+                                    {{ $n($log->quantity_remaining) }}
+                                    <span class="text-muted">/ {{ $n($log->chemical?->quantity_received) }} containers</span>
+                                @else
+                                    <span class="text-muted">N/A</span>
+                                @endif
                             </td>
                             <td class="td">
                                 <p class="font-medium">

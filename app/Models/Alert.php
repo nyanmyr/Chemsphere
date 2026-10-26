@@ -34,14 +34,14 @@ class Alert extends Model
     }
 
     public function chemical(): BelongsTo
-   {
-       return $this->belongsTo(Chemical::class, 'item_id', 'chemical_id');
-   }
+    {
+        return $this->belongsTo(Chemical::class, 'item_id', 'chemical_id');
+    }
 
-   public function equipment(): BelongsTo
-   {
-       return $this->belongsTo(Equipment::class, 'item_id', 'equipment_id');
-   }
+    public function equipment(): BelongsTo
+    {
+        return $this->belongsTo(Equipment::class, 'item_id', 'equipment_id');
+    }
 
     public function notifiable(): MorphTo
     {

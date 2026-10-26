@@ -30,7 +30,7 @@
             <section id="used-today" class="mt-8" aria-labelledby="used-today-title">
                 <div class="mb-3 flex flex-wrap items-baseline justify-between gap-x-3">
                     <h2 id="used-today-title" class="text-lg font-semibold tracking-tight">
-                        Chemicals used today
+                        Chemicals Used Today
                     </h2>
                     <p class="text-sm text-muted">{{ $today->format('l, M j') }}</p>
                 </div>
@@ -40,9 +40,8 @@
                         <thead class="border-b border-line">
                             <tr>
                                 <th class="th">Chemical</th>
-                                <th class="th">Used</th>
                                 <th class="th">Remaining</th>
-                                <th class="th">Last used</th>
+                                <th class="th">Time Used</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-line">
@@ -61,13 +60,9 @@
                                         @endif
                                     </td>
                                     <td class="td whitespace-nowrap tabular-nums">
-                                        {{ $row['times_used'] }}
-                                        <span class="text-muted">{{ $c?->unit }}</span>
-                                    </td>
-                                    <td class="td whitespace-nowrap tabular-nums">
                                         @if ($c)
                                             {{ $n($c->current_quantity) }}
-                                            <span class="text-muted">{{ $c->unit }}</span>
+                                            <span class="text-muted">/ {{ $n($c->quantity_received) }} containers</span>
                                         @else
                                             <span class="text-muted">N/A</span>
                                         @endif
@@ -92,7 +87,7 @@
 
             <section class="mt-8" aria-labelledby="attention-title">
                 <h2 id="attention-title" class="mb-3 text-lg font-semibold tracking-tight">
-                    Chemicals needing attention
+                    Chemicals Needing Attention
                 </h2>
 
                 <x-filter-bar :action="route('welcome')" placeholder="Search name, batch / lot number, or brand"

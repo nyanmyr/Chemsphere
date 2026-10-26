@@ -46,6 +46,16 @@ class UsageLog extends Model
         return $this->belongsTo(Location::class, 'location_id', 'location_id');
     }
 
+    public function chemical(): BelongsTo
+    {
+        return $this->belongsTo(Chemical::class, 'item_id', 'chemical_id');
+    }
+
+    public function equipment(): BelongsTo
+    {
+        return $this->belongsTo(Equipment::class, 'item_id', 'equipment_id');
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by', 'user_id');
