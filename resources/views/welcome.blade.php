@@ -53,7 +53,7 @@
                                         @if ($c)
                                             <p class="font-medium">{{ $c->chemical_name }}</p>
                                             <p class="text-xs text-muted">
-                                                #{{ $c->chemical_id }}, batch {{ $c->batch_number }}
+                                                #{{ $c->chemical_id }}, batch / lot number {{ $c->batch_number }}
                                             </p>
                                         @else
                                             <p class="font-medium text-muted">Deleted chemical</p>
@@ -95,7 +95,7 @@
                     Chemicals needing attention
                 </h2>
 
-                <x-filter-bar :action="route('welcome')" placeholder="Search name, batch, or brand"
+                <x-filter-bar :action="route('welcome')" placeholder="Search name, batch / lot number, or brand"
                     :choices="['search_alert_type' => ['Status', $alertTypes]]" :sortable="false" />
 
                 @php $filtered = filled(request('search')) || filled(request('search_alert_type')); @endphp

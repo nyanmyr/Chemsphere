@@ -30,7 +30,7 @@
     <div class="card mb-6 max-w-2xl p-5">
         <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
             <div>
-                <dt class="text-muted">Batch</dt>
+                <dt class="text-muted">Batch / Lot Number</dt>
                 <dd class="font-medium">{{ $chemical->batch_number }}</dd>
             </div>
             <div>

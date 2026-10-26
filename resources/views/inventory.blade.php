@@ -29,7 +29,7 @@
         @endif
     </x-slot:actions>
 
-    <x-filter-bar :action="route('inventory')" placeholder="Search name, batch, or brand" :ranges="$ranges"
+    <x-filter-bar :action="route('inventory')" placeholder="Search name, batch / lot number, or brand" :ranges="$ranges"
         :choices="$choices" sortable />
 
     <div id="inventory-table">
@@ -62,7 +62,7 @@
                                     {{ $c->chemical_name }}
                                 </p>
                                 <p class="text-xs text-muted">
-                                    #{{ $c->chemical_id }}, batch {{ $c->batch_number }},
+                                    #{{ $c->chemical_id }}, batch / lot number {{ $c->batch_number }},
                                     {{ $c->brand_name }}
                                 </p>
                             </td>

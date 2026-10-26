@@ -35,7 +35,7 @@
                                     {{ $alert->chemical?->chemical_name }}
                                 </p>
                                 <p class="text-xs text-muted">
-                                    #{{ $alert->chemical?->chemical_id }}, batch {{ $alert->chemical?->batch_number }},
+                                    #{{ $alert->chemical?->chemical_id }}, batch / lot number {{ $alert->chemical?->batch_number }},
                                     {{ $alert->chemical?->brand_name }}
                                 </p>
                             </td>

@@ -5,15 +5,15 @@
 
 <div class="grid gap-4 sm:grid-cols-2">
     <x-input name="chemical_name" label="Name" :value="$c?->chemical_name" class="sm:col-span-2" />
-    <x-input name="batch_number" label="Batch number" :value="$c?->batch_number" />
+    <x-input name="batch_number" label="Batch / Lot Number" :value="$c?->batch_number" />
     <x-input name="brand_name" label="Brand" :value="$c?->brand_name" />
     <x-input name="location_id" label="Location ID" type="number" min="1" step="1" :value="$c?->location_id" />
     <x-select name="unit" label="Unit" :options="\App\Enums\Unit::cases()" :value="$c?->unit" />
-    <x-input name="quantity_per_unit" label="{{ ucfirst($chemical->quantityType()) }} per container" type="number" step="0.01" min="0" max="99999999" :value="$c?->quantity_per_unit" />
+    <x-input name="quantity_per_unit" label="{{ ucfirst($chemical->quantityType()) }} Per Container" type="number" step="0.01" min="0" max="99999999" :value="$c?->quantity_per_unit" />
     <x-input name="quantity_received" label="Quantity received" type="number" step="0.01" min="0" max="99999999" :value="$c?->quantity_received" />
-    <x-input name="current_quantity" label="Current quantity" type="number" step="0.01" min="0" max="99999999" :value="$c?->current_quantity" />
-    <x-input name="date_received" label="Date received" type="date" :value="$c?->date_received?->format('Y-m-d')" />
-    <x-input name="expiration_date" label="Expiration date" type="date" :value="$c?->expiration_date?->format('Y-m-d')" />
-    <x-chips name="safety_classes" label="Safety classes" :cases="\App\Enums\SafetyClass::cases()" :selected="old('safety_classes', $split($c?->safety_classes))" class="sm:col-span-2" />
-    <x-chips name="ghs_symbols" label="GHS symbols" :cases="\App\Enums\GHSSymbol::cases()" :selected="old('ghs_symbols', $split($c?->ghs_symbols))" class="sm:col-span-2" />
+    <x-input name="current_quantity" label="Current Quantity" type="number" step="0.01" min="0" max="99999999" :value="$c?->current_quantity" />
+    <x-input name="date_received" label="Date Received" type="date" :value="$c?->date_received?->format('Y-m-d')" />
+    <x-input name="expiration_date" label="Expiration Date" type="date" :value="$c?->expiration_date?->format('Y-m-d')" />
+    <x-chips name="safety_classes" label="Safety Classes" :cases="\App\Enums\SafetyClass::cases()" :selected="old('safety_classes', $split($c?->safety_classes))" class="sm:col-span-2" />
+    <x-chips name="ghs_symbols" label="GHS Symbols" :cases="\App\Enums\GHSSymbol::cases()" :selected="old('ghs_symbols', $split($c?->ghs_symbols))" class="sm:col-span-2" />
 </div>
