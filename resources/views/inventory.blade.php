@@ -58,7 +58,7 @@
                         @endphp
                         <tr>
                             <td class="td">
-                                <p class="font-medium">
+                                <p class="font-semibold">
                                     {{ $c->chemical_name }}
                                 </p>
                                 <p class="text-xs text-muted">
@@ -83,6 +83,11 @@
                                     {{ rtrim(rtrim(number_format($current, 3), '0'), '.') }}
                                     <span class="text-muted">
                                         of {{ rtrim(rtrim(number_format($initial, 3), '0'), '.') }}
+                                    </span>
+                                </p>
+                                <p class="whitespace-nowrap tabular-nums">
+                                    <span class="text-muted text-xs">
+                                        {{ $c->quantity_per_unit }} {{ $c->quantityType() }} per container
                                     </span>
                                 </p>
                             </td>

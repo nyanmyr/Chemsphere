@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Unit;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -57,5 +58,10 @@ class Chemical extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by', 'user_id');
+    }
+
+    public function quantityType(): string
+    {
+        return Unit::tryFrom((string) $this->unit)?->quantityType() ?? 'quantity';
     }
 }
