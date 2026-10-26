@@ -1,17 +1,23 @@
-@props(['name', 'label', 'options', 'value' => null])
+@props(['name', 'label', 'options', 'value' => null, 'keyed' => false, 'placeholder' => null])
 
 <div {{ $attributes->only('class') }}>
     <label for="{{ $name }}" class="label">
         {{ $label }}
     </label>
-    <select id="{{ $name }}" name="{{ $name }}" class="field
+    <select id="{{ $name }}" name="{{ $name }}" @required($placeholder) class="field
     @error($name)
         border-red-400
     @enderror
     ">
-        @foreach ($options as $option)
-            @php $v = is_object($option) ? $option->value : $option; @endphp
-            <option value="{{ $v }}" @selected(old($name, $value) == $v)>{{ $v }}</option>
+        @if ($placeholder)
+            <option value="">{{ $placeholder }}</option>
+        @endif
+        @foreach ($options as $key => $option)
+            @php
+                $v = $keyed ? $key : (is_object($option) ? $option->value : $option);
+                $text = $keyed ? $option : $v;
+            @endphp
+            <option value="{{ $v }}" @selected(old($name, $value) == $v)>{{ $text }}</option>
         @endforeach
     </select>
     @error ($name)

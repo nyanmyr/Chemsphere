@@ -4,13 +4,14 @@
     $units = collect(\App\Enums\Unit::cases())
     ->mapWithKeys(fn ($u) => [$u->value => ucfirst($u->quantityType())]);
     $quantityType = $units[old('unit', $c?->unit)] ?? $units->first(); 
+    $locations = \App\Models\Location::orderBy('location_name')->pluck('location_name', 'location_id');
 @endphp
 
 <div class="grid gap-4 sm:grid-cols-2">
     <x-input name="chemical_name" label="Name" :value="$c?->chemical_name" class="sm:col-span-2" />
     <x-input name="batch_number" label="Batch / Lot Number" :value="$c?->batch_number" />
     <x-input name="brand_name" label="Brand" :value="$c?->brand_name" />
-    <x-input name="location_id" label="Location ID" type="number" min="1" step="1" :value="$c?->location_id" />
+    <x-select name="location_id" label="Location" :options="$locations" :value="$c?->location_id" keyed placeholder="Select a location" />
     <x-select name="unit" label="Unit" :options="\App\Enums\Unit::cases()" :value="$c?->unit" />
     <x-input name="quantity_per_unit" :label="$quantityType . ' Per Container'" type="number" step="0.01" min="0" max="99999999" :value="$c?->quantity_per_unit" />
     <x-input name="quantity_received" label="Quantity received" type="number" step="0.01" min="0" max="99999999" :value="$c?->quantity_received" />
