@@ -19,8 +19,8 @@
                         <th class="th">Item</th>
                         <th class="th">Remaining</th>
                         <th class="th">Date Out</th>
-                        <th class="th">Created By</th>
                         <th class="th">Notes</th>
+                        <th class="th">Created By</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-line">

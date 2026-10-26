@@ -41,7 +41,7 @@
                             <tr>
                                 <th class="th">Chemical</th>
                                 <th class="th">Remaining</th>
-                                <th class="th">Time Used</th>
+                                <th class="th">Time Out</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-line">
