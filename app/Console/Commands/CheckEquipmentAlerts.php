@@ -10,7 +10,7 @@ class CheckEquipmentAlerts extends Command
 {
     protected $signature = 'equipment:check-alerts';
 
-    protected $description = 'Check equipment for warranty expiration.';
+    protected $description = 'Check equipment for upcoming and overdue preventive maintenance.';
 
     public function handle(EquipmentAlertService $alertService): int
     {

@@ -17,7 +17,7 @@ class Alert extends Model
     protected $primaryKey = 'alert_id';
 
     protected $fillable = [
-        'chemical_id',
+        'item_id',
         'message',
         'alert_type',
         'notifiable_id',
@@ -34,9 +34,14 @@ class Alert extends Model
     }
 
     public function chemical(): BelongsTo
-    {
-        return $this->belongsTo(Chemical::class, 'chemical_id', 'chemical_id');
-    }
+   {
+       return $this->belongsTo(Chemical::class, 'item_id', 'chemical_id');
+   }
+
+   public function equipment(): BelongsTo
+   {
+       return $this->belongsTo(Equipment::class, 'item_id', 'equipment_id');
+   }
 
     public function notifiable(): MorphTo
     {

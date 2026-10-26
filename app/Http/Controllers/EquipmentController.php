@@ -2,19 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AlertType;
 use App\Enums\AuditAction;
 use App\Enums\EquipmentStatus;
 use App\Enums\ItemType;
 use App\Models\AuditLog;
 use App\Models\Equipment;
 use App\Models\UsageLog;
+use App\Services\EquipmentAlertService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class EquipmentController extends Controller
 {
-    public function equipment(Request $request)
+    private const ATTENTION_TYPES = [
+        AlertType::MAINTENANCE_CLOSE_TO_DUE,
+        AlertType::MAINTENANCE_OVERDUE,
+    ];
+
+    public function equipment(Request $request, EquipmentAlertService $alerts)
     {
         $user = Auth::user();
 
@@ -29,12 +36,12 @@ class EquipmentController extends Controller
             'search_status' => 'nullable|array',
             'search_date_received_min' => 'nullable|date',
             'search_date_received_max' => 'nullable|date',
-            'search_warranty_expiration_min' => 'nullable|date',
-            'search_warranty_expiration_max' => 'nullable|date',
-            'search_last_maintenance_min' => 'nullable|date',
-            'search_last_maintenance_max' => 'nullable|date',
-            'search_next_maintenance_min' => 'nullable|date',
-            'search_next_maintenance_max' => 'nullable|date',
+            'search_preventive_maintenance_date_min' => 'nullable|date',
+            'search_preventive_maintenance_date_max' => 'nullable|date',
+            'search_next_due_min' => 'nullable|date',
+            'search_next_due_max' => 'nullable|date',
+            'search_alert_type' => 'nullable|array',
+            'search_alert_type.*' => ['required', Rule::enum(AlertType::class)->only(self::ATTENTION_TYPES)],
             'sort' => 'nullable|in:recent,oldest',
         ]);
 
@@ -84,28 +91,31 @@ class EquipmentController extends Controller
             $q->whereDate('date_received', '<=', $request['search_date_received_max']);
         });
 
-        $query->when($request->filled('search_warranty_expiration_min'), function ($q) use ($request) {
-            $q->whereDate('warranty_expiration', '>=', $request['search_warranty_expiration_min']);
+        $query->when($request->filled('search_preventive_maintenance_date_min'), function ($q) use ($request) {
+            $q->whereDate('preventive_maintenance_date', '>=', $request['search_preventive_maintenance_date_min']);
         });
 
-        $query->when($request->filled('search_warranty_expiration_max'), function ($q) use ($request) {
-            $q->whereDate('warranty_expiration', '<=', $request['search_warranty_expiration_max']);
+        $query->when($request->filled('search_preventive_maintenance_date_max'), function ($q) use ($request) {
+            $q->whereDate('preventive_maintenance_date', '<=', $request['search_preventive_maintenance_date_max']);
         });
 
-        $query->when($request->filled('search_last_maintenance_min'), function ($q) use ($request) {
-            $q->whereDate('last_maintenance', '>=', $request['search_last_maintenance_min']);
+        $query->when($request->filled('search_next_due_min'), function ($q) use ($request) {
+            $q->whereDate('next_due', '>=', $request['search_next_due_min']);
         });
 
-        $query->when($request->filled('search_last_maintenance_max'), function ($q) use ($request) {
-            $q->whereDate('last_maintenance', '<=', $request['search_last_maintenance_max']);
+        $query->when($request->filled('search_next_due_max'), function ($q) use ($request) {
+            $q->whereDate('next_due', '<=', $request['search_next_due_max']);
         });
 
-        $query->when($request->filled('search_next_maintenance_min'), function ($q) use ($request) {
-            $q->whereDate('next_maintenance', '>=', $request['search_next_maintenance_min']);
-        });
+        // Ticking both alert types shows equipment in either state.
+        $query->when($request->filled('search_alert_type'), function ($q) use ($request, $alerts) {
+            $types = collect($request['search_alert_type'])->map(fn ($value) => AlertType::from($value));
 
-        $query->when($request->filled('search_next_maintenance_max'), function ($q) use ($request) {
-            $q->whereDate('next_maintenance', '<=', $request['search_next_maintenance_max']);
+            $q->where(function ($sub) use ($types, $alerts) {
+                foreach ($types as $type) {
+                    $sub->orWhere(fn ($w) => $this->applyCondition($w, $type, $alerts->closeToDueMonths()));
+                }
+            });
         });
 
         $direction = $request->input('sort', 'recent') === 'oldest' ? 'asc' : 'desc';
@@ -117,7 +127,11 @@ class EquipmentController extends Controller
             session()->now('info', __('messages.equipment.none_found'));
         }
 
-        return view('equipment', compact('data', 'user'));
+        $statuses = $data->getCollection()
+            ->mapWithKeys(fn (Equipment $e) => [$e->equipment_id => $alerts->maintenanceStatus($e)]);
+        $alertTypes = self::ATTENTION_TYPES;
+
+        return view('equipment', compact('data', 'user', 'statuses', 'alertTypes'));
     }
 
     public function delete($equipment_id)
@@ -155,9 +169,8 @@ class EquipmentController extends Controller
             'serial_id' => 'required|string|max:255',
             'status' => ['required', Rule::enum(EquipmentStatus::class)],
             'date_received' => 'required|date',
-            'warranty_expiration' => 'required|date',
-            'last_maintenance' => 'required|date',
-            'next_maintenance' => 'required|date'
+            'preventive_maintenance_date' => 'required|date',
+            'next_due' => 'required|date'
         ]);
 
         $equipment = Equipment::where(
@@ -176,7 +189,7 @@ class EquipmentController extends Controller
         return redirect()->route('equipment')->with('success', __('messages.equipment.updated'));
     }
 
-    public function use_edit($equipment_id)
+    public function use_edit($equipment_id, EquipmentAlertService $alerts)
     {
         $equipment = Equipment::where(
             'equipment_id',
@@ -186,15 +199,15 @@ class EquipmentController extends Controller
         switch ($equipment['status']) {
             case EquipmentStatus::OUT_OF_ORDER->value:
                 return back()->with('error', __('messages.equipment.out_of_order'));
-            case EquipmentStatus::DUE_FOR_CALIBRATION->value:
-                return back()->with('error', __('messages.equipment.due_for_calibration'));
             case EquipmentStatus::FOR_DISPOSAL->value:
                 return back()->with('error', __('messages.equipment.for_disposal'));
             case EquipmentStatus::IN_USE->value:
                 return back()->with('error', __('messages.equipment.in_use'));
         }
 
-        return view('use_equipment', compact('equipment'));
+        $maintenance = $alerts->maintenanceStatus($equipment);
+
+        return view('use_equipment', compact('equipment', 'maintenance'));
     }
 
     public function use_update(Request $request, $equipment_id)
@@ -232,5 +245,15 @@ class EquipmentController extends Controller
         ]);
 
         return redirect()->route('equipment')->with('success', __('messages.equipment.used'));
+    }
+
+    private function applyCondition($query, AlertType $type, int $closeToDueMonths): void
+    {
+        match ($type) {
+            AlertType::MAINTENANCE_OVERDUE => $query->whereDate('next_due', '<=', today()),
+            AlertType::MAINTENANCE_CLOSE_TO_DUE => $query
+                ->whereDate('next_due', '>', today())
+                ->whereDate('next_due', '<=', today()->addMonthsNoOverflow($closeToDueMonths)),
+        };
     }
 }

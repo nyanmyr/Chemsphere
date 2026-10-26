@@ -23,18 +23,16 @@ class Equipment extends Model
         'serial_id',
         'status',
         'date_received',
-        'warranty_expiration',
-        'last_maintenance',
-        'next_maintenance'
+        'preventive_maintenance_date',
+        'next_due'
     ];
 
     protected function casts(): array
     {
         return [
             'date_received' => 'date',
-            'warranty_expiration'    => 'date',
-            'last_maintenance'    => 'date',
-            'next_maintenance'    => 'date'
+            'preventive_maintenance_date' => 'date',
+            'next_due' => 'date'
         ];
     }
 

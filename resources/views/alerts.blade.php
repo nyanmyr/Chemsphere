@@ -1,5 +1,6 @@
 @php
-    $tone = fn($type) => in_array($type?->value, ['expired', 'out of stock']) ? 'badge-danger' : 'badge-warning';
+    $equipmentTypes = [App\Enums\AlertType::MAINTENANCE_CLOSE_TO_DUE, App\Enums\AlertType::MAINTENANCE_OVERDUE];
+    $tone = fn($type) => in_array($type?->value, ['expired', 'out of stock', 'maintenance overdue']) ? 'badge-danger' : 'badge-warning';
 @endphp
 
 <x-app-layout title="Alerts">
@@ -18,12 +19,7 @@
                     @forelse ($data as $alert)
                         <tr class="{{ $alert->read_at ? 'text-muted' : '' }}">
                             <td class="td">
-                                @if ($alert->alert_type == App\Enums\AlertType::EXPIRED ||
-                                $alert->alert_type == App\Enums\AlertType::OUT_OF_STOCK)
-                                    <span class="badge badge-danger">
-                                @else
-                                    <span class="badge badge-warning ml-1">
-                                @endif
+                                <span class="badge {{ $tone($alert->alert_type) }}">
                                     {{ ucfirst((string) ($alert->alert_type->value ?? $alert->alert_type)) }}
                                 </span>
                                 <p class="mt-1 {{ $alert->read_at ? '' : 'font-medium' }}">
@@ -31,13 +27,23 @@
                                 </p>
                             </td>
                             <td class="td">
-                                <p class="font-medium">
-                                    {{ $alert->chemical?->chemical_name }}
-                                </p>
-                                <p class="text-xs text-muted">
-                                    #{{ $alert->chemical?->chemical_id }}, batch / lot number {{ $alert->chemical?->batch_number }},
-                                    {{ $alert->chemical?->brand_name }}
-                                </p>
+                                @if (in_array($alert->alert_type, $equipmentTypes, true))
+                                    <p class="font-medium">
+                                        {{ $alert->equipment?->equipment_name }}
+                                    </p>
+                                    <p class="text-xs text-muted">
+                                        #{{ $alert->equipment?->equipment_id }}, {{ $alert->equipment?->model }}, serial
+                                        {{ $alert->equipment?->serial_id }}
+                                    </p>
+                                @else
+                                    <p class="font-medium">
+                                        {{ $alert->chemical?->chemical_name }}
+                                    </p>
+                                    <p class="text-xs text-muted">
+                                        #{{ $alert->chemical?->chemical_id }}, batch {{ $alert->chemical?->batch_number }},
+                                        {{ $alert->chemical?->brand_name }}
+                                    </p>
+                                @endif
                             </td>
                             <td class="td">
                                 <p class="font-medium whitespace-nowrap">
@@ -69,8 +75,8 @@
                     @empty
                         <tr>
                             <td colspan="4" class="td py-10 text-center text-muted">
-                                No alerts. Anything expiring or running
-                                low will show up here.
+                                No alerts. Anything expiring, running low, or
+                                due for maintenance will show up here.
                             </td>
                         </tr>
                     @endforelse

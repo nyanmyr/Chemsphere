@@ -192,9 +192,8 @@ Route::post('/equipment/create', function () {
         'serial_id'   => 'required|string|max:255',
         'status' => ['required', Rule::enum(EquipmentStatus::class)],
         'date_received'   => 'required|date',
-        'warranty_expiration'   => 'required|date',
-        'last_maintenance'   => 'required|date',
-        'next_maintenance'   => 'required|date'
+        'preventive_maintenance_date'   => 'required|date',
+        'next_due'   => 'required|date'
     ]);
 
     $validated['created_by'] = $user['user_id'];

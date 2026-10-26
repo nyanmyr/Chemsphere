@@ -16,7 +16,7 @@ class EquipmentObserver
 
     public function updated(Equipment $equipment): void
     {
-        if ($equipment->wasChanged(['warranty_expiration'])) {
+        if ($equipment->wasChanged(['next_due'])) {
             $this->alertService->checkEquipment($equipment);
         }
     }

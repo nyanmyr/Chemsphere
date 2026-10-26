@@ -10,7 +10,6 @@
     <x-select name="location_id" label="Location" :options="$locations" :value="$e?->location_id" keyed placeholder="Select a location" />
     <x-select name="status" label="Status" :options="\App\Enums\EquipmentStatus::cases()" :value="$e?->status" />
     <x-input name="date_received" label="Date Received" type="date" :value="$e?->date_received?->format('Y-m-d')" />
-    <x-input name="warranty_expiration" label="Warranty Expiration" type="date" :value="$e?->warranty_expiration?->format('Y-m-d')" />
-    <x-input name="last_maintenance" label="Last Maintenance" type="date" :value="$e?->last_maintenance?->format('Y-m-d')" />
-    <x-input name="next_maintenance" label="Next Maintenance" type="date" :value="$e?->next_maintenance?->format('Y-m-d')" />
+    <x-input name="preventive_maintenance_date" label="Preventive Maintenance Date" type="date" :value="$e?->preventive_maintenance_date?->format('Y-m-d')" />
+    <x-input name="next_due" label="Next Due" type="date" :value="$e?->next_due?->format('Y-m-d')" />
 </div>

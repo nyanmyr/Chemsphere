@@ -44,7 +44,7 @@ Powered by WebSockets, every table updates instantly without needing a page refr
 - **Chemical inventory** - with batch / lot number, brand, quantity per unit, initial and current quantity, received and expiration dates, storage location, and unit of measure (kg, g, mg, µg, L, mL, µL).
 - **Safety metadata** - on every chemical: safety classes (flammable, corrosive, reactive, toxic) and GHS pictograms (GHS01 to GHS09).
 - **Advanced search and filtering** - on the inventory: free-text search plus min/max ranges for ID, location, creator, volume, quantities, and dates, and filters for safety classes, GHS symbols, and unit.
-- **Equipment tracking** - with model, serial ID, location, purchase and warranty dates, last/next maintenance dates, and a status of *available*, *unavailable*, *broken*, or *under maintenance*.
+- **Equipment tracking** - with model, serial ID, location, purchase and preventive maintenance dates, last/next maintenance dates, and a status of *available*, *unavailable*, *broken*, or *under maintenance*.
 - **Locations** - to record where chemicals and equipment are kept.
 
 ### Usage tracking
@@ -347,7 +347,7 @@ JSON endpoints live in `routes/api.php` and require a Sanctum token (`auth:sanct
 | `users` | Email, password, Google ID, and role (`pending`, `suspended`, `user`, `admin`) |
 | `locations` | Named storage locations with a description |
 | `chemicals` | Chemical stock, quantities, dates, safety classes, GHS symbols, unit |
-| `equipment` | Equipment records, status, and maintenance/warranty dates |
+| `equipment` | Equipment records, status, and preventive maintenance dates |
 | `alerts` | Per-user chemical alerts with type and read state |
 | `usage_logs` | Append-only record of chemical and equipment use |
 | `audit_logs` | Append-only record of logins and data changes |

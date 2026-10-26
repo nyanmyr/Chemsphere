@@ -18,9 +18,8 @@ return new class extends Migration
             $table->string('serial_id');
             $table->string('status')->default(EquipmentStatus::AVAILABLE->value);
             $table->date('date_received');
-            $table->date('warranty_expiration');
-            $table->date('last_maintenance');
-            $table->date('next_maintenance');
+            $table->date('preventive_maintenance_date');
+            $table->date('next_due');
             $table->timestamps();
         });
     }

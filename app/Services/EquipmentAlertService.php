@@ -10,40 +10,50 @@ use Illuminate\Support\Collection;
 class EquipmentAlertService
 {
     public function __construct(
-        protected int $expiringSoonDays = 30,
+        protected int $closeToDueMonths = 3,
     ) {}
 
     public function checkEquipment(Equipment $equipment): void
     {
-        $this->checkWarranty($equipment);
+        $this->checkMaintenance($equipment);
     }
 
-    protected function checkWarranty(Equipment $equipment): void
+    public function maintenanceStatus(Equipment $equipment): ?AlertType
     {
-        $expiresAt = $equipment->warranty_expiration;
+        if (!$equipment->next_due) {
+            return null;
+        }
 
-        if (!$expiresAt) {
+        $dueOn = now()->parse($equipment->next_due);
+
+        if ($dueOn->lte(today())) {
+            return AlertType::MAINTENANCE_OVERDUE;
+        }
+
+        if ($dueOn->lte(today()->addMonthsNoOverflow($this->closeToDueMonths))) {
+            return AlertType::MAINTENANCE_CLOSE_TO_DUE;
+        }
+
+        return null;
+    }
+
+    protected function checkMaintenance(Equipment $equipment): void
+    {
+        $status = $this->maintenanceStatus($equipment);
+
+        if ($status === null) {
             return;
         }
 
-        $expiresAt = now()->parse($expiresAt);
+        $dueOn = $equipment->next_due->toFormattedDateString();
 
-        if ($expiresAt->isPast()) {
-            $this->notify(
-                $equipment,
-                AlertType::WARRANTY_EXPIRED,
-                "{$equipment->equipment_name} warranty expired on {$expiresAt->toFormattedDateString()}."
-            );
-            return;
-        }
-
-        if (now()->diffInDays($expiresAt, false) <= $this->expiringSoonDays) {
-            $this->notify(
-                $equipment,
-                AlertType::WARRANTY_EXPIRING_SOON,
-                "{$equipment->equipment_name} warranty expires on {$expiresAt->toFormattedDateString()}."
-            );
-        }
+        $this->notify(
+            $equipment,
+            $status,
+            $status === AlertType::MAINTENANCE_OVERDUE
+                ? "{$equipment->equipment_name} is overdue for preventive maintenance (due {$dueOn})."
+                : "{$equipment->equipment_name} is due for preventive maintenance on {$dueOn}."
+        );
     }
 
     protected function notify(Equipment $equipment, AlertType $type, string $message): void
@@ -71,5 +81,10 @@ class EquipmentAlertService
     protected function recipientsFor(Equipment $equipment): Collection
     {
         return User::receivesAlerts()->get();
+    }
+
+    public function closeToDueMonths(): int
+    {
+        return $this->closeToDueMonths;
     }
 }

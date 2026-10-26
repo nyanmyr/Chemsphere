@@ -30,16 +30,19 @@
                 <dd class="font-medium">{{ $date($equipment->date_received) }}</dd>
             </div>
             <div>
-                <dt class="text-muted">Warranty Expiration</dt>
-                <dd class="font-medium">{{ $date($equipment->warranty_expiration) }}</dd>
+                <dt class="text-muted">Preventive Maintenance Date</dt>
+                <dd class="font-medium">{{ $date($equipment->preventive_maintenance_date) }}</dd>
             </div>
             <div>
-                <dt class="text-muted">Last maintenance</dt>
-                <dd class="font-medium">{{ $date($equipment->last_maintenance) }}</dd>
-            </div>
-            <div>
-                <dt class="text-muted">Next maintenance</dt>
-                <dd class="font-medium">{{ $date($equipment->next_maintenance) }}</dd>
+                <dt class="text-muted">Next Due</dt>
+                <dd class="font-medium">
+                    {{ $date($equipment->next_due) }}
+                    @if ($maintenance === \App\Enums\AlertType::MAINTENANCE_OVERDUE)
+                        <span class="badge badge-danger ml-1">Overdue</span>
+                    @elseif ($maintenance === \App\Enums\AlertType::MAINTENANCE_CLOSE_TO_DUE)
+                        <span class="badge badge-warning ml-1">Close to due</span>
+                    @endif
+                </dd>
             </div>
         </dl>
     </div>

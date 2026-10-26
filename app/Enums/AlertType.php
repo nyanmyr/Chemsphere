@@ -8,6 +8,6 @@ enum AlertType: string
     case EXPIRED      = 'expired';
     case LOW_STOCK     = 'low stock';
     case OUT_OF_STOCK    = 'out of stock';
-    case WARRANTY_EXPIRED = 'warranty expired';
-    case WARRANTY_EXPIRING_SOON = 'warranty expiring soon';
+    case MAINTENANCE_CLOSE_TO_DUE = 'maintenance close to due';
+    case MAINTENANCE_OVERDUE = 'maintenance overdue';
 }

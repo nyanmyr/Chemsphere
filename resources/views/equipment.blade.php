@@ -14,10 +14,12 @@
         'location_id' => ['Location ID', 'number', '1'],
         'created_by' => ['Created by (user ID)', 'number', '1'],
         'date_received' => ['Date Received', 'date', null],
-        'warranty_expiration' => ['Warranty expiration', 'date', null],
-        'last_maintenance' => ['Last maintenance', 'date', null],
-        'next_maintenance' => ['Next maintenance', 'date', null],
-    ]" :choices="['search_status' => ['Status', \App\Enums\EquipmentStatus::cases()]]" sortable />
+        'preventive_maintenance_date' => ['Preventive maintenance date', 'date', null],
+        'next_due' => ['Next due', 'date', null],
+    ]" :choices="[
+        'search_status' => ['Status', \App\Enums\EquipmentStatus::cases()],
+        'search_alert_type' => ['Alert type', $alertTypes],
+    ]" sortable />
 
     <div id="equipment-table">
         <div class="card overflow-x-auto">
@@ -27,7 +29,6 @@
                         <th class="th">Equipment</th>
                         <th class="th">Location</th>
                         <th class="th">Status</th>
-                        <th class="th">Warranty</th>
                         <th class="th">Maintenance</th>
                         <th class="th">
                             <span class="sr-only">
@@ -63,24 +64,19 @@
                                 </span>
                             </td>
                             <td class="td whitespace-nowrap">
-                                <span class="tabular-nums">
-                                    {{ $date($e->warranty_expiration) }}
-                                </span>
-                                @if ($e->warranty_expiration?->isPast())
-                                    <span class="badge badge-neutral ml-1">
-                                        Expired
-                                    </span>
-                                @endif
-                            </td>
-                            <td class="td whitespace-nowrap">
+                                @php $maintenance = $statuses[$e->equipment_id] ?? null; @endphp
                                 <p class="text-xs text-muted">
-                                    Last {{ $date($e->last_maintenance) }}
+                                    Last {{ $date($e->preventive_maintenance_date) }}
                                 </p>
                                 <p class="tabular-nums">
-                                    Next {{ $date($e->next_maintenance) }}
-                                    @if ($e->next_maintenance?->isPast())
+                                    Next due {{ $date($e->next_due) }}
+                                    @if ($maintenance === \App\Enums\AlertType::MAINTENANCE_OVERDUE)
                                         <span class="badge badge-danger ml-1">
                                             Overdue
+                                        </span>
+                                    @elseif ($maintenance === \App\Enums\AlertType::MAINTENANCE_CLOSE_TO_DUE)
+                                        <span class="badge badge-warning ml-1">
+                                            Close to due
                                         </span>
                                     @endif
                                 </p>
@@ -110,7 +106,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="td py-10 text-center text-muted">
+                            <td colspan="5" class="td py-10 text-center text-muted">
                                 No equipment found.
                             </td>
                         </tr>
