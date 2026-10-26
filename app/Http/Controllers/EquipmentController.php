@@ -51,7 +51,9 @@ class EquipmentController extends Controller
             $q->where(function ($sub) use ($request) {
                 $sub->where('equipment_name', 'LIKE', "%{$request['search']}%")
                     ->orWhere('model', 'LIKE', "%{$request['search']}%")
-                    ->orWhere('serial_id', 'LIKE', "%{$request['search']}%");
+                    ->orWhere('serial_id', 'LIKE', "%{$request['search']}%")
+                    ->orWhere('uic_asset_code', 'LIKE', "%{$request['search']}%")
+                    ->orWhere('src_asset_code', 'LIKE', "%{$request['search']}%");
             });
         });
 
@@ -167,6 +169,8 @@ class EquipmentController extends Controller
             'equipment_name' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'serial_id' => 'required|string|max:255',
+            'uic_asset_code'   => 'required|string|max:255',
+             'src_asset_code'   => 'required|string|max:255',
             'status' => ['required', Rule::enum(EquipmentStatus::class)],
             'date_received' => 'required|date',
             'preventive_maintenance_date' => 'required|date',

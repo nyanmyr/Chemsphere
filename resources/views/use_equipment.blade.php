@@ -14,8 +14,12 @@
                 <dd class="font-medium">{{ $equipment->serial_id }}</dd>
             </div>
             <div>
-                <dt class="text-muted">Location ID</dt>
-                <dd class="font-medium tabular-nums">{{ $equipment->location?->location_id }}</dd>
+                <dt class="text-muted">UIC Asset Code</dt>
+                <dd class="font-medium">{{ $equipment->src_asset_code }}</dd>
+            </div>
+            <div>
+                <dt class="text-muted">SRC Asset Code</dt>
+                <dd class="font-medium">{{ $equipment->src_asset_code }}</dd>
             </div>
             <div>
                 <dt class="text-muted">Location Name</dt>

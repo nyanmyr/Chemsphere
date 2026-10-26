@@ -9,7 +9,7 @@
         @if ($isAdmin)<a href="{{ route('equipment.create') }}" class="btn btn-primary">Create Equipment</a>@endif
     </x-slot:actions>
 
-    <x-filter-bar :action="route('equipment')" placeholder="Search name, model, or serial" :ranges="[
+    <x-filter-bar :action="route('equipment')" placeholder="Search name, model, serial, or asset codes" :ranges="[
         'equipment_id' => ['Equipment ID', 'number', '1'],
         'location_id' => ['Location ID', 'number', '1'],
         'created_by' => ['Created by (user ID)', 'number', '1'],
@@ -27,6 +27,7 @@
                 <thead class="border-b border-line">
                     <tr>
                         <th class="th">Equipment</th>
+                        <th class="th">Asset Codes</th>
                         <th class="th">Location</th>
                         <th class="th">Status</th>
                         <th class="th">Maintenance</th>
@@ -48,6 +49,20 @@
                                 <p class="text-xs text-muted">
                                     #{{ $e->equipment_id }}, {{ $e->model }}, serial
                                     {{ $e->serial_id }}
+                                </p>
+                            </td>
+                            <td class="td">
+                                <p class="font-medium">
+                                    UIC: 
+                                    <span class="text-xs text-muted">
+                                        {{ $e->uic_asset_code }}
+                                    </span>
+                                </p>
+                                <p class="font-medium">
+                                    SRC: 
+                                    <span class="text-xs text-muted">
+                                        {{ $e->src_asset_code }}
+                                    </span>
                                 </p>
                             </td>
                             <td class="td">

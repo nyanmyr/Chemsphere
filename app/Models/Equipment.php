@@ -21,6 +21,8 @@ class Equipment extends Model
         'equipment_name',
         'model',
         'serial_id',
+        'uic_asset_code',
+        'src_asset_code',
         'status',
         'date_received',
         'preventive_maintenance_date',

@@ -190,6 +190,8 @@ Route::post('/equipment/create', function () {
         'equipment_name'   => 'required|string|max:255',
         'model'   => 'required|string|max:255',
         'serial_id'   => 'required|string|max:255',
+        'uic_asset_code'   => 'required|string|max:255',
+        'src_asset_code'   => 'required|string|max:255',
         'status' => ['required', Rule::enum(EquipmentStatus::class)],
         'date_received'   => 'required|date',
         'preventive_maintenance_date'   => 'required|date',

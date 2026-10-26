@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('equipment_name');
             $table->string('model');
             $table->string('serial_id');
+            $table->string('uic_asset_code');
+            $table->string('src_asset_code');
             $table->string('status')->default(EquipmentStatus::AVAILABLE->value);
             $table->date('date_received');
             $table->date('preventive_maintenance_date');
