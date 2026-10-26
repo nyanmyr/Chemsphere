@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 class ChemicalAlertService
 {
     public function __construct(
-        protected int $expiringSoonDays = 30,
+        protected int $expiringSoonMonths = 3,
         protected float $lowStockThreshold = 0.2, // 20% of quantity_received
     ) {}
 
@@ -20,32 +20,47 @@ class ChemicalAlertService
         $this->checkStockLevel($chemical);
     }
 
+    public function expirationStatus(Chemical $chemical): ?AlertType
+    {
+        if (!$chemical->expiration_date) {
+            return null;
+        }
+
+        $expiresAt = now()->parse($chemical->expiration_date);
+
+        if ($expiresAt->lte(today())) {
+            return AlertType::EXPIRED;
+        }
+
+        if ($expiresAt->lte(today()->addMonthsNoOverflow($this->expiringSoonMonths))) {
+            return AlertType::EXPIRING_SOON;
+        }
+
+        return null;
+    }
+
     protected function checkExpiration(Chemical $chemical): void
     {
-        $expiresAt = $chemical->expiration_date;
+        $status = $this->expirationStatus($chemical);
 
-        if (!$expiresAt) {
+        if ($status === null) {
             return;
         }
 
-        $expiresAt = now()->parse($expiresAt);
+        $expiresOn = now()->parse($chemical->expiration_date)->toFormattedDateString();
 
-        if ($expiresAt->isPast()) {
-            $this->notify(
-                $chemical,
-                AlertType::EXPIRED,
-                "{$chemical->chemical_name} (batch {$chemical->batch_number}) expired on {$expiresAt->toFormattedDateString()}."
-            );
-            return;
-        }
+        $this->notify(
+            $chemical,
+            $status,
+            $status === AlertType::EXPIRED
+                ? "{$chemical->chemical_name} (batch {$chemical->batch_number}) expired on {$expiresOn}."
+                : "{$chemical->chemical_name} (batch {$chemical->batch_number}) expires on {$expiresOn}."
+        );
+    }
 
-        if (now()->diffInDays($expiresAt, false) <= $this->expiringSoonDays) {
-            $this->notify(
-                $chemical,
-                AlertType::EXPIRING_SOON,
-                "{$chemical->chemical_name} (batch {$chemical->batch_number}) expires on {$expiresAt->toFormattedDateString()}."
-            );
-        }
+    public function expiringSoonMonths(): int
+    {
+        return $this->expiringSoonMonths;
     }
 
     protected function checkStockLevel(Chemical $chemical): void

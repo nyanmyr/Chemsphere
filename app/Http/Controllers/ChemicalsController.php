@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AlertType;
 use App\Enums\AuditAction;
 use App\Enums\GHSSymbol;
 use App\Enums\ItemType;
+use App\Enums\SafetyClass;
+use App\Enums\Unit;
 use App\Models\AuditLog;
 use App\Models\Chemical;
 use App\Models\UsageLog;
-use App\Enums\SafetyClass;
-use App\Enums\Unit;
+use App\Services\ChemicalAlertService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +19,12 @@ use Illuminate\Validation\Rule;
 
 class ChemicalsController extends Controller
 {
-    public function chemicals(Request $request)
+    private const EXPIRATION_TYPES = [
+        AlertType::EXPIRING_SOON,
+        AlertType::EXPIRED,
+    ];
+
+    public function chemicals(Request $request, ChemicalAlertService $alerts)
     {
         $user = Auth::user();
 
@@ -42,6 +49,8 @@ class ChemicalsController extends Controller
             'search_safety_classes' => 'nullable|array',
             'search_ghs_symbols' => 'nullable|array',
             'search_unit' => 'nullable|array',
+            'search_alert_type' => 'nullable|array',
+            'search_alert_type.*' => ['required', Rule::enum(AlertType::class)->only(self::EXPIRATION_TYPES)],
             'sort' => 'nullable|in:recent,oldest',
         ]);
 
@@ -143,6 +152,16 @@ class ChemicalsController extends Controller
             $q->whereIn('unit', (array) $request['search_unit']);
         });
 
+        $query->when($request->filled('search_alert_type'), function ($q) use ($request, $alerts) {
+            $types = collect($request['search_alert_type'])->map(fn ($value) => AlertType::from($value));
+
+            $q->where(function ($sub) use ($types, $alerts) {
+                foreach ($types as $type) {
+                    $sub->orWhere(fn ($w) => $this->applyCondition($w, $type, $alerts->expiringSoonMonths()));
+                }
+            });
+        });
+
         $direction = $request->input('sort', 'recent') === 'oldest' ? 'asc' : 'desc';
         $query->orderBy('created_at', $direction)->orderBy('chemical_id', $direction);
 
@@ -152,7 +171,21 @@ class ChemicalsController extends Controller
             session()->now('info', __('messages.chemical.none_found'));
         }
 
-        return view('inventory', compact('data', 'user'));
+        $statuses = $data->getCollection()
+            ->mapWithKeys(fn (Chemical $c) => [$c->chemical_id => $alerts->expirationStatus($c)]);
+        $alertTypes = self::EXPIRATION_TYPES;
+
+        return view('inventory', compact('data', 'user', 'statuses', 'alertTypes'));
+    }
+
+    private function applyCondition($query, AlertType $type, int $expiringSoonMonths): void
+    {
+        match ($type) {
+            AlertType::EXPIRED => $query->whereDate('expiration_date', '<=', today()),
+            AlertType::EXPIRING_SOON => $query
+                ->whereDate('expiration_date', '>', today())
+                ->whereDate('expiration_date', '<=', today()->addMonthsNoOverflow($expiringSoonMonths)),
+        };
     }
 
     public function delete($chemical_id)
@@ -235,7 +268,7 @@ class ChemicalsController extends Controller
         return redirect()->route('inventory')->with('success', __('messages.chemical.updated'));
     }
 
-    public function use_edit($chemical_id)
+    public function use_edit($chemical_id, ChemicalAlertService $alerts)
     {
         $chemical = Chemical::where(
             'chemical_id',
@@ -247,7 +280,9 @@ class ChemicalsController extends Controller
             return back()->with('error', __('messages.chemical.out_of_stock'));
         }
 
-        return view('use_chemical', compact('chemical'));
+        $expiration = $alerts->expirationStatus($chemical);
+
+        return view('use_chemical', compact('chemical', 'expiration'));
     }
 
     public function use_update(Request $request, $chemical_id)

@@ -16,6 +16,7 @@
         'search_safety_classes' => ['Safety class', \App\Enums\SafetyClass::cases()],
         'search_ghs_symbols' => ['GHS symbol', \App\Enums\GHSSymbol::cases()],
         'search_unit' => ['Unit', \App\Enums\Unit::cases()],
+        'search_alert_type' => ['Alert type', $alertTypes],
     ];
 
     $list = fn($v) => collect(is_array($v) ? $v : explode(',', (string) $v))->map(fn($s) => trim($s))->filter();
@@ -53,8 +54,7 @@
                             $pct = $initial > 0 ? max(0, min(100, $current / $initial * 100)) : 0;
                             $bar = $current <= 0 ? 'bg-red-600' : ($pct < 20 ? 'bg-amber-500' : 'bg-reagent-600');
                             $exp = \Illuminate\Support\Carbon::parse($c->expiration_date);
-                            $expired = $exp->isPast();
-                            $soon = !$expired && $exp->isBefore(now()->addDays(30));
+                            $expiration = $statuses[$c->chemical_id] ?? null;
                         @endphp
                         <tr>
                             <td class="td">
@@ -87,7 +87,7 @@
                                 </p>
                                 <p class="whitespace-nowrap tabular-nums">
                                     <span class="text-muted text-xs">
-                                        {{ $c->quantity_per_unit }} {{ $c->quantityType() }} per container
+                                        {{ $c->quantity_per_unit }} {{ $c->quantityType() }} Per Container
                                     </span>
                                 </p>
                             </td>
@@ -95,14 +95,15 @@
                                 <span class="tabular-nums">
                                     {{ $exp->format('M j, Y') }}
                                 </span>
-                                @if ($expired)
+                                @if ($expiration === \App\Enums\AlertType::EXPIRED)
                                     <span class="badge badge-danger ml-1">
                                         Expired
                                     </span>
-                                @elseif ($soon)
+                                @elseif ($expiration === \App\Enums\AlertType::EXPIRING_SOON)
                                     <span class="badge badge-warning ml-1">
-                                        Soon
-                                    </span>@endif
+                                        Close to expiration
+                                    </span>
+                                @endif
                             </td>
                             <td class="td">
                                 <div class="flex max-w-56 flex-wrap gap-1">

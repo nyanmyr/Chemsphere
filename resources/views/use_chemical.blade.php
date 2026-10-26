@@ -43,14 +43,21 @@
             </div>
             <div>
                 <dt class="text-muted">Expiration Date</dt>
-                <dd class="font-medium">{{ $chemical->expiration_date?->format('M j, Y') }}</dd>
+                <dd class="font-medium">
+                    {{ $chemical->expiration_date?->format('M j, Y') }}
+                    @if ($expiration === \App\Enums\AlertType::EXPIRED)
+                        <span class="badge badge-danger ml-1">Expired</span>
+                    @elseif ($expiration === \App\Enums\AlertType::EXPIRING_SOON)
+                        <span class="badge badge-warning ml-1">Close to expiration</span>
+                    @endif
+                </dd>
             </div>
             <div>
                 <dt class="text-muted">Date Received</dt>
                 <dd class="font-medium">{{ $chemical->date_received?->format('M j, Y') }}</dd>
             </div>
             <div>
-                <dt class="text-muted">{{ ucfirst($chemical->quantityType()) }} per container</dt>
+                <dt class="text-muted">{{ ucfirst($chemical->quantityType()) }} Per Container</dt>
                 <dd class="font-medium tabular-nums">{{ $n($chemical->quantity_per_unit) }} {{ $chemical->unit }}{{ $n($chemical->quantity_per_unit) > 1 ? 's' : '' }}</dd>
             </div>
         </dl>
