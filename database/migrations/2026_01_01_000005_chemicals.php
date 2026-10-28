@@ -13,19 +13,12 @@ return new class extends Migration
     {
         Schema::create('chemicals', function (Blueprint $table) {
             $table->id('chemical_id');
-            $table->foreignId('location_id')->constrained('locations')->references('location_id');
-            $table->foreignId('created_by')->constrained('users')->references('user_id');
-            $table->string('chemical_name');
-            $table->string('batch_number');
-            $table->string('brand_name');
-            $table->decimal('quantity_per_unit', $precision = 8, $scale = 2);
-            $table->integer('quantity_received');
-            $table->integer('current_quantity');
-            $table->date('expiration_date');
-            $table->date('date_received');
-            $table->set('safety_classes', array_column(SafetyClass::cases(), 'value'));
-            $table->set('ghs_symbols', array_column(GHSSymbol::cases(), 'value'));
+            $table->string('chemical_name')->unique();
+            $table->decimal('quantity_per_unit', 8, 2)->default(0);
+            $table->string('safety_classes')->default('');
+            $table->string('ghs_symbols')->default('');
             $table->string('unit')->default(Unit::KILOGRAM->value);
+            $table->foreignId('created_by')->nullable()->constrained('users', 'user_id')->nullOnDelete();
             $table->timestamps();
         });
     }

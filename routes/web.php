@@ -103,73 +103,31 @@ Route::put('/locations/{id}', [LocationsController::class, 'update'])
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('locations.update');
 
-// inventory routes
-Route::get('/inventory', [ChemicalsController::class, 'chemicals'])
-->middleware(['auth', 'pending', 'suspended'])
-->name('inventory');
-
-Route::get('/inventory/create', function () {
-    return view('create_chemical');
-})
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
-->name('inventory.create');
-
-Route::post('/inventory/create', function () {
-    $user = Auth::user();
-
-    $validated = request()->validate([
-        'location_id' => 'required|integer|exists:locations,location_id',
-        'chemical_name'   => 'required|string|max:255',
-        'batch_number'   => 'required|string|max:255',
-        'brand_name'   => 'required|string|max:255',
-        'quantity_per_unit'   => 'required|numeric|min:0|max:99999999.99',
-        'quantity_received'   => 'required|numeric|min:0|max:99999999',
-        'current_quantity'   => 'required|numeric|min:0|max:99999999',
-        'expiration_date'   => 'required|date',
-        'date_received'   => 'required|date',
-        'safety_classes'   => 'nullable|array',
-        'safety_classes.*' => ['required', Rule::enum(SafetyClass::class)],
-        'ghs_symbols'   => 'nullable|array',
-        'ghs_symbols.*' => ['required', Rule::enum(GHSSymbol::class)],
-        'unit' => ['required', Rule::enum(Unit::class)],
-    ]);
-
-    $validated['safety_classes'] = implode(',', $validated['safety_classes'] ?? []);
-    $validated['ghs_symbols'] = implode(',', $validated['ghs_symbols'] ?? []);
-    $validated['created_by'] = $user['user_id'];
-
-    Chemical::create($validated);
-
-    AuditLog::create([
-        'created_by' => $user['user_id'],
-        'audit_action' => AuditAction::CREATE,
-        'target' => 'create chemical',
-    ]);
-
-    return redirect()->route('inventory')->with('success', __('messages.chemical.created'));
-})
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
-->name('inventory.store');
-
-Route::delete('/inventory/{id}', [ChemicalsController::class, 'delete'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
-->name('inventory.delete');
-
-Route::get('/inventory/{id}/edit', [ChemicalsController::class, 'edit'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
-->name('inventory.edit');
-
-Route::put('/inventory/{id}', [ChemicalsController::class, 'update'])
-->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
-->name('inventory.update');
-
-Route::get('/inventory/use/{id}/edit', [ChemicalsController::class, 'use_edit'])
-->middleware(['auth', 'pending', 'suspended'])
-->name('inventory.use.edit');
-
-Route::put('/inventory/use/{id}', [ChemicalsController::class, 'use_update'])
-->middleware(['auth', 'pending', 'suspended'])
-->name('inventory.use.update');
+// Chemical inventory and batch/container routes
+Route::get('/inventory', [ChemicalsController::class, 'index'])
+    ->middleware(['auth', 'pending', 'suspended'])->name('inventory');
+Route::get('/inventory/create', [ChemicalsController::class, 'create'])
+    ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])->name('inventory.create');
+Route::post('/inventory', [ChemicalsController::class, 'store'])
+    ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])->name('inventory.store');
+Route::get('/inventory/chemical/{chemical}', [ChemicalsController::class, 'show'])
+    ->middleware(['auth', 'pending', 'suspended'])->name('inventory.show');
+Route::get('/inventory/chemical/{chemical}/edit', [ChemicalsController::class, 'edit'])
+    ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])->name('inventory.chemical.edit');
+Route::put('/inventory/chemical/{chemical}', [ChemicalsController::class, 'update'])
+    ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])->name('inventory.chemical.update');
+Route::delete('/inventory/chemical/{chemical}', [ChemicalsController::class, 'destroy'])
+    ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])->name('inventory.delete');
+Route::post('/inventory/chemical/{chemical}/containers', [ChemicalsController::class, 'storeContainer'])
+    ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])->name('inventory.containers.store');
+Route::get('/inventory/containers/{container}/edit', [ChemicalsController::class, 'editContainer'])
+    ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])->name('inventory.containers.edit');
+Route::put('/inventory/containers/{container}', [ChemicalsController::class, 'updateContainer'])
+    ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])->name('inventory.containers.update');
+Route::delete('/inventory/containers/{container}', [ChemicalsController::class, 'destroyContainer'])
+    ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])->name('inventory.containers.delete');
+Route::post('/inventory/containers/{container}/use', [ChemicalsController::class, 'useContainer'])
+    ->middleware(['auth', 'pending', 'suspended'])->name('inventory.containers.use');
 
 // equipment routes
 Route::get('/equipment', [EquipmentController::class, 'equipment'])

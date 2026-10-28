@@ -18,6 +18,7 @@ class Alert extends Model
 
     protected $fillable = [
         'item_id',
+        'chemical_container_id',
         'message',
         'alert_type',
         'notifiable_id',
@@ -31,6 +32,11 @@ class Alert extends Model
             'alert_type' => AlertType::class,
             'read_at' => 'datetime',
         ];
+    }
+
+    public function chemicalContainer(): BelongsTo
+    {
+        return $this->belongsTo(ChemicalContainer::class, 'chemical_container_id', 'chemical_container_id');
     }
 
     public function chemical(): BelongsTo

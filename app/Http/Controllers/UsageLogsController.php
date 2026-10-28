@@ -28,7 +28,7 @@ class UsageLogsController extends Controller
             'sort' => 'nullable|in:recent,oldest',
         ]);
 
-        $query = UsageLog::query();
+        $query = UsageLog::query()->with(['chemicalContainer.chemical', 'chemical', 'equipment', 'user', 'location']);
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($q) use ($request) {

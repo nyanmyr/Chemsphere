@@ -37,11 +37,11 @@
                                     </p>
                                 @else
                                     <p class="font-medium">
-                                        {{ $alert->chemical?->chemical_name }}
+                                        {{ $alert->chemicalContainer?->chemical?->chemical_name ?? $alert->chemical?->chemical_name }}
                                     </p>
                                     <p class="text-xs text-muted">
-                                        #{{ $alert->chemical?->chemical_id }}, batch {{ $alert->chemical?->batch_number }},
-                                        {{ $alert->chemical?->brand_name }}
+                                        #{{ $alert->chemicalContainer?->chemical_container_id ?? $alert->chemical?->chemical_id }}, batch {{ $alert->chemicalContainer?->batch_number ?? $alert->chemical?->batch_number }},
+                                        {{ $alert->chemicalContainer?->brand_name ?? $alert->chemical?->brand_name }}
                                     </p>
                                 @endif
                             </td>

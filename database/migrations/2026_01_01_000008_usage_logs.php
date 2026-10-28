@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('location_id');
             $table->string('item_type');
             $table->foreignId('item_id');
+            $table->foreignId('chemical_container_id')->nullable()->constrained('chemical_containers', 'chemical_container_id')->nullOnDelete();
             $table->integer('quantity_remaining');
             $table->text('notes')->nullable();
             $table->timestamp('created_at')->useCurrent();

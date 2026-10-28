@@ -21,6 +21,7 @@ class UsageLog extends Model
         'location_id',
         'item_type',
         'item_id',
+        'chemical_container_id',
         'quantity_remaining',
         'notes'
     ];
@@ -44,6 +45,11 @@ class UsageLog extends Model
     public function location(): BelongsTo
     {
         return $this->belongsTo(Location::class, 'location_id', 'location_id');
+    }
+
+    public function chemicalContainer(): BelongsTo
+    {
+        return $this->belongsTo(ChemicalContainer::class, 'chemical_container_id', 'chemical_container_id');
     }
 
     public function chemical(): BelongsTo

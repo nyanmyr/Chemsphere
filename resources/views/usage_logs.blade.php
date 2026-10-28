@@ -31,7 +31,7 @@
                         <tr>
                             <td class="td whitespace-nowrap">
                                 @if ($isChemical)
-                                    {{ $log->chemical?->chemical_name }}
+                                    {{ $log->chemicalContainer?->chemical?->chemical_name ?? $log->chemical?->chemical_name }}
                                 @else
                                     {{ $log->equipment?->equipment_name }}
                                 @endif
@@ -40,14 +40,14 @@
                                         {{ ucfirst((string) ($log->item_type->value ?? $log->item_type)) }}
                                     </span>
                                     <span class="tabular-nums text-muted">
-                                        #{{ $log->item_id }}
+                                        #{{ $log->chemical_container_id ?? $log->item_id }}
                                     </span>
                                 </p>
                             </td>
                             <td class="td tabular-nums">
                                 @if ($isChemical)
                                     {{ $n($log->quantity_remaining) }}
-                                    <span class="text-muted">/ {{ $n($log->chemical?->quantity_received) }} containers</span>
+                                    <span class="text-muted">/ {{ $n($log->chemicalContainer?->quantity_received ?? $log->chemical?->quantity_received) }} containers</span>
                                 @else
                                     <span class="text-muted">N/A</span>
                                 @endif

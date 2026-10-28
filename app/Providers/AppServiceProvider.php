@@ -3,10 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Models\Chemical;
 use App\Models\Equipment;
-use App\Observers\ChemicalsObserver;
+use App\Models\ChemicalContainer;
 use App\Observers\EquipmentObserver;
+use App\Observers\ChemicalContainersObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        Chemical::observe(ChemicalsObserver::class);
         Equipment::observe(EquipmentObserver::class);
+        ChemicalContainer::observe(ChemicalContainersObserver::class);
     }
 }

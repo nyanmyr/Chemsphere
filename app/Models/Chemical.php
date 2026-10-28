@@ -16,43 +16,11 @@ class Chemical extends Model
 
     protected $primaryKey = 'chemical_id';
 
-    protected $fillable = [
-        'location_id',
-        'created_by',
-        'chemical_name',
-        'batch_number',
-        'brand_name',
-        'quantity_per_unit',
-        'quantity_received',
-        'current_quantity',
-        'expiration_date',
-        'date_received',
-        'safety_classes',
-        'ghs_symbols',
-        'unit'
-    ];
+    protected $fillable = ['chemical_name', 'quantity_per_unit', 'safety_classes', 'ghs_symbols', 'unit', 'created_by'];
 
-    protected function casts(): array
+    public function containers(): HasMany
     {
-        return [
-            'expiration_date' => 'date',
-            'date_received'    => 'date',
-        ];
-    }
-
-    public function alerts(): HasMany
-    {
-        return $this->hasMany(Alert::class, 'chemical_id', 'chemical_id');
-    }
-
-    public function broadcastOn(string $event): array
-    {
-        return [new PrivateChannel('inventory')];
-    }
-
-    public function location(): BelongsTo
-    {
-        return $this->belongsTo(Location::class, 'location_id', 'location_id');
+        return $this->hasMany(ChemicalContainer::class, 'chemical_id', 'chemical_id');
     }
 
     public function user(): BelongsTo
@@ -63,5 +31,15 @@ class Chemical extends Model
     public function quantityType(): string
     {
         return Unit::tryFrom((string) $this->unit)?->quantityType() ?? 'quantity';
+    }
+
+    public function getTotalCurrentQuantityAttribute(): int
+    {
+        return (int) $this->containers()->sum('current_quantity');
+    }
+
+    public function broadcastOn(string $event): array
+    {
+        return [new PrivateChannel('inventory')];
     }
 }
