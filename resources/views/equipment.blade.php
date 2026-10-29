@@ -103,10 +103,6 @@
                                         View
                                     </a>
                                     @if ($isAdmin)
-                                        <a href="{{ route('equipment.edit', $e->equipment_id) }}"
-                                            class="btn btn-secondary btn-sm">
-                                            Edit
-                                        </a>
                                         <form action="{{ route('equipment.delete', $e->equipment_id) }}" method="POST"
                                             onsubmit="return confirm(@js('Delete ' . $e->equipment_name . '?'))">
                                             @csrf

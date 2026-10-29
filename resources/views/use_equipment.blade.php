@@ -3,6 +3,12 @@
 @endphp
 
 <x-app-layout title="Use {{ $equipment->equipment_name }}">
+    <x-slot:actions>
+        @if (Auth::user()->user_role->isRole(\App\Enums\UserRole::ADMIN))
+            <a href="{{ route('equipment.edit', $equipment->equipment_id) }}" class="btn btn-secondary">Edit Equipment</a>
+        @endif
+    </x-slot:actions>
+
     <div class="card mb-6 max-w-2xl p-5">
         <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
             <div>
