@@ -7,15 +7,17 @@
 <x-app-layout title="{{ $chemical->chemical_name }} Batches">
     <x-slot:actions>
         @if ($isAdmin)
-            <a href="{{ route('inventory.batch.create', $chemical->chemical_id) }}" class="btn btn-primary">Add Batch</a>
-            <a href="{{ route('inventory.edit', $chemical->chemical_id) }}" class="btn btn-secondary">Edit Category</a>
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('inventory.edit', $chemical->chemical_id) }}" class="btn btn-secondary">Edit Category</a>
+                <a href="{{ route('inventory.batch.create', $chemical->chemical_id) }}" class="btn btn-primary">Add Batch</a>
+            </div>
         @endif
     </x-slot:actions>
 
     <a href="{{ route('inventory') }}" class="link text-sm">← Back to inventory</a>
 
     <section class="card mt-4 p-5">
-        <p class="text-xs font-medium uppercase tracking-wide text-muted">Chemical category #{{ $chemical->chemical_id }}</p>
+        <p class="text-xs font-medium uppercase tracking-wide text-muted">#{{ $chemical->chemical_id }}</p>
         <h2 class="mt-1 text-xl font-semibold tracking-tight">{{ $chemical->chemical_name }}</h2>
         <div class="mt-3 flex flex-wrap gap-1">
             @foreach ($list($chemical->safety_classes) as $class)
@@ -31,9 +33,6 @@
     <section class="mt-6" id="chemical-batches-table">
         <div class="mb-3 flex flex-wrap items-baseline justify-between gap-3">
             <h2 class="text-lg font-semibold">Batches <span class="text-muted">({{ $chemical->batches->count() }})</span></h2>
-            @if ($isAdmin)
-                <a href="{{ route('inventory.batch.create', $chemical->chemical_id) }}" class="link text-sm">Add another batch</a>
-            @endif
         </div>
 
         <div class="card overflow-x-auto">
@@ -42,9 +41,9 @@
                     <tr>
                         <th class="th">Batch / Lot</th>
                         <th class="th">Brand</th>
-                        <th class="th">Storage Location</th>
+                        <th class="th">Location</th>
                         <th class="th">Stock</th>
-                        <th class="th">Expiration</th>
+                        <th class="th">Expiration Date</th>
                         <th class="th"><span class="sr-only">Actions</span></th>
                     </tr>
                 </thead>
@@ -60,7 +59,7 @@
                         <tr>
                             <td class="td">
                                 <p class="font-semibold">{{ $batch->batch_number }}</p>
-                                <p class="text-xs text-muted">Batch ID #{{ $batch->chemical_batch_id }}</p>
+                                <p class="text-xs text-muted">#{{ $batch->chemical_batch_id }}</p>
                             </td>
                             <td class="td">{{ $batch->brand_name }}</td>
                             <td class="td">
@@ -88,13 +87,8 @@
                             </td>
                             <td class="td">
                                 <div class="flex justify-end gap-1.5">
-                                    @if ($batch->current_quantity > 0)
-                                        <a href="{{ route('inventory.use.edit', $batch->chemical_batch_id) }}" class="btn btn-secondary btn-sm">Use</a>
-                                    @else
-                                        <span class="badge badge-danger">Out of stock</span>
-                                    @endif
+                                    <a href="{{ route('inventory.use.edit', $batch->chemical_batch_id) }}" class="btn btn-secondary btn-sm">View</a>
                                     @if ($isAdmin)
-                                        <a href="{{ route('inventory.batch.edit', $batch->chemical_batch_id) }}" class="btn btn-secondary btn-sm">Edit</a>
                                         <form action="{{ route('inventory.batch.delete', $batch->chemical_batch_id) }}" method="POST"
                                             onsubmit="return confirm(@js('Delete batch ' . $batch->batch_number . '? This can\'t be undone.'))">
                                             @csrf

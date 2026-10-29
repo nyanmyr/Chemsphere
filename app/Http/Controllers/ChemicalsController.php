@@ -357,10 +357,6 @@ class ChemicalsController extends Controller
     {
         $batch = ChemicalBatch::with(['chemical', 'location'])->where('chemical_batch_id', $chemical_batch_id)->firstOrFail();
 
-        if ($batch->current_quantity <= 0) {
-            return back()->with('error', __('messages.chemical.out_of_stock'));
-        }
-
         $expiration = $alerts->expirationStatus($batch);
 
         return view('use_chemical', compact('batch', 'expiration'));

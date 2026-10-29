@@ -12,7 +12,12 @@
     $remainingAfter = $current - 1;
 @endphp
 
-<x-app-layout title="Use {{ $category?->chemical_name ?? 'Chemical' }} — Batch {{ $batch->batch_number }}">
+<x-app-layout title="Batch Details — {{ $category?->chemical_name ?? 'Chemical' }} — {{ $batch->batch_number }}">
+    <x-slot:actions>
+        @if (Auth::user()->user_role->isRole(\App\Enums\UserRole::ADMIN))
+            <a href="{{ route('inventory.batch.edit', $batch->chemical_batch_id) }}" class="btn btn-secondary">Edit Batch</a>
+        @endif
+    </x-slot:actions>
     {{-- One shared container icon; every button below references it. --}}
     <svg class="absolute h-0 w-0 overflow-hidden" aria-hidden="true" focusable="false">
         <symbol id="container-icon" viewBox="0 0 24 32">
@@ -34,7 +39,7 @@
                 <dd class="font-medium">{{ $batch->brand_name }}</dd>
             </div>
             <div>
-                <dt class="text-muted">Storage Location</dt>
+                <dt class="text-muted">Location</dt>
                 <dd class="font-medium">{{ $batch->location?->location_name }}</dd>
             </div>
             <div>
@@ -78,23 +83,28 @@
     </div>
 
     <section class="card max-w-2xl p-6" aria-labelledby="containers-heading">
-        <h2 id="containers-heading" class="text-base font-semibold">Pick a container to use</h2>
-        <p class="mt-1 text-sm text-muted">Each icon is one container. Selecting one logs a single use and takes it out of this batch's stock.</p>
+        @if ($current > 0)
+            <h2 id="containers-heading" class="text-base font-semibold">Pick a container to use</h2>
+            <p class="mt-1 text-sm text-muted">Each icon is one container. Selecting one logs a single use and takes it out of this batch's stock.</p>
 
-        <ul class="mt-4 grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-2">
-            @for ($i = 1; $i <= $shown; $i++)
-                <li>
-                    <button type="button" data-container aria-label="Use container {{ $i }} of {{ $current }}"
-                        class="flex w-full flex-col items-center gap-1 rounded-lg border border-line bg-white px-2 py-3 text-reagent-700 transition-colors hover:border-reagent-600 hover:bg-reagent-50 hover:text-reagent-600 data-selected:border-reagent-600 data-selected:bg-reagent-50 data-selected:text-reagent-600">
-                        <svg class="h-10 w-[30px]" aria-hidden="true"><use href="#container-icon" /></svg>
-                        <span class="text-xs tabular-nums text-muted">#{{ $i }}</span>
-                    </button>
-                </li>
-            @endfor
-        </ul>
+            <ul class="mt-4 grid grid-cols-[repeat(auto-fill,minmax(4.5rem,1fr))] gap-2">
+                @for ($i = 1; $i <= $shown; $i++)
+                    <li>
+                        <button type="button" data-container aria-label="Use container {{ $i }} of {{ $current }}"
+                            class="flex w-full flex-col items-center gap-1 rounded-lg border border-line bg-white px-2 py-3 text-reagent-700 transition-colors hover:border-reagent-600 hover:bg-reagent-50 hover:text-reagent-600 data-selected:border-reagent-600 data-selected:bg-reagent-50 data-selected:text-reagent-600">
+                            <svg class="h-10 w-[30px]" aria-hidden="true"><use href="#container-icon" /></svg>
+                            <span class="text-xs tabular-nums text-muted">#{{ $i }}</span>
+                        </button>
+                    </li>
+                @endfor
+            </ul>
 
-        @if ($current > $shown)
-            <p class="mt-3 text-sm text-muted">Showing {{ $shown }} of {{ $current }} containers. Any one of them logs a single use.</p>
+            @if ($current > $shown)
+                <p class="mt-3 text-sm text-muted">Showing {{ $shown }} of {{ $current }} containers. Any one of them logs a single use.</p>
+            @endif
+        @else
+            <h2 id="containers-heading" class="text-base font-semibold">Out of stock</h2>
+            <p class="mt-1 text-sm text-muted">This batch has no containers remaining. You can still view its details or edit the batch if you are an administrator.</p>
         @endif
     </section>
 

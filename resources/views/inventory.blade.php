@@ -25,7 +25,7 @@
 <x-app-layout title="Inventory">
     <x-slot:actions>
         @if ($isAdmin)
-            <a href="{{ route('inventory.create') }}" class="btn btn-primary">Create Chemical Category</a>
+            <a href="{{ route('inventory.create') }}" class="btn btn-primary">Add Chemical Category</a>
         @endif
     </x-slot:actions>
 
@@ -57,11 +57,10 @@
                         <tr>
                             <td class="td">
                                 <p class="font-semibold">{{ $chemical->chemical_name }}</p>
-                                <p class="text-xs text-muted">Category #{{ $chemical->chemical_id }}</p>
+                                <p class="text-xs text-muted">#{{ $chemical->chemical_id }}</p>
                             </td>
                             <td class="td">
                                 <p class="font-medium tabular-nums">{{ $chemical->batches_count }}</p>
-                                <p class="text-xs text-muted">{{ \Illuminate\Support\Str::plural('batch', $chemical->batches_count) }} recorded</p>
                             </td>
                             <td class="td">
                                 <div class="h-1.5 w-24 overflow-hidden rounded-full bg-line" role="img" aria-label="{{ round($pct) }}% remaining">
@@ -95,9 +94,8 @@
                             </td>
                             <td class="td">
                                 <div class="flex justify-end gap-1.5">
-                                    <a href="{{ route('inventory.show', $chemical->chemical_id) }}" class="btn btn-secondary btn-sm">Open batches</a>
+                                    <a href="{{ route('inventory.show', $chemical->chemical_id) }}" class="btn btn-secondary btn-sm">View</a>
                                     @if ($isAdmin)
-                                        <a href="{{ route('inventory.edit', $chemical->chemical_id) }}" class="btn btn-secondary btn-sm">Edit</a>
                                         <form action="{{ route('inventory.delete', $chemical->chemical_id) }}" method="POST"
                                             onsubmit="return confirm(@js('Delete ' . $chemical->chemical_name . ' and all of its batches? This can\'t be undone.'))">
                                             @csrf

@@ -7,7 +7,7 @@
 <div class="grid gap-4 sm:grid-cols-2">
     <x-input name="batch_number" label="Batch / Lot Number" :value="$b?->batch_number" />
     <x-input name="brand_name" label="Brand" :value="$b?->brand_name" />
-    <x-select name="location_id" label="Storage Location" :options="$locationOptions" :value="$b?->location_id" keyed placeholder="Select a location" />
+    <x-select name="location_id" label="Location" :options="$locationOptions" :value="$b?->location_id" keyed placeholder="Select a location" />
     <x-select name="unit" label="Unit" :options="\App\Enums\Unit::cases()" :value="$b?->unit" />
     <x-input name="quantity_per_unit" label="Quantity Per Container" type="number" step="0.01" min="0" max="99999999.99" :value="$b?->quantity_per_unit" />
     <x-input name="quantity_received" label="Quantity Received (containers)" type="number" min="1" max="99999999" :value="$b?->quantity_received" />
