@@ -2,9 +2,6 @@
 
 use App\Enums\AuditAction;
 use App\Enums\EquipmentStatus;
-use App\Enums\GHSSymbol;
-use App\Enums\SafetyClass;
-use App\Enums\Unit;
 use App\Enums\UserRole;
 use App\Http\Controllers\AlertsController;
 use App\Http\Controllers\AuditLogsController;
@@ -16,7 +13,6 @@ use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\UsageLogsController;
 use App\Http\Controllers\UsersController;
 use App\Models\AuditLog;
-use App\Models\Chemical;
 use App\Models\Equipment;
 use App\Models\Location;
 use Illuminate\Support\Facades\Auth;
@@ -108,48 +104,33 @@ Route::get('/inventory', [ChemicalsController::class, 'chemicals'])
 ->middleware(['auth', 'pending', 'suspended'])
 ->name('inventory');
 
-Route::get('/inventory/create', function () {
-    return view('create_chemical');
-})
+Route::get('/inventory/create', [ChemicalsController::class, 'create'])
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('inventory.create');
 
-Route::post('/inventory/create', function () {
-    $user = Auth::user();
-
-    $validated = request()->validate([
-        'location_id' => 'required|integer|exists:locations,location_id',
-        'chemical_name'   => 'required|string|max:255',
-        'batch_number'   => 'required|string|max:255',
-        'brand_name'   => 'required|string|max:255',
-        'quantity_per_unit'   => 'required|numeric|min:0|max:99999999.99',
-        'quantity_received'   => 'required|numeric|min:0|max:99999999',
-        'current_quantity'   => 'required|numeric|min:0|max:99999999',
-        'expiration_date'   => 'required|date',
-        'date_received'   => 'required|date',
-        'safety_classes'   => 'nullable|array',
-        'safety_classes.*' => ['required', Rule::enum(SafetyClass::class)],
-        'ghs_symbols'   => 'nullable|array',
-        'ghs_symbols.*' => ['required', Rule::enum(GHSSymbol::class)],
-        'unit' => ['required', Rule::enum(Unit::class)],
-    ]);
-
-    $validated['safety_classes'] = implode(',', $validated['safety_classes'] ?? []);
-    $validated['ghs_symbols'] = implode(',', $validated['ghs_symbols'] ?? []);
-    $validated['created_by'] = $user['user_id'];
-
-    Chemical::create($validated);
-
-    AuditLog::create([
-        'created_by' => $user['user_id'],
-        'audit_action' => AuditAction::CREATE,
-        'target' => 'create chemical',
-    ]);
-
-    return redirect()->route('inventory')->with('success', __('messages.chemical.created'));
-})
+Route::post('/inventory/create', [ChemicalsController::class, 'store'])
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
 ->name('inventory.store');
+
+Route::get('/inventory/{id}/batches/create', [ChemicalsController::class, 'batch_create'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
+->name('inventory.batch.create');
+
+Route::post('/inventory/{id}/batches', [ChemicalsController::class, 'batch_store'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
+->name('inventory.batch.store');
+
+Route::get('/inventory/batches/{id}/edit', [ChemicalsController::class, 'batch_edit'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
+->name('inventory.batch.edit');
+
+Route::put('/inventory/batches/{id}', [ChemicalsController::class, 'batch_update'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
+->name('inventory.batch.update');
+
+Route::delete('/inventory/batches/{id}', [ChemicalsController::class, 'batch_delete'])
+->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
+->name('inventory.batch.delete');
 
 Route::delete('/inventory/{id}', [ChemicalsController::class, 'delete'])
 ->middleware(['auth', 'role:' . UserRole::ADMIN->value, 'pending', 'suspended'])
@@ -170,6 +151,10 @@ Route::get('/inventory/use/{id}/edit', [ChemicalsController::class, 'use_edit'])
 Route::put('/inventory/use/{id}', [ChemicalsController::class, 'use_update'])
 ->middleware(['auth', 'pending', 'suspended'])
 ->name('inventory.use.update');
+
+Route::get('/inventory/{id}', [ChemicalsController::class, 'show'])
+->middleware(['auth', 'pending', 'suspended'])
+->name('inventory.show');
 
 // equipment routes
 Route::get('/equipment', [EquipmentController::class, 'equipment'])

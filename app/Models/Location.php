@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Location extends Model
 {
@@ -17,7 +18,7 @@ class Location extends Model
     protected $fillable = [
         'created_by',
         'location_name',
-        'description'
+        'description',
     ];
 
     public function broadcastOn(string $event): array
@@ -28,5 +29,10 @@ class Location extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by', 'user_id');
+    }
+
+    public function chemicalBatches(): HasMany
+    {
+        return $this->hasMany(ChemicalBatch::class, 'location_id', 'location_id');
     }
 }

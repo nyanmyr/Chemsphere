@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Enums\AlertType;
-use App\Models\Chemical;
+use App\Models\ChemicalBatch;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
@@ -14,19 +14,20 @@ class ChemicalAlertService
         protected float $lowStockThreshold = 0.2, // 20% of quantity_received
     ) {}
 
-    public function checkChemical(Chemical $chemical): void
+    public function checkChemical(ChemicalBatch $batch): void
     {
-        $this->checkExpiration($chemical);
-        $this->checkStockLevel($chemical);
+        $batch->loadMissing('chemical');
+        $this->checkExpiration($batch);
+        $this->checkStockLevel($batch);
     }
 
-    public function expirationStatus(Chemical $chemical): ?AlertType
+    public function expirationStatus(ChemicalBatch $batch): ?AlertType
     {
-        if (!$chemical->expiration_date) {
+        if (!$batch->expiration_date) {
             return null;
         }
 
-        $expiresAt = now()->parse($chemical->expiration_date);
+        $expiresAt = now()->parse($batch->expiration_date);
 
         if ($expiresAt->lte(today())) {
             return AlertType::EXPIRED;
@@ -39,22 +40,23 @@ class ChemicalAlertService
         return null;
     }
 
-    protected function checkExpiration(Chemical $chemical): void
+    protected function checkExpiration(ChemicalBatch $batch): void
     {
-        $status = $this->expirationStatus($chemical);
+        $status = $this->expirationStatus($batch);
 
         if ($status === null) {
             return;
         }
 
-        $expiresOn = now()->parse($chemical->expiration_date)->toFormattedDateString();
+        $name = $batch->chemical?->chemical_name ?? 'Deleted chemical';
+        $expiresOn = now()->parse($batch->expiration_date)->toFormattedDateString();
 
         $this->notify(
-            $chemical,
+            $batch,
             $status,
             $status === AlertType::EXPIRED
-                ? "{$chemical->chemical_name} (batch {$chemical->batch_number}) expired on {$expiresOn}."
-                : "{$chemical->chemical_name} (batch {$chemical->batch_number}) expires on {$expiresOn}."
+                ? "{$name} (batch {$batch->batch_number}) expired on {$expiresOn}."
+                : "{$name} (batch {$batch->batch_number}) expires on {$expiresOn}."
         );
     }
 
@@ -63,33 +65,35 @@ class ChemicalAlertService
         return $this->expiringSoonMonths;
     }
 
-    protected function checkStockLevel(Chemical $chemical): void
+    protected function checkStockLevel(ChemicalBatch $batch): void
     {
-        if ($chemical->current_quantity <= 0) {
+        $name = $batch->chemical?->chemical_name ?? 'Deleted chemical';
+
+        if ($batch->current_quantity <= 0) {
             $this->notify(
-                $chemical,
+                $batch,
                 AlertType::OUT_OF_STOCK,
-                "{$chemical->chemical_name} (batch {$chemical->batch_number}) is out of stock."
+                "{$name} (batch {$batch->batch_number}) is out of stock."
             );
             return;
         }
 
-        $threshold = $chemical->quantity_received * $this->lowStockThreshold;
+        $threshold = $batch->quantity_received * $this->lowStockThreshold;
 
-        if ($chemical->current_quantity <= $threshold) {
+        if ($batch->current_quantity <= $threshold) {
             $this->notify(
-                $chemical,
+                $batch,
                 AlertType::LOW_STOCK,
-                "{$chemical->chemical_name} (batch {$chemical->batch_number}) is low: {$chemical->current_quantity} containers remaining."
+                "{$name} (batch {$batch->batch_number}) is low: {$batch->current_quantity} containers remaining."
             );
         }
     }
 
-    protected function notify(Chemical $chemical, AlertType $type, string $message): void
+    protected function notify(ChemicalBatch $batch, AlertType $type, string $message): void
     {
-        foreach ($this->recipientsFor($chemical) as $recipient) {
+        foreach ($this->recipientsFor($batch) as $recipient) {
             $existing = $recipient->alerts()
-                ->where('item_id', $chemical->chemical_id)
+                ->where('item_id', $batch->chemical_batch_id)
                 ->where('alert_type', $type->value)
                 ->unread()
                 ->first();
@@ -100,14 +104,14 @@ class ChemicalAlertService
             }
 
             $recipient->alerts()->create([
-                'item_id' => $chemical->chemical_id,
+                'item_id' => $batch->chemical_batch_id,
                 'alert_type' => $type,
                 'message' => $message,
             ]);
         }
     }
 
-    protected function recipientsFor(Chemical $chemical): Collection
+    protected function recipientsFor(ChemicalBatch $batch): Collection
     {
         return User::receivesAlerts()->get();
     }

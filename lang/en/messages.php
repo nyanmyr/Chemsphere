@@ -21,12 +21,15 @@ return [
     ],
 
     'chemical' => [
-        'created' => 'Chemical added.',
-        'updated' => 'Chemical updated.',
-        'deleted' => 'Chemical deleted.',
+        'created' => 'Chemical category added.',
+        'updated' => 'Chemical category updated.',
+        'deleted' => 'Chemical category deleted.',
         'used' => 'Chemical usage recorded.',
-        'out_of_stock' => 'This chemical is out of stock.',
-        'none_found' => 'No chemicals found matching your search.',
+        'out_of_stock' => 'This chemical batch is out of stock.',
+        'none_found' => 'No chemical categories found matching your search.',
+        'batch_created' => 'Chemical batch added.',
+        'batch_updated' => 'Chemical batch updated.',
+        'batch_deleted' => 'Chemical batch deleted.',
     ],
 
     'equipment' => [

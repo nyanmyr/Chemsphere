@@ -22,7 +22,7 @@ class UsageLog extends Model
         'item_type',
         'item_id',
         'quantity_remaining',
-        'notes'
+        'notes',
     ];
 
     protected static function booted(): void
@@ -46,9 +46,9 @@ class UsageLog extends Model
         return $this->belongsTo(Location::class, 'location_id', 'location_id');
     }
 
-    public function chemical(): BelongsTo
+    public function chemicalBatch(): BelongsTo
     {
-        return $this->belongsTo(Chemical::class, 'item_id', 'chemical_id');
+        return $this->belongsTo(ChemicalBatch::class, 'item_id', 'chemical_batch_id');
     }
 
     public function equipment(): BelongsTo

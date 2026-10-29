@@ -41,8 +41,8 @@ Powered by WebSockets, every table updates instantly without needing a page refr
 
 ### Inventory and equipment
 
-- **Chemical inventory** - with batch / lot number, brand, quantity per unit, initial and current quantity, received and expiration dates, storage location, and unit of measure (kg, g, mg, µg, L, mL, µL).
-- **Safety metadata** - on every chemical: safety classes (flammable, corrosive, reactive, toxic) and GHS pictograms (GHS01 to GHS09).
+- **Chemical inventory** - chemicals are stored as categories (one record per chemical name), and each category can contain multiple batches. Every batch has its own unique batch / lot number within that category, brand, quantity per unit, initial and current quantity, received and expiration dates, storage location, and unit of measure (kg, g, mg, µg, L, mL, µL).
+- **Safety metadata** - on each chemical category: safety classes (flammable, corrosive, reactive, toxic) and GHS pictograms (GHS01 to GHS09).
 - **Advanced search and filtering** - on the inventory: free-text search plus min/max ranges for ID, location, creator, volume, quantities, and dates, and filters for safety classes, GHS symbols, and unit.
 - **Equipment tracking** - with model, serial ID, location, purchase and preventive maintenance dates, last/next maintenance dates, and a status of *available*, *unavailable*, *broken*, or *under maintenance*.
 - **Locations** - to record where chemicals and equipment are kept.
@@ -55,8 +55,8 @@ Powered by WebSockets, every table updates instantly without needing a page refr
 
 ### Alerts
 
-- Automatic alerts for **expiring soon**, **expired**, **low stock**, and **out of stock** chemicals.
-- Alerts are created the moment a chemical changes, and re-checked every morning by a scheduled command automatically.
+- Automatic alerts for **expiring soon**, **expired**, **low stock**, and **out of stock** batches.
+- Alerts are created when a batch is added or its stock / expiration details change, and re-checked every morning by a scheduled command automatically.
 - Unread alerts are de-duplicated, and each alert can be marked as read.
 
 ### Accounts and security
@@ -143,12 +143,12 @@ chemsphere/
 │   │       ├── PendingRedirect.php      # alias: pending
 │   │       ├── RoleAuthorization.php    # alias: role:<name>
 │   │       └── VerifyUserRole.php       # alias: verify
-│   ├── Models/                          # Alert, AuditLog, Chemical, Equipment, Location,
+│   ├── Models/                          # Alert, AuditLog, Chemical, ChemicalBatch, Equipment, Location,
 │   │                                    # UsageLog, User
 │   ├── Observers/
-│   │   └── ChemicalsObserver.php        # Re-checks alerts when a chemical changes
+│   │   └── ChemicalsObserver.php        # Re-checks alerts when batch stock / dates change
 │   ├── Providers/
-│   │   └── AppServiceProvider.php       # Registers the Chemical observer
+│   │   └── AppServiceProvider.php       # Registers the chemical batch observer
 │   └── Services/
 │       └── ChemicalAlertService.php     # Expiry and stock-level alert logic
 ├── bootstrap/
@@ -157,7 +157,7 @@ chemsphere/
 │                                        # queue, reverb, sanctum, services, session, ...
 ├── database/
 │   ├── factories/
-│   ├── migrations/                      # users, locations, audit_logs, chemicals, equipment,
+│   ├── migrations/                      # users, locations, audit_logs, chemical categories / batches, equipment,
 │   │                                    # alerts, usage_logs, sessions, jobs, cache, tokens
 │   └── seeders/
 ├── lang/en/
@@ -310,21 +310,21 @@ and add the standard Laravel scheduler entry to cron:
 
 ## How Alerts Work
 
-`ChemicalAlertService` evaluates each chemical against these rules:
+`ChemicalAlertService` evaluates each batch against these rules:
 
 | Alert | Condition |
 | --- | --- |
 | Expired | Expiration date has passed |
-| Expiring soon | Expires within 30 days |
+| Expiring soon | Expires within 3 months |
 | Out of stock | Current quantity is 0 or less |
 | Low stock | Current quantity is at or below 20% of the initial quantity |
 
 Checks run in two places:
 
-1. **On change:** `ChemicalsObserver` checks a chemical when it is created, and again whenever its `current_quantity` or `expiration_date` changes.
-2. **On a schedule:** `chemicals:check-alerts` runs daily at 06:00 and checks every chemical in batches of 100.
+1. **On change:** `ChemicalsObserver` checks a batch when it is created, and again whenever its `current_quantity`, `quantity_received`, or `expiration_date` changes.
+2. **On a schedule:** `chemicals:check-alerts` runs daily at 06:00 and checks every batch in groups of 100.
 
-Alerts go to all users with the *user* or *admin* role. If a recipient already has an unread alert of the same type for the same chemical, its message is refreshed (for example with the new quantity) instead of creating a duplicate.
+Alerts go to all users with the *user* or *admin* role. If a recipient already has an unread alert of the same type for the same batch, its message is refreshed (for example with the new quantity) instead of creating a duplicate.
 
 ## Real-Time Updates
 
@@ -346,14 +346,15 @@ JSON endpoints live in `routes/api.php` and require a Sanctum token (`auth:sanct
 | --- | --- |
 | `users` | Email, password, Google ID, and role (`pending`, `suspended`, `user`, `admin`) |
 | `locations` | Named storage locations with a description |
-| `chemicals` | Chemical stock, quantities, dates, safety classes, GHS symbols, unit |
+| `chemicals` | Chemical categories with names, safety classes, and GHS symbols |
+| `chemical_batches` | Per-category batch / lot numbers, brands, stock, dates, units, and locations |
 | `equipment` | Equipment records, status, and preventive maintenance dates |
 | `alerts` | Per-user chemical alerts with type and read state |
 | `usage_logs` | Append-only record of chemical and equipment use |
 | `audit_logs` | Append-only record of logins and data changes |
 | `sessions`, `jobs`, `cache`, `personal_access_tokens` | Framework support tables |
 
-Chemicals, equipment, and locations are linked by `location_id`, and every record stores the `created_by` user.
+Chemical batches and equipment are linked to storage locations, and each category, batch, equipment, and location record stores the `created_by` user. Batch numbers are unique within each chemical category.
 
 ## Testing and Code Style
 

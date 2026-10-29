@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Unit;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,32 +16,15 @@ class Chemical extends Model
     protected $primaryKey = 'chemical_id';
 
     protected $fillable = [
-        'location_id',
         'created_by',
         'chemical_name',
-        'batch_number',
-        'brand_name',
-        'quantity_per_unit',
-        'quantity_received',
-        'current_quantity',
-        'expiration_date',
-        'date_received',
         'safety_classes',
         'ghs_symbols',
-        'unit'
     ];
 
-    protected function casts(): array
+    public function batches(): HasMany
     {
-        return [
-            'expiration_date' => 'date',
-            'date_received'    => 'date',
-        ];
-    }
-
-    public function alerts(): HasMany
-    {
-        return $this->hasMany(Alert::class, 'chemical_id', 'chemical_id');
+        return $this->hasMany(ChemicalBatch::class, 'chemical_id', 'chemical_id');
     }
 
     public function broadcastOn(string $event): array
@@ -50,18 +32,8 @@ class Chemical extends Model
         return [new PrivateChannel('inventory')];
     }
 
-    public function location(): BelongsTo
-    {
-        return $this->belongsTo(Location::class, 'location_id', 'location_id');
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by', 'user_id');
-    }
-
-    public function quantityType(): string
-    {
-        return Unit::tryFrom((string) $this->unit)?->quantityType() ?? 'quantity';
     }
 }

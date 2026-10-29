@@ -26,14 +26,17 @@
                 <tbody class="divide-y divide-line">
                     @forelse ($data as $log)
                         @php
-                            $isChemical = $log->item_type->value ?? $log->item_type === \App\Enums\ItemType::CHEMICAL->value
+                            $isChemical = ($log->item_type->value ?? $log->item_type) === \App\Enums\ItemType::CHEMICAL->value
                         @endphp
                         <tr>
                             <td class="td whitespace-nowrap">
                                 @if ($isChemical)
-                                    {{ $log->chemical?->chemical_name }}
+                                    {{ $log->chemicalBatch?->chemical?->chemical_name ?? 'Deleted chemical category' }}
                                 @else
                                     {{ $log->equipment?->equipment_name }}
+                                @endif
+                                @if ($isChemical && $log->chemicalBatch)
+                                    <p class="text-xs text-muted">Batch / lot {{ $log->chemicalBatch->batch_number }} · {{ $log->chemicalBatch->brand_name }}</p>
                                 @endif
                                 <p class="text-xs text-muted">
                                     <span class="badge badge-neutral">
@@ -47,7 +50,7 @@
                             <td class="td tabular-nums">
                                 @if ($isChemical)
                                     {{ $n($log->quantity_remaining) }}
-                                    <span class="text-muted">/ {{ $n($log->chemical?->quantity_received) }} containers</span>
+                                    <span class="text-muted">/ {{ $n($log->chemicalBatch?->quantity_received) }} containers</span>
                                 @else
                                     <span class="text-muted">N/A</span>
                                 @endif

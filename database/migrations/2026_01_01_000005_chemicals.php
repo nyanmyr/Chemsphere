@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Enums\SafetyClass;
 use App\Enums\GHSSymbol;
-use App\Enums\Unit;
 
 return new class extends Migration
 {
@@ -13,19 +12,10 @@ return new class extends Migration
     {
         Schema::create('chemicals', function (Blueprint $table) {
             $table->id('chemical_id');
-            $table->foreignId('location_id')->constrained('locations')->references('location_id');
-            $table->foreignId('created_by')->constrained('users')->references('user_id');
-            $table->string('chemical_name');
-            $table->string('batch_number');
-            $table->string('brand_name');
-            $table->decimal('quantity_per_unit', $precision = 8, $scale = 2);
-            $table->integer('quantity_received');
-            $table->integer('current_quantity');
-            $table->date('expiration_date');
-            $table->date('date_received');
+            $table->foreignId('created_by')->constrained('users', 'user_id');
+            $table->string('chemical_name')->unique();
             $table->set('safety_classes', array_column(SafetyClass::cases(), 'value'));
             $table->set('ghs_symbols', array_column(GHSSymbol::cases(), 'value'));
-            $table->string('unit')->default(Unit::KILOGRAM->value);
             $table->timestamps();
         });
     }

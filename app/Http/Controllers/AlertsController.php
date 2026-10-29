@@ -12,7 +12,7 @@ class AlertsController extends Controller
     {
         $user = Auth::user();
 
-        $query = $user->alerts()->with(['chemical', 'equipment']);
+        $query = $user->alerts()->with(['chemicalBatch.chemical', 'equipment']);
         $query->latest();
 
         $data = $query->paginate(10)->withQueryString();

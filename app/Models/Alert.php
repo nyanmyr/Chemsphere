@@ -33,9 +33,9 @@ class Alert extends Model
         ];
     }
 
-    public function chemical(): BelongsTo
+    public function chemicalBatch(): BelongsTo
     {
-        return $this->belongsTo(Chemical::class, 'item_id', 'chemical_id');
+        return $this->belongsTo(ChemicalBatch::class, 'item_id', 'chemical_batch_id');
     }
 
     public function equipment(): BelongsTo

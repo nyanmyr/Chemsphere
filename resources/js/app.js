@@ -5,6 +5,9 @@ const userId = document.querySelector('meta[name="user-id"]')?.content;
 // Each entry: the table's element id, its private channel, and the event prefix.
 const liveTables = [
     { table: 'inventory-table', channel: 'inventory', prefix: 'Chemical' },
+    { table: 'inventory-table', channel: 'inventory', prefix: 'ChemicalBatch' },
+    { table: 'chemical-batches-table', channel: 'inventory', prefix: 'Chemical' },
+    { table: 'chemical-batches-table', channel: 'inventory', prefix: 'ChemicalBatch' },
     { table: 'equipment-table', channel: 'equipment', prefix: 'Equipment' },
     { table: 'locations-table', channel: 'locations', prefix: 'Location' },
     { table: 'alerts-table', channel: `alerts.${userId}`, prefix: 'Alert' },
@@ -13,6 +16,7 @@ const liveTables = [
     { table: 'audit-logs-table', channel: 'audit_logs', prefix: 'AuditLog' },
     { table: 'used-today', channel: 'usage_logs', prefix: 'UsageLog' },
     { table: 'attention-table', channel: 'inventory', prefix: 'Chemical' },
+    { table: 'attention-table', channel: 'inventory', prefix: 'ChemicalBatch' },
 ];
 
 document.addEventListener('DOMContentLoaded', () => {

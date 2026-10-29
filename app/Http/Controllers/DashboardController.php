@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\AlertType;
 use App\Enums\ItemType;
 use App\Enums\UserRole;
-use App\Models\Chemical;
+use App\Models\ChemicalBatch;
 use App\Models\UsageLog;
 use App\Services\ChemicalAlertService;
 use Illuminate\Http\Request;
@@ -57,14 +57,14 @@ class DashboardController extends Controller
             ->orderByDesc('last_used_at')
             ->get();
 
-        $chemicals = Chemical::whereIn('chemical_id', $usage->pluck('item_id'))
+        $batches = ChemicalBatch::with('chemical')
+            ->whereIn('chemical_batch_id', $usage->pluck('item_id'))
             ->get()
-            ->keyBy('chemical_id');
+            ->keyBy('chemical_batch_id');
 
         return $usage->map(fn ($row) => [
             'id' => $row->item_id,
-            'chemical' => $chemicals->get($row->item_id),
-            'total_used' => $row->total_used,
+            'batch' => $batches->get($row->item_id),
             'times_used' => (int) $row->times_used,
             'last_used_at' => Carbon::parse($row->last_used_at, $storageZone)->setTimezone($displayZone),
         ]);
@@ -83,7 +83,7 @@ class DashboardController extends Controller
             ->all();
         $types = $selected ?: self::ATTENTION_TYPES;
 
-        $query = Chemical::query()->with('location');
+        $query = ChemicalBatch::query()->with(['chemical', 'location']);
 
         $query->where(function ($q) use ($types, $lowStockThreshold) {
             foreach ($types as $type) {
@@ -93,45 +93,46 @@ class DashboardController extends Controller
 
         $query->when($request->filled('search'), function ($q) use ($request) {
             $q->where(function ($sub) use ($request) {
-                $sub->where('chemical_name', 'LIKE', "%{$request['search']}%")
-                    ->orWhere('batch_number', 'LIKE', "%{$request['search']}%")
-                    ->orWhere('brand_name', 'LIKE', "%{$request['search']}%");
+                $sub->where('batch_number', 'LIKE', "%{$request['search']}%")
+                    ->orWhere('brand_name', 'LIKE', "%{$request['search']}%")
+                    ->orWhereHas('chemical', fn ($category) => $category->where('chemical_name', 'LIKE', "%{$request['search']}%"));
             });
         });
 
-        $query->orderBy('expiration_date')->orderBy('chemical_id');
+        $query->orderBy('expiration_date')->orderBy('chemical_batch_id');
 
         return $query->paginate(10)
             ->withQueryString()
-            ->through(fn (Chemical $c) => [
-                'chemical' => $c,
-                'statuses' => $this->statusesOf($c, $lowStockThreshold),
+            ->through(fn (ChemicalBatch $batch) => [
+                'batch' => $batch,
+                'statuses' => $this->statusesOf($batch, $lowStockThreshold),
             ]);
     }
 
     private function applyCondition($query, AlertType $type, float $lowStockThreshold): void
     {
         match ($type) {
-            AlertType::EXPIRED => $query->where('expiration_date', '<', now()),
+            AlertType::EXPIRED => $query->whereDate('expiration_date', '<=', today()),
             AlertType::OUT_OF_STOCK => $query->where('current_quantity', '<=', 0),
             AlertType::LOW_STOCK => $query
                 ->where('current_quantity', '>', 0)
                 ->whereRaw('current_quantity <= quantity_received * ?', [$lowStockThreshold]),
+            default => null,
         };
     }
 
-    private function statusesOf(Chemical $chemical, float $lowStockThreshold): array
+    private function statusesOf(ChemicalBatch $batch, float $lowStockThreshold): array
     {
-        $current = (float) $chemical->current_quantity;
+        $current = (float) $batch->current_quantity;
         $statuses = [];
 
-        if ($chemical->expiration_date->isPast()) {
+        if ($batch->expiration_date->isPast()) {
             $statuses[] = AlertType::EXPIRED;
         }
 
         if ($current <= 0) {
             $statuses[] = AlertType::OUT_OF_STOCK;
-        } elseif ($current <= (float) $chemical->quantity_received * $lowStockThreshold) {
+        } elseif ($current <= (float) $batch->quantity_received * $lowStockThreshold) {
             $statuses[] = AlertType::LOW_STOCK;
         }
 

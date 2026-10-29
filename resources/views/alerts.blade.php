@@ -37,11 +37,12 @@
                                     </p>
                                 @else
                                     <p class="font-medium">
-                                        {{ $alert->chemical?->chemical_name }}
+                                        {{ $alert->chemicalBatch?->chemical?->chemical_name ?? 'Deleted chemical category' }}
                                     </p>
                                     <p class="text-xs text-muted">
-                                        #{{ $alert->chemical?->chemical_id }}, batch {{ $alert->chemical?->batch_number }},
-                                        {{ $alert->chemical?->brand_name }}
+                                        Batch #{{ $alert->chemicalBatch?->chemical_batch_id ?? $alert->item_id }},
+                                        lot {{ $alert->chemicalBatch?->batch_number ?? 'unknown' }},
+                                        {{ $alert->chemicalBatch?->brand_name }}
                                     </p>
                                 @endif
                             </td>

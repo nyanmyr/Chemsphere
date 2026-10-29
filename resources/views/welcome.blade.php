@@ -46,23 +46,23 @@
                         </thead>
                         <tbody class="divide-y divide-line">
                             @forelse ($usedToday as $row)
-                                @php $c = $row['chemical']; @endphp
+                                @php $batch = $row['batch']; $category = $batch?->chemical; @endphp
                                 <tr>
                                     <td class="td">
-                                        @if ($c)
-                                            <p class="font-medium">{{ $c->chemical_name }}</p>
+                                        @if ($batch)
+                                            <p class="font-medium">{{ $category?->chemical_name ?? 'Deleted chemical category' }}</p>
                                             <p class="text-xs text-muted">
-                                                #{{ $c->chemical_id }}, batch / lot number {{ $c->batch_number }}
+                                                Batch #{{ $batch->chemical_batch_id }}, lot {{ $batch->batch_number }}
                                             </p>
                                         @else
-                                            <p class="font-medium text-muted">Deleted chemical</p>
+                                            <p class="font-medium text-muted">Deleted chemical batch</p>
                                             <p class="text-xs text-muted">#{{ $row['id'] }}</p>
                                         @endif
                                     </td>
                                     <td class="td whitespace-nowrap tabular-nums">
-                                        @if ($c)
-                                            {{ $n($c->current_quantity) }}
-                                            <span class="text-muted">/ {{ $n($c->quantity_received) }} containers</span>
+                                        @if ($batch)
+                                            {{ $n($batch->current_quantity) }}
+                                            <span class="text-muted">/ {{ $n($batch->quantity_received) }} containers</span>
                                         @else
                                             <span class="text-muted">N/A</span>
                                         @endif
@@ -97,7 +97,7 @@
 
                 <div id="attention-table">
                     <p class="mb-2 text-sm text-muted">
-                        {{ $attention->total() }} {{ $attention->total() === 1 ? 'chemical' : 'chemicals' }}
+                        {{ $attention->total() }} {{ $attention->total() === 1 ? 'batch' : 'batches' }}
                     </p>
 
                     <div class="card overflow-x-auto">
@@ -114,10 +114,11 @@
                             <tbody class="divide-y divide-line">
                                 @forelse ($attention as $row)
                                     @php
-                                        $c = $row['chemical'];
+                                        $batch = $row['batch'];
+                                        $category = $batch->chemical;
                                         $has = fn($type) => in_array($type, $row['statuses'], true);
-                                        $initial = (float) $c->quantity_received;
-                                        $current = (float) $c->current_quantity;
+                                        $initial = (float) $batch->quantity_received;
+                                        $current = (float) $batch->current_quantity;
                                         $pct = $initial > 0 ? max(0, min(100, $current / $initial * 100)) : 0;
                                         $bar = $has(\App\Enums\AlertType::OUT_OF_STOCK)
                                             ? 'bg-red-600'
@@ -125,10 +126,9 @@
                                     @endphp
                                     <tr>
                                         <td class="td">
-                                            <p class="font-medium">{{ $c->chemical_name }}</p>
+                                            <p class="font-medium">{{ $category?->chemical_name ?? 'Deleted chemical category' }}</p>
                                             <p class="text-xs text-muted">
-                                                #{{ $c->chemical_id }}, batch {{ $c->batch_number }},
-                                                {{ $c->brand_name }}
+                                                Batch #{{ $batch->chemical_batch_id }}, {{ $batch->batch_number }}, {{ $batch->brand_name }}
                                             </p>
                                         </td>
                                         <td class="td">
@@ -151,12 +151,12 @@
                                             </p>
                                         </td>
                                         <td class="td whitespace-nowrap">
-                                            <span class="tabular-nums">{{ $c->expiration_date->format('M j, Y') }}</span>
-                                            <p class="text-xs text-muted">{{ $c->expiration_date->diffForHumans() }}</p>
+                                            <span class="tabular-nums">{{ $batch->expiration_date->format('M j, Y') }}</span>
+                                            <p class="text-xs text-muted">{{ $batch->expiration_date->diffForHumans() }}</p>
                                         </td>
                                         <td class="td">
-                                            <p class="font-medium">{{ $c->location?->location_name }}</p>
-                                            <p class="text-xs text-muted">#{{ $c->location?->location_id }}</p>
+                                            <p class="font-medium">{{ $batch->location?->location_name }}</p>
+                                            <p class="text-xs text-muted">#{{ $batch->location?->location_id }}</p>
                                         </td>
                                     </tr>
                                 @empty
@@ -167,7 +167,7 @@
                                                 <a href="{{ route('welcome') }}" class="link">Clear filters</a>
                                             @else
                                                 Nothing needs attention right now. Expired, low-stock, and
-                                                out-of-stock chemicals will show up here.
+                                                out-of-stock batches will show up here.
                                             @endif
                                         </td>
                                     </tr>
